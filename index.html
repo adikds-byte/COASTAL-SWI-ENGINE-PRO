@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <!-- ==================== LAPISAN KEAMANAN SISTEM & EARLY GUARD (ANTI CTRL+U / DEVTOOLS / KLIK KANAN) ==================== -->
+  <script id="coastalswi-early-guard">
+    /**
+     * COASTAL-SWI PRO - EARLY GUARD SECURITY SUBSYSTEM
+     * Proteksi Integritas Aplikasi, Pemblokiran Ctrl+U, F12, Inspect Element, dan Context Menu
+     */
+    (function() {
+      'use strict';
+
+      function playSecurityWarningAudio() {
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          const ctx = new AudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(880, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.24);
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime);
+          osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
+      }
+
+      window.showSecurityHUD = function(reason, actionCode) {
+        playSecurityWarningAudio();
+
+        let container = document.getElementById('securityHudContainer');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'securityHudContainer';
+          container.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:1000000;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;width:92%;max-width:540px;';
+          (document.body || document.documentElement).appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.style.cssText = 'pointer-events:auto;width:100%;background:linear-gradient(135deg,rgba(18,6,6,0.97),rgba(45,10,10,0.95));border:1.5px solid #ef4444;border-radius:14px;padding:12px 16px;box-shadow:0 0 35px rgba(239,68,68,0.45),inset 0 0 16px rgba(239,68,68,0.22);color:#fee2e2;font-family:"JetBrains Mono",Menlo,monospace;font-size:11px;display:flex;align-items:center;gap:12px;backdrop-filter:blur(16px);animation:secToastIn 0.35s cubic-bezier(0.16,1,0.3,1) forwards;';
+
+        const iconWrap = '<div style="width:38px;height:38px;border-radius:10px;background:rgba(239,68,68,0.22);border:1px solid #ef4444;display:flex;align-items:center;justify-content:center;color:#f87171;font-size:18px;flex-shrink:0;"><i class="fa-solid fa-shield-halved"></i></div>';
+
+        const details = '<div style="flex:1;min-width:0;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">' +
+            '<span style="font-weight:800;color:#fca5a5;letter-spacing:0.06em;text-transform:uppercase;font-size:11px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> NOTIFIKASI KEAMANAN SISTEM</span>' +
+            '<span style="font-size:9px;background:#7f1d1d;color:#fecaca;padding:2px 7px;border-radius:4px;border:1px solid #b91c1c;font-weight:bold;">' + (actionCode || 'PROTECTION GUARD') + '</span>' +
+          '</div>' +
+          '<div style="color:#fecaca;font-size:10.5px;line-height:1.45;">' + reason + '</div>' +
+          '<div style="margin-top:4px;font-size:9px;color:#f87171;opacity:0.85;">COASTAL-SWI PRO SECURITY CORE &bull; AKSES KODE SUMBER DIBATASI</div>' +
+        '</div>';
+
+        toast.innerHTML = iconWrap + details;
+        container.appendChild(toast);
+
+        document.documentElement.style.transition = 'box-shadow 0.2s ease';
+        document.documentElement.style.boxShadow = 'inset 0 0 50px rgba(239,68,68,0.45)';
+        setTimeout(function() {
+          document.documentElement.style.boxShadow = '';
+        }, 350);
+
+        setTimeout(function() {
+          toast.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(-14px) scale(0.96)';
+          setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+          }, 360);
+        }, 3400);
+      };
+
+      window.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.showSecurityHUD('Akses Klik Kanan (Context Menu) dinonaktifkan demi perlindungan kode sumber dan integritas pemodelan hidrogeologi.', 'CONTEXT-MENU-BLOCKED');
+        return false;
+      }, true);
+
+      window.addEventListener('keydown', function(e) {
+        const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+        const isShift = e.shiftKey;
+        const isAlt = e.altKey;
+        const key = (e.key || '').toUpperCase();
+        const keyCode = e.keyCode || e.which;
+
+        if (key === 'F12' || keyCode === 123) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan F12 (Developer Tools) telah diblokir oleh kebijakan keamanan aplikasi.', 'KEY-F12-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && (key === 'U' || keyCode === 85)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan Ctrl + U / Cmd + U (Lihat Sumber Kode) diblokir oleh Early Guard.', 'VIEW-SOURCE-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && (isShift || isAlt) && (key === 'I' || keyCode === 73)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan Inspeksi Elemen (Ctrl/Cmd + Shift/Alt + I) telah diblokir demi keamanan data.', 'INSPECT-ELEMENT-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && (isShift || isAlt) && (key === 'J' || keyCode === 74)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan Konsol Pengembang (Ctrl/Cmd + Shift/Alt + J) telah dinonaktifkan.', 'CONSOLE-ACCESS-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && (isShift || isAlt) && (key === 'C' || keyCode === 67)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan Pemeriksaan Komponen (Ctrl/Cmd + Shift/Alt + C) diblokir.', 'ELEMENT-PICKER-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && isShift && (key === 'K' || keyCode === 75)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Pintasan Konsol Web Pengembang (Ctrl/Cmd + Shift + K) diblokir.', 'WEB-CONSOLE-BLOCKED');
+          return false;
+        }
+
+        if (isCtrlOrCmd && (key === 'S' || keyCode === 83)) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.showSecurityHUD('Penyimpanan halaman web langsung (Ctrl/Cmd + S) dinonaktifkan. Gunakan tombol ekspor resmi JSON FloPy.', 'SAVE-PAGE-BLOCKED');
+          return false;
+        }
+      }, true);
+    })();
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CoastalSWI PRO V2.0 — Coastal Aquifer & Seawater Intrusion Web Engine</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            slate: { 850: '#151f32', 900: '#0f172a', 950: '#020617' }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+            tech: ['Orbitron', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Google Fonts & FontAwesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Plotly.js CDN -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+  <style>
+    :root {
+      --bg-cmd: #040916;
+      --card-cmd: rgba(9, 17, 36, 0.92);
+      --border-cmd: rgba(14, 165, 233, 0.32);
+      --text-cmd: #f8fafc;
+    }
+    .light {
+      --bg-cmd: #f1f5f9;
+      --card-cmd: rgba(255, 255, 255, 0.96);
+      --border-cmd: rgba(2, 132, 199, 0.3);
+      --text-cmd: #0f172a;
+    }
+    body {
+      background-color: var(--bg-cmd);
+      color: var(--text-cmd);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+    }
+    .font-tech { font-family: 'Orbitron', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    .cmd-card {
+      background: var(--card-cmd);
+      border: 1px solid var(--border-cmd);
+      border-radius: 1rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+    .cmd-card:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.25);
+    }
+
+    .dev-card {
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(9, 20, 43, 0.95), rgba(4, 10, 24, 0.9));
+      animation: cardGlow 3s ease-in-out infinite;
+    }
+    @keyframes cardGlow {
+      0%, 100% { border-color: rgba(245, 158, 11, 0.35); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+      50% { border-color: rgba(252, 211, 77, 75%); box-shadow: 0 0 18px rgba(245, 158, 11, 0.25); }
+    }
+    .dev-avatar-lg {
+      width: 54px; height: 54px; border-radius: 14px;
+      background: linear-gradient(135deg, #b45309, #facc15);
+      color: #040a18; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
+    }
+    .pulse-gold { animation: pulseGold 2s infinite ease-in-out; }
+    @keyframes pulseGold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.45); }
+      50% { box-shadow: 0 0 22px 4px rgba(250, 204, 21, 0.28); }
+    }
+
+    @keyframes secToastIn {
+      0% { transform: translateY(-20px) scale(0.92); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes earthGlowPulse {
+      0%, 100% { box-shadow: 0 0 35px rgba(14, 165, 233, 0.3), inset 0 0 25px rgba(245, 158, 11, 0.2); }
+      50% { box-shadow: 0 0 70px rgba(16, 185, 129, 0.45), inset 0 0 35px rgba(14, 165, 233, 0.3); }
+    }
+    .earth-glow-box { animation: earthGlowPulse 4s ease-in-out infinite; }
+
+    .chat-drawer {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    .chat-drawer.closed {
+      transform: translateY(110%) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .chat-drawer.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(5, 11, 24, 0.8); }
+    ::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 4px; }
+    input[type="range"] { accent-color: #0ea5e9; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-sky-500 selection:text-white relative">
+
+  <!-- 0. BACKGROUND REALISTIS ORBIT BUMI 3D BERPUTAR (THREE.JS) -->
+  <div id="bgEarthContainer" class="fixed inset-0 z-0 pointer-events-none opacity-25 overflow-hidden">
+    <div id="bgEarthCanvas" class="w-full h-full"></div>
+  </div>
+
+  <!-- 1. ANIMASI LOADING BOOTING SISTEM DENGAN BUMI 3D INTERAKTIF (TANPA PASSWORD) -->
+  <div id="bootOverlay" class="fixed inset-0 z-[10000] bg-slate-950/95 text-white flex flex-col justify-between p-4 sm:p-6 overflow-y-auto select-none transition-all duration-500">
+    <div class="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-sky-500/30">
+          <i class="fa-solid fa-water"></i>
+        </div>
+        <div>
+          <h1 class="font-tech text-sm sm:text-base font-black tracking-wider text-sky-400 flex items-center gap-1.5">
+            COASTAL-SWI <span class="text-white">PRO</span>
+            <span class="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">GHYBEN-HERZBERG ENGINE</span>
+          </h1>
+          <p class="text-[10px] text-slate-400 font-mono">Pemodelan Analitik Intrusi Air Laut, Upconing Sumur &amp; Pre-Processor Numerik FloPy</p>
+        </div>
+      </div>
+
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-sky-500/40 text-xs font-mono text-sky-300 shadow-inner">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span id="bootClock">Memuat Hari &amp; Waktu Real-Time...</span>
+      </div>
+    </div>
+
+    <div class="w-full max-w-xl mx-auto my-auto py-4 flex flex-col items-center justify-center space-y-5 text-center">
+      <!-- Bola Dunia 3D Interaktif -->
+      <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center rounded-full earth-glow-box bg-slate-900/40 border border-sky-500/30 backdrop-blur-sm cursor-grab active:cursor-grabbing" title="Geser/Putar Bumi 3D dengan mouse atau sentuhan jari">
+        <div id="loadingEarthCanvas" class="w-full h-full rounded-full overflow-hidden"></div>
+        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/85 border border-sky-500/40 text-[10px] font-mono text-sky-300 flex items-center gap-1.5 shadow pointer-events-none whitespace-nowrap">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span>Orbit Bumi &amp; Awan 3D (Sentuh/Geser)</span>
+        </div>
+      </div>
+
+      <!-- Bar Progres Inisialisasi Otomatis -->
+      <div class="w-full bg-slate-900/90 border border-sky-500/40 rounded-2xl p-5 shadow-2xl space-y-3 backdrop-blur-xl">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span id="bootStatusText" class="text-sky-300 font-bold flex items-center gap-2">
+            <i class="fa-solid fa-gear fa-spin text-amber-400"></i> Menginisialisasi Engine Ghyben-Herzberg...
+          </span>
+          <span id="bootPctText" class="text-amber-400 font-black font-tech">0%</span>
+        </div>
+
+        <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
+          <div id="bootProgressBar" class="h-full rounded-full bg-gradient-to-r from-sky-500 via-amber-400 to-emerald-400 transition-all duration-150" style="width: 0%"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1">
+          <span><i class="fa-solid fa-shield-halved text-emerald-400"></i> Proteksi Anti Ctrl+U &amp; DevTools Aktif</span>
+          <button type="button" onclick="finishBootSequence()" class="px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold transition shadow cursor-pointer">
+            Lewati Animasi &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full max-w-4xl mx-auto text-center pb-2 space-y-1">
+      <div class="text-[11px] text-slate-400 font-mono">
+        &ldquo;Keseimbangan hidrostatik air tawar dan air laut di wilayah pesisir adalah kunci keberlanjutan sumber daya air masa depan.&rdquo; &mdash; Ir. Mohamad Hartadi
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SCREENSAVER REALISTIS 3D ORBIT + DIGITAL CLOCK -->
+  <div id="screensaverOverlay" class="fixed inset-0 z-[9700] bg-slate-950/92 backdrop-blur-md text-white hidden flex-col items-center justify-between p-6 sm:p-8 select-none transition-opacity duration-500" onclick="toggleScreensaver(false)">
+    <div class="w-full flex items-center justify-between z-20 px-3 sm:px-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-600/30 border border-sky-400/40 flex items-center justify-center text-sky-300 text-lg shadow">
+          <i class="fa-solid fa-earth-asia"></i>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-white font-tech">Screensaver Orbit Bumi &amp; Monitoring Intrusi Air Laut</div>
+          <div class="text-xs text-slate-300 font-mono">Tekan ESC atau klik di mana saja untuk kembali ke simulasi</div>
+        </div>
+      </div>
+      <button type="button" onclick="event.stopPropagation(); toggleScreensaver(false)" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold text-white transition flex items-center gap-1.5 shadow cursor-pointer font-mono">
+        <i class="fa-solid fa-xmark"></i> Tutup Screensaver
+      </button>
+    </div>
+
+    <div class="relative w-full h-[340px] sm:h-[420px] my-auto flex items-center justify-center pointer-events-none">
+      <div id="ssEarthCanvas" class="absolute inset-0 w-full h-full"></div>
+      <div class="z-20 flex flex-col items-center text-center max-w-4xl px-4 space-y-2 pointer-events-none">
+        <div id="screensaverClock" class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-white to-amber-200 font-mono drop-shadow-2xl">
+          00:00:00
+        </div>
+        <div id="screensaverDate" class="text-sm sm:text-lg font-bold text-sky-300 uppercase tracking-widest font-mono">
+          Memuat Hari &amp; Tanggal...
+        </div>
+        <div id="ssLiveTelemetry" class="text-xs text-emerald-300 font-mono tracking-widest uppercase font-bold bg-slate-950/85 px-4 py-1.5 rounded-full border border-emerald-500/40 shadow-lg">
+          STATUS SIMULASI AKTIF • TOE INTRUSI: -- m | RASIO GHYBEN: α = 40.0
+        </div>
+      </div>
+    </div>
+
+    <div class="z-20 w-full max-w-2xl mx-auto px-4 mb-2 pointer-events-auto">
+      <div class="bg-slate-900/90 border border-sky-500/50 p-4 sm:p-5 rounded-2xl shadow-2xl backdrop-blur text-center">
+        <div class="text-amber-400 text-xs mb-1">
+          <i class="fa-solid fa-quote-left mr-1"></i> <span class="font-bold uppercase tracking-wider text-amber-300">Prinsip Hidrogeologi Pesisir</span> <i class="fa-solid fa-quote-right ml-1"></i>
+        </div>
+        <p class="text-xs sm:text-sm italic text-slate-200 font-serif leading-relaxed">
+          "Setiap penurunan satu meter muka air tanah tawar di daratan pesisir akan memicu kenaikan antarmuka air asin sekitar empat puluh meter dari kedalaman."
+        </p>
+        <div class="mt-2 text-[11px] text-sky-400 font-mono font-bold">
+          — Prinsip Badon Ghyben (1888) &amp; Alexander Herzberg (1901) • Dikembangkan oleh Ir. Mohamad Hartadi
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP ACCENT STRIP -->
+  <div class="h-1.5 w-full bg-gradient-to-r from-sky-500 via-amber-400 to-emerald-500 z-40"></div>
+
+  <!-- HEADER NAVIGATION -->
+  <header class="sticky top-0 z-30 border-b border-sky-500/30 bg-slate-950/90 backdrop-blur-md px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-sky-500/30">
+        <i class="fa-solid fa-water"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h1 class="font-tech text-sm sm:text-base font-black tracking-wider text-sky-400">
+            COASTAL-SWI <span class="text-white">ENGINE PRO</span>
+          </h1>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-500/40 font-bold">
+            Ghyben-Herzberg + Dupuit-Strack
+          </span>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved"></i> EARLY GUARD ACTIVE
+          </span>
+        </div>
+        <p class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>ANALYTICAL SEAWATER INTRUSION &amp; FLOPY (MODFLOW 6 / SEAWAT) PRE-PROCESSOR</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Live Clock Pill -->
+    <div class="hidden xl:flex items-center gap-2 bg-slate-900 border border-sky-500/40 rounded-xl px-3 py-1 text-xs font-mono text-sky-300">
+      <i class="fa-regular fa-clock text-amber-400"></i>
+      <span id="headerLiveClock">Memuat waktu...</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+      <button id="btnReset" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center gap-1" title="Reset Parameter ke Nilai Awal">
+        <i class="fa-solid fa-rotate-left text-sky-400"></i> <span class="hidden sm:inline">Reset</span>
+      </button>
+      <button id="btnExportModal" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white font-bold shadow flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-file-code text-amber-300"></i> <span>JSON FloPy</span>
+      </button>
+      <button type="button" onclick="replayBootLoading()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1 transition" title="Tampilkan Ulang Animasi Loading Bumi 3D">
+        <i class="fa-solid fa-spinner"></i> <span class="hidden md:inline">Animasi Loading</span>
+      </button>
+      <button type="button" onclick="toggleScreensaver(true)" class="px-2.5 py-1.5 rounded-lg bg-indigo-950/90 hover:bg-indigo-900 text-indigo-200 border border-indigo-500/60 font-bold flex items-center gap-1 transition" title="Buka Screensaver 3D Orbit Bumi">
+        <i class="fa-solid fa-tv text-amber-400"></i> <span class="hidden md:inline">Screensaver</span>
+      </button>
+      <button type="button" onclick="openModal('creatorModal')" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black hover:brightness-110 flex items-center gap-1 transition shadow">
+        <i class="fa-solid fa-user-gear"></i> <span>Creator</span>
+      </button>
+      <button id="btnTheme" class="p-1.5 px-2.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" title="Mode Gelap / Terang">
+        <i id="themeIcon" class="fa-solid fa-moon text-amber-400"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- BANNER VALIDASI & PERINGATAN HIDROGEOLOGI -->
+  <div id="alertBanner" class="hidden relative z-20 mx-6 mt-4 p-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-between transition-all"></div>
+
+  <!-- MAIN WORKSPACE GRID -->
+  <main class="relative z-10 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1650px] w-full mx-auto flex-1">
+
+    <!-- PANEL KIRI: INPUT VARIABEL HIDRODINAMIK (4 KOLOM) -->
+    <aside class="lg:col-span-4 space-y-4 font-mono">
+
+      <!-- Grup 1: Properti Akuifer & Densitas -->
+      <div class="cmd-card p-4 space-y-3.5">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center justify-between border-b border-slate-800 pb-2">
+          <span><i class="fa-solid fa-layer-group mr-1.5 text-amber-400"></i> 1. Akuifer &amp; Densitas Fluida</span>
+          <span class="text-[10px] text-slate-400">Ghyben-Herzberg</span>
+        </h2>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="inpK" class="font-semibold text-slate-200">Konduktivitas Hidrolik (K)</label>
+              <span class="text-sky-400 font-bold"><span id="valK">15.0</span> m/hari</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpK" type="range" min="0.5" max="100" step="0.5" value="15" class="w-full" />
+              <input id="numK" type="number" min="0.1" max="500" step="0.5" value="15" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 text-right font-bold" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Densitas Air Tawar (ρ<sub>f</sub>)</label>
+              <div class="relative">
+                <input id="numRhoF" type="number" min="990" max="1010" step="0.5" value="1000" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-cyan-300 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">kg/m³</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Densitas Air Laut (ρ<sub>s</sub>)</label>
+              <div class="relative">
+                <input id="numRhoS" type="number" min="1015" max="1045" step="0.5" value="1025" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-rose-400 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">kg/m³</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Kedalaman Dasar (z<sub>b</sub>)</label>
+              <div class="relative">
+                <input id="numZb" type="number" min="10" max="200" step="5" value="60" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (-MSL)</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Elevasi Tanah (z<sub>surf</sub>)</label>
+              <div class="relative">
+                <input id="numZSurf" type="number" min="2" max="50" step="1" value="8" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (+MSL)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grup 2: Hidrodinamik & Geometri Penampang -->
+      <div class="cmd-card p-4 space-y-3.5">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center justify-between border-b border-slate-800 pb-2">
+          <span><i class="fa-solid fa-water-ladder mr-1.5 text-emerald-400"></i> 2. Variabel Hidrodinamik Pesisir</span>
+          <span class="text-[10px] text-slate-400">Dupuit-Strack</span>
+        </h2>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="font-semibold text-slate-200">Elevasi Muka Air Tanah Hulu (h)</label>
+              <span class="text-emerald-400 font-bold"><span id="valHL">2.40</span> m (+MSL)</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpHL" type="range" min="0.2" max="10.0" step="0.1" value="2.4" class="w-full" />
+              <input id="numHL" type="number" min="0.1" max="25.0" step="0.1" value="2.4" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-300 text-right font-bold" />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="font-semibold text-slate-200">Panjang Penampang dari Pantai (L)</label>
+              <span class="text-emerald-400 font-bold"><span id="valL">1000</span> m</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpL" type="range" min="200" max="5000" step="50" value="1000" class="w-full" />
+              <input id="numL" type="number" min="100" max="10000" step="50" value="1000" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-white text-right font-bold" />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="font-semibold text-slate-200">Laju Resapan / Recharge (R)</label>
+              <span class="text-cyan-400 font-bold"><span id="valR">250</span> mm/tahun</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpR" type="range" min="0" max="1500" step="25" value="250" class="w-full" />
+              <input id="numR" type="number" min="0" max="3000" step="25" value="250" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-cyan-300 text-right font-bold" />
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="font-semibold text-slate-200">Jarak Titik Inspeksi dari Pantai (x)</label>
+              <span class="text-amber-400 font-bold"><span id="valXObs">250</span> m</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpXObs" type="range" min="10" max="1000" step="10" value="250" class="w-full" />
+              <input id="numXObs" type="number" min="0" max="10000" step="10" value="250" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 text-right font-bold" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grup 3: Stres Pemompaan Sumur (Upconing) -->
+      <div class="cmd-card p-4 space-y-3.5">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center justify-between border-b border-slate-800 pb-2">
+          <span><i class="fa-solid fa-bore-hole mr-1.5 text-rose-400"></i> 3. Debit Pemompaan Sumur (Q)</span>
+          <span class="text-[10px] text-slate-400">Thiem &amp; Dagan-Bear</span>
+        </h2>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <label class="font-semibold text-slate-200">Debit Pemompaan Sumur (Q)</label>
+              <span class="text-rose-400 font-bold"><span id="valQ">180</span> m³/hari</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpQ" type="range" min="0" max="1500" step="10" value="180" class="w-full" />
+              <input id="numQ" type="number" min="0" max="5000" step="10" value="180" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-rose-400 text-right font-bold" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Jarak Sumur (x<sub>w</sub>)</label>
+              <div class="relative">
+                <input id="numXw" type="number" min="20" max="5000" step="10" value="350" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Kedalaman Saringan</label>
+              <div class="relative">
+                <input id="numZScreen" type="number" min="5" max="150" step="1" value="18" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-purple-300 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (-MSL)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- PANEL KANAN: KARTU TELEMETRI KPI, GRAFIK 2D PLOTLY & TABEL (8 KOLOM) -->
+    <section class="lg:col-span-8 space-y-4 font-mono">
+
+      <!-- 4 Kartu Indikator Utama -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="cmd-card p-3.5 border-l-4 border-l-sky-500">
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Rasio Ghyben (α) &amp; Toe (x<sub>toe</sub>)</p>
+          <p class="text-xl font-black font-tech text-sky-400 mt-1" id="kpiToe">-- m</p>
+          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiAlpha">α = 40.0</p>
+        </div>
+
+        <div class="cmd-card p-3.5 border-l-4 border-l-emerald-500">
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Inspeksi (x = <span id="lblXObs">250</span> m)</p>
+          <p class="text-xl font-black font-tech text-emerald-400 mt-1" id="kpiZiObs">-- m</p>
+          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiHfObs">MAT: -- m (+MSL)</p>
+        </div>
+
+        <div class="cmd-card p-3.5 border-l-4 border-l-amber-500">
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Fluks Lepas Pantai (q<sub>0</sub>)</p>
+          <p class="text-xl font-black font-tech text-amber-400 mt-1" id="kpiFlux">-- m²/hr</p>
+          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiGrad">Gradien: --</p>
+        </div>
+
+        <div class="cmd-card p-3.5 border-l-4 border-l-rose-500">
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Status Upconing Sumur</p>
+          <p class="text-lg sm:text-xl font-black font-tech mt-1" id="kpiUpconing">--</p>
+          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiUpRatio">Kriteria Dagan-Bear: --</p>
+        </div>
+      </div>
+
+      <!-- Visualisasi Penampang 2D Interaktif (Plotly.js) -->
+      <div class="cmd-card p-4 space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
+          <div>
+            <h3 class="text-sm font-bold font-tech text-sky-400 flex items-center gap-2">
+              <i class="fa-solid fa-chart-area text-amber-400"></i> PENAMPANG MELINTANG HIDROGEOLOGI 2D (COASTAL CROSS-SECTION)
+            </h3>
+            <p class="text-[11px] text-slate-400">Menampilkan Elevasi Permukaan Tanah, Muka Air Tanah (Water Table), Kurva Intrusi Air Asin, dan Upconing Sumur</p>
+          </div>
+          <span class="text-[10px] px-2.5 py-1 rounded bg-slate-900 border border-sky-500/40 text-sky-300 font-bold">
+            200 Nodal Analitik Aktif
+          </span>
+        </div>
+        <div id="plotCrossSection" class="w-full h-[450px]"></div>
+      </div>
+
+      <!-- Tabel Profil Transek Pesisir -->
+      <div class="cmd-card p-4 overflow-x-auto">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-table-list"></i> Tabel Evaluasi Hidrodinamik Sepanjang Transek Pesisir
+        </h3>
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 bg-slate-900/80 text-[10px] uppercase">
+              <th class="py-2 px-3">Jarak x (m)</th>
+              <th class="py-2 px-3">MAT Alami h<sub>0</sub> (m)</th>
+              <th class="py-2 px-3">MAT Terpompa h (m)</th>
+              <th class="py-2 px-3">Kedalaman Antarmuka z<sub>i</sub> (m MSL)</th>
+              <th class="py-2 px-3">Tebal Lensa Air Tawar (m)</th>
+              <th class="py-2 px-3">Status Zona Akuifer</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-slate-800/70"></tbody>
+        </table>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ==================== 3. FLOATING SMART CHATBOT (INTERNAL + WIKIPEDIA LIVE API + GOOGLE + MULTI-AI) ==================== -->
+  <div id="chatDrawer" class="chat-drawer closed fixed bottom-4 right-4 z-50 w-[96vw] sm:w-[440px] bg-slate-900 border-2 border-sky-500/70 rounded-2xl shadow-[0_0_45px_rgba(14,165,233,0.3)] overflow-hidden font-mono flex flex-col">
+    <!-- Header Chatbot -->
+    <div class="p-3 bg-gradient-to-r from-slate-950 via-sky-950 to-indigo-950 border-b border-sky-500/50 flex justify-between items-center text-xs">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-sky-500 to-amber-400 flex items-center justify-center text-slate-950 font-black shadow">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <div>
+          <span class="font-bold text-sky-300 font-tech block leading-none">OMNI-AI &amp; WIKI SMART ENGINE</span>
+          <span class="text-[9px] text-emerald-400 flex items-center gap-1 mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Hydrogeology + Wikipedia API + Google + AI Hub
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button onclick="clearChatHistory()" class="p-1.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-[10px]" title="Bersihkan Riwayat Chat">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+        <button onclick="toggleChatWindow()" class="p-1.5 rounded bg-rose-950/80 hover:bg-rose-800 text-rose-300">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Area Pesan Chat -->
+    <div id="chatMessages" class="p-3.5 h-[360px] overflow-y-auto space-y-3 text-xs text-slate-200 bg-slate-950/60">
+      <div class="p-3 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/60 border border-sky-500/40 text-[11px] leading-relaxed shadow-md space-y-2">
+        <div class="flex items-center gap-1.5 font-bold text-amber-300">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Selamat Datang di Asisten Pintar Multi-Engine!
+        </div>
+        <p class="text-slate-300">
+          Saya dapat menganalisis <b>data simulasi intrusi air laut</b> secara langsung, maupun menjawab <b>pertanyaan di luar topik</b> (Sains, Geoteknik, Bendungan, Sejarah, Tokoh, Teknologi, dll) dengan mengambil referensi langsung dari <span class="text-purple-300 font-bold">Wikipedia Live API</span>, <span class="text-emerald-300 font-bold">Google Search/Scholar</span>, serta <span class="text-amber-300 font-bold">AI Global (ChatGPT, Perplexity, Gemini, Claude)</span>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Prompt Pills (Topik Internal & Luar Topik) -->
+    <div class="px-2.5 py-2 bg-slate-900 border-t border-slate-800 flex gap-1.5 overflow-x-auto text-[10px]">
+      <button onclick="sendQuickPrompt('Analisis status intrusi & posisi toe saat ini')" class="px-2.5 py-1 rounded-lg bg-sky-950 hover:bg-sky-900 text-sky-300 whitespace-nowrap border border-sky-500/40 font-semibold">
+        <i class="fa-solid fa-water mr-1"></i>Status Intrusi
+      </button>
+      <button onclick="sendQuickPrompt('Apakah sumur pemompaan aman dari upconing?')" class="px-2.5 py-1 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 whitespace-nowrap border border-rose-500/40 font-semibold">
+        <i class="fa-solid fa-bore-hole mr-1"></i>Cek Upconing
+      </button>
+      <button onclick="sendQuickPrompt('Bendungan')" class="px-2.5 py-1 rounded-lg bg-purple-950 hover:bg-purple-900 text-purple-300 whitespace-nowrap border border-purple-500/40 font-semibold" title="Contoh Pencarian Wikipedia & AI Luar Topik">
+        <i class="fa-brands fa-wikipedia-w mr-1"></i>Wiki: Bendungan
+      </button>
+      <button onclick="sendQuickPrompt('Kecerdasan buatan')" class="px-2.5 py-1 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-emerald-300 whitespace-nowrap border border-emerald-500/40 font-semibold" title="Contoh Pencarian Wikipedia & AI Luar Topik">
+        <i class="fa-solid fa-globe mr-1"></i>Wiki: AI
+      </button>
+      <button onclick="sendQuickPrompt('Tampilkan profil Creator & Kontak')" class="px-2.5 py-1 rounded-lg bg-amber-950 hover:bg-amber-900 text-amber-300 whitespace-nowrap border border-amber-500/40 font-semibold">
+        <i class="fa-solid fa-user-tie mr-1"></i>Creator
+      </button>
+    </div>
+
+    <!-- Input Box -->
+    <div class="p-2.5 bg-slate-950 border-t border-slate-800 flex gap-2">
+      <input type="text" id="chatInput" placeholder="Tanyakan intrusi air laut atau topik umum apa saja..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-400 transition" onkeydown="if(event.key==='Enter') sendChatMessage()">
+      <button onclick="sendChatMessage()" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-sky-500/20">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- FLOATING CHAT TRIGGER BUTTON -->
+  <button onclick="toggleChatWindow()" class="fixed bottom-4 right-4 z-40 p-3.5 rounded-full bg-gradient-to-r from-sky-600 via-indigo-600 to-amber-500 text-white shadow-2xl border border-sky-300 hover:scale-105 transition font-bold flex items-center gap-2">
+    <i class="fa-solid fa-robot text-lg text-amber-300"></i>
+    <span class="text-xs font-mono hidden sm:inline">AI &amp; Wiki Smart Chat</span>
+  </button>
+
+  <!-- MODAL CREATOR PROFILE -->
+  <div id="creatorModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 select-none">
+    <div class="dev-card p-6 max-w-md w-full space-y-4 shadow-2xl relative text-xs font-mono">
+      <button onclick="closeModal('creatorModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-amber-500/40 pb-3">
+        <div class="dev-avatar-lg pulse-gold">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div>
+          <b class="text-[10px] text-amber-300 tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-id-badge text-amber-400"></i> DATA PROGRAMMER &amp; LEAD GEOTECHNICAL CONSULTANT
+          </b>
+          <h3 class="text-base font-bold text-white font-tech">Ir. Mohamad Hartadi (Adi)</h3>
+          <p class="text-[11px] text-amber-300">Civil &amp; Geotechnical Dam Safety Engineer • AI Developer</p>
+          <p class="text-[10px] text-slate-400 font-mono">SKA Ahli Utama Bendungan</p>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-slate-300 text-[11px] leading-relaxed">
+        <p>
+          Pengembang dan perancang sistem integrasi komputasi geoteknik, pemodelan numerik hidrogeologi pesisir, stabilitas bendungan/TSF, dan otomatisasi analisis rekayasa sumber daya air.
+        </p>
+        <div class="grid gap-1.5 pt-1 text-[10px]">
+          <a href="https://facebook.com/m.hartadi" target="_blank" class="p-2 rounded bg-[#0a1428] border border-blue-600/70 text-blue-300 flex justify-between items-center hover:bg-blue-900/40 transition">
+            <span><i class="fa-brands fa-facebook text-blue-400 mr-1.5"></i> <b>Facebook:</b> m.hartadi</span>
+            <span class="bg-blue-900 px-2 py-0.5 rounded font-bold">Buka</span>
+          </a>
+          <a href="https://newbieonline7.blogspot.com" target="_blank" class="p-2 rounded bg-[#1a1206] border border-amber-600/70 text-amber-300 flex justify-between items-center hover:bg-amber-900/40 transition">
+            <span><i class="fa-solid fa-blog text-amber-400 mr-1.5"></i> <b>Blog:</b> newbieonline7.blogspot.com</span>
+            <span class="bg-amber-900 px-2 py-0.5 rounded font-bold">Buka</span>
+          </a>
+          <a href="https://wa.me/6282231036047" target="_blank" class="p-2 rounded bg-[#04140c] border border-emerald-600/70 text-emerald-300 flex justify-between items-center hover:bg-emerald-900/40 transition">
+            <span><i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> <b>WA:</b> 0822-3103-6047</span>
+            <span class="bg-emerald-900 px-2 py-0.5 rounded font-bold animate-pulse">Chat</span>
+          </a>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
+          <div class="flex justify-between"><span>Spesialisasi:</span><span class="text-amber-300 font-bold">Geoteknik, Bendungan &amp; Sumber Daya Air</span></div>
+          <div class="flex justify-between"><span>Portofolio:</span><span class="text-cyan-300 font-bold">Tujuh Bukit, Way Apu, Sabo Dam Rababaka</span></div>
+          <div class="flex justify-between"><span>Portofolio Aplikasi:</span><span class="text-purple-300 font-bold">61+ Aplikasi Web Teknik</span></div>
+        </div>
+      </div>
+
+      <div class="pt-2 text-center">
+        <button onclick="closeModal('creatorModal')" class="w-full py-2 bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-bold rounded-xl shadow cursor-pointer">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EKSPOR JSON FLOPY (MODFLOW / SEAWAT) -->
+  <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="cmd-card max-w-3xl w-full p-6 shadow-2xl space-y-4 font-mono">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-sm sm:text-base font-bold font-tech text-sky-400">Payload JSON Integrasi FloPy (MODFLOW 6 BUY / SEAWAT VDF)</h3>
+          <p class="text-[11px] text-slate-400">Siap diumpankan ke script Python FloPy untuk simulasi numerik Variable-Density Flow</p>
+        </div>
+        <button id="btnCloseModal" class="text-slate-400 hover:text-white text-lg font-bold px-2">✕</button>
+      </div>
+      <pre id="jsonPreview" class="bg-slate-950 text-emerald-400 p-4 rounded-xl text-xs overflow-auto max-h-[380px] border border-slate-800"></pre>
+      <div class="flex justify-end gap-3 pt-2">
+        <button id="btnCopyJson" class="px-4 py-2 text-xs font-semibold rounded-lg border border-slate-700 hover:bg-slate-800 transition">
+          Salin JSON ke Clipboard
+        </button>
+        <button id="btnDownloadJson" class="px-4 py-2 text-xs font-semibold rounded-lg bg-sky-600 hover:bg-sky-500 text-white transition">
+          Unduh File (.json)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed top-16 right-4 z-[9999] space-y-2 pointer-events-none"></div>
+
+  <!-- ==================== JAVASCRIPT ENGINE ==================== -->
+  <script>
+    /**
+     * 1. STATE DEFAULT & PARAMETER HIDROGEOLOGI
+     */
+    const DEFAULT_PARAMS = {
+      K: 15.0,
+      rhoF: 1000.0,
+      rhoS: 1025.0,
+      zb: 60.0,
+      zSurf: 8.0,
+      hL: 2.4,
+      L: 1000.0,
+      R_mm: 250.0,
+      xObs: 250.0,
+      Qw: 180.0,
+      xw: 350.0,
+      zScreen: 18.0
+    };
+
+    let currentSimulationOutput = null;
+
+    /**
+     * 2. VALIDASI INPUT & ERROR HANDLING
+     */
+    function validateParameters(raw) {
+      const errors = [];
+      const warnings = [];
+
+      for (const [key, val] of Object.entries(raw)) {
+        if (typeof val !== 'number' || Number.isNaN(val) || !Number.isFinite(val)) {
+          errors.push(`Variabel "${key}" mengandung nilai non-numerik.`);
+        }
+      }
+      if (errors.length > 0) return { valid: false, errors, warnings };
+
+      if (raw.K <= 0) errors.push('Konduktivitas hidrolik (K) harus > 0 m/hari.');
+      if (raw.rhoS <= raw.rhoF) {
+        errors.push(`Densitas air laut (ρs = ${raw.rhoS} kg/m³) wajib lebih besar dari densitas air tawar (ρf = ${raw.rhoF} kg/m³) untuk mencegah pembagian nol pada persamaan Ghyben-Herzberg.`);
+      }
+      if (raw.L <= 50) errors.push('Panjang penampang (L) minimal 50 m.');
+      if (raw.zb <= 5) errors.push('Kedalaman dasar akuifer (zb) minimal 5 m.');
+      if (raw.hL < 0) errors.push('Elevasi muka air tanah hulu (h) tidak boleh negatif.');
+
+      if (raw.xObs > raw.L) {
+        warnings.push(`Jarak titik inspeksi x (${raw.xObs} m) melampaui panjang domain L (${raw.L} m), disesuaikan otomatis ke L.`);
+        raw.xObs = raw.L;
+      }
+      if (raw.xw > raw.L) {
+        warnings.push(`Lokasi sumur xw (${raw.xw} m) berada di luar panjang penampang L (${raw.L} m).`);
+      }
+      if (raw.zScreen >= raw.zb) {
+        warnings.push('Kedalaman saringan sumur menembus dasar kedap akuifer.');
+      }
+
+      return { valid: errors.length === 0, errors, warnings, params: raw };
+    }
+
+    /**
+     * 3. CORE ANALYTICAL ENGINE (GHYBEN-HERZBERG + STRACK + THIEM-DAGAN-BEAR)
+     */
+    function solveCoastalAquifer(p) {
+      const alpha = p.rhoF / (p.rhoS - p.rhoF);
+      const R_mday = (p.R_mm / 1000.0) / 365.25;
+      const qInland = (p.K * Math.pow(p.hL, 2)) / (2.0 * p.L);
+      const qRecharge = 0.5 * R_mday * p.L;
+      const q0 = qInland + qRecharge;
+
+      const nNodes = 200;
+      const dx = p.L / (nNodes - 1);
+
+      const xArr = [], hNaturalArr = [], hPumpedArr = [], ziNaturalArr = [], ziPumpedArr = [], zSurfArr = [], zBottomArr = [];
+      const T_avg = Math.max(p.K * (p.zb * 0.65), 1.0);
+      const R_influence = Math.min(Math.max(p.L * 0.45, 150.0), 1500.0);
+
+      let xToe = 0;
+      let toeFound = false;
+
+      for (let i = 0; i < nNodes; i++) {
+        const x = i * dx;
+        xArr.push(x);
+
+        const hSq = (Math.pow(p.hL, 2) / p.L) * x + (R_mday / p.K) * (p.L * x - Math.pow(x, 2));
+        const h0 = Math.sqrt(Math.max(0, hSq));
+        hNaturalArr.push(h0);
+
+        const zi0_raw = -alpha * h0;
+        ziNaturalArr.push(Math.max(-p.zb, zi0_raw));
+
+        let drawdown = 0;
+        if (p.Qw > 0 && x > 0) {
+          const r1 = Math.max(Math.abs(x - p.xw), 0.5);
+          const r2 = Math.max(x + p.xw, 0.5);
+          const sRaw = (p.Qw / (2.0 * Math.PI * T_avg)) * Math.log(r2 / r1);
+          const radialDamping = Math.exp(-Math.abs(x - p.xw) / R_influence);
+          drawdown = Math.max(0, sRaw * radialDamping * 0.45);
+        }
+
+        const hPumped = Math.max(0.01, h0 - drawdown);
+        hPumpedArr.push(hPumped);
+
+        const ziPumped_raw = -alpha * hPumped;
+        const ziPumped = Math.max(-p.zb, ziPumped_raw);
+        ziPumpedArr.push(ziPumped);
+
+        if (!toeFound && ziPumped_raw <= -p.zb) {
+          xToe = x;
+          toeFound = true;
+        }
+
+        const topoElev = p.zSurf * (0.35 + 0.65 * Math.pow(x / p.L, 0.35));
+        zSurfArr.push(Number(topoElev.toFixed(2)));
+        zBottomArr.push(-p.zb);
+      }
+
+      if (!toeFound) xToe = p.L;
+
+      const idxObs = Math.min(nNodes - 1, Math.max(0, Math.round(p.xObs / dx)));
+      const hObs = hPumpedArr[idxObs];
+      const ziObs = ziPumpedArr[idxObs];
+
+      const idxWell = Math.min(nNodes - 1, Math.max(0, Math.round(p.xw / dx)));
+      const ziWellInitial = Math.abs(ziNaturalArr[idxWell]);
+      const d0 = Math.max(0.5, ziWellInitial - p.zScreen);
+      const upconingRise = Math.max(0, ziPumpedArr[idxWell] - ziNaturalArr[idxWell]);
+      const upconingRatio = upconingRise / d0;
+
+      const qSafeMax = upconingRatio > 0.01 ? (p.Qw * (0.33 / upconingRatio)) : (p.Qw + 350);
+
+      let upconingStatus = 'AMAN';
+      if (ziWellInitial <= p.zScreen || ziPumpedArr[idxWell] >= -p.zScreen) {
+        upconingStatus = 'INTRUSI SUMUR';
+      } else if (upconingRatio >= 0.33) {
+        upconingStatus = 'KRITIS (>1/3 d₀)';
+      } else if (upconingRatio >= 0.20) {
+        upconingStatus = 'WASPADA';
+      }
+
+      return {
+        alpha, R_mday, q0, xToe, hObs, ziObs, upconingRise, upconingRatio, upconingStatus, d0, qSafeMax,
+        arrays: { x: xArr, hNatural: hNaturalArr, hPumped: hPumpedArr, ziNatural: ziNaturalArr, ziPumped: ziPumpedArr, zSurf: zSurfArr, zBottom: zBottomArr }
+      };
+    }
+
+    /**
+     * 4. RENDER PLOTLY 2D CROSS-SECTION
+     */
+    function renderCrossSection(p, res) {
+      const isDark = document.documentElement.classList.contains('dark');
+      const bgPlot = isDark ? 'rgba(9,17,36,0.4)' : '#ffffff';
+      const gridColor = isDark ? '#1e293b' : '#e2e8f0';
+      const textColor = isDark ? '#cbd5e1' : '#334155';
+      const x = res.arrays.x;
+
+      const traces = [
+        {
+          x, y: res.arrays.zBottom, mode: 'lines', name: 'Dasar Akuifer Kedap (-zb)',
+          line: { color: '#64748b', width: 2, dash: 'dot' }
+        },
+        {
+          x, y: res.arrays.ziPumped, mode: 'lines', name: 'Antarmuka Air Asin (Terpompa)',
+          line: { color: '#ef4444', width: 3 }, fill: 'tonexty',
+          fillcolor: isDark ? 'rgba(239, 68, 68, 0.30)' : 'rgba(239, 68, 68, 0.22)'
+        },
+        {
+          x, y: res.arrays.hPumped, mode: 'lines', name: 'Muka Air Tanah (h)',
+          line: { color: '#0ea5e9', width: 2.5 }, fill: 'tonexty',
+          fillcolor: isDark ? 'rgba(14, 165, 233, 0.22)' : 'rgba(14, 165, 233, 0.18)'
+        },
+        {
+          x, y: res.arrays.ziNatural, mode: 'lines', name: 'Antarmuka Alami (Tanpa Q)',
+          line: { color: '#f59e0b', width: 1.5, dash: 'dash' }
+        },
+        {
+          x, y: res.arrays.zSurf, mode: 'lines', name: 'Permukaan Tanah',
+          line: { color: '#10b981', width: 2 }
+        },
+        {
+          x: [p.xObs, p.xObs], y: [-p.zb, p.zSurf], mode: 'lines', name: `Inspeksi (x = ${p.xObs}m)`,
+          line: { color: '#eab308', width: 1.5, dash: 'dashdot' }
+        },
+        {
+          x: [p.xw, p.xw], y: [p.zSurf, -p.zScreen], mode: 'lines+markers', name: `Sumur (Q = ${p.Qw} m³/hr)`,
+          line: { color: '#ec4899', width: 3.5 }, marker: { symbol: 'triangle-down', size: 10, color: '#ec4899' }
+        }
+      ];
+
+      const layout = {
+        paper_bgcolor: bgPlot,
+        plot_bgcolor: bgPlot,
+        margin: { l: 55, r: 20, t: 25, b: 45 },
+        font: { family: 'JetBrains Mono, monospace', color: textColor, size: 11 },
+        xaxis: { title: 'Jarak dari Garis Pantai x (meter)', gridcolor: gridColor, range: [0, p.L] },
+        yaxis: { title: 'Elevasi terhadap MSL (meter)', gridcolor: gridColor, zerolinecolor: '#38bdf8', zerolinewidth: 1.5, range: [-p.zb * 1.05, Math.max(p.zSurf, p.hL) * 1.2] },
+        legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'left', x: 0 },
+        annotations: [{
+          x: Math.min(res.xToe, p.L * 0.9), y: -p.zb + 3,
+          text: `Toe Intrusi: ${res.xToe.toFixed(1)} m`, showarrow: true, arrowhead: 2, ax: 25, ay: -25,
+          font: { color: '#ef4444', size: 11 }, bgcolor: isDark ? 'rgba(15,23,42,0.9)' : '#fff', bordercolor: '#ef4444'
+        }]
+      };
+
+      Plotly.react('plotCrossSection', traces, layout, { responsive: true, displaylogo: false });
+    }
+
+    /**
+     * 5. UPDATE DOM, TABEL & SINKRONISASI TELEMETRI SCREENSAVER
+     */
+    function updateUI(p, res) {
+      document.getElementById('kpiToe').textContent = `${res.xToe.toFixed(1)} m`;
+      document.getElementById('kpiAlpha').textContent = `α = ${res.alpha.toFixed(2)} | zb = -${p.zb} m`;
+      document.getElementById('lblXObs').textContent = p.xObs.toFixed(0);
+      document.getElementById('kpiZiObs').textContent = `${res.ziObs.toFixed(2)} m`;
+      document.getElementById('kpiHfObs').textContent = `MAT: +${res.hObs.toFixed(2)} m MSL`;
+      document.getElementById('kpiFlux').textContent = `${res.q0.toFixed(3)} m²/hr`;
+      document.getElementById('kpiGrad').textContent = `i avg: ${(p.hL / p.L).toExponential(2)}`;
+
+      const kpiUp = document.getElementById('kpiUpconing');
+      kpiUp.textContent = res.upconingStatus;
+      kpiUp.className = 'text-lg sm:text-xl font-black font-tech mt-1 ' + (
+        res.upconingStatus === 'AMAN' ? 'text-emerald-400' :
+        res.upconingStatus === 'WASPADA' ? 'text-amber-400' : 'text-rose-400'
+      );
+      document.getElementById('kpiUpRatio').textContent = `λ = ${(res.upconingRatio * 100).toFixed(1)}% (Batas 33%)`;
+
+      const ssTel = document.getElementById('ssLiveTelemetry');
+      if (ssTel) {
+        ssTel.textContent = `STATUS SIMULASI AKTIF • TOE INTRUSI: ${res.xToe.toFixed(1)} m | RASIO GHYBEN: α = ${res.alpha.toFixed(1)} | UPCONING: ${res.upconingStatus}`;
+      }
+
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      [0.05, 0.15, 0.30, 0.50, 0.75, 1.0].forEach(frac => {
+        const idx = Math.min(res.arrays.x.length - 1, Math.floor(frac * (res.arrays.x.length - 1)));
+        const xVal = res.arrays.x[idx];
+        const h0Val = res.arrays.hNatural[idx];
+        const hVal = res.arrays.hPumped[idx];
+        const ziVal = res.arrays.ziPumped[idx];
+        const lensThick = hVal - ziVal;
+        const isIntruded = ziVal > -p.zb + 0.05;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/50';
+        tr.innerHTML = `
+          <td class="py-2 px-3 font-bold text-amber-300">${xVal.toFixed(0)}</td>
+          <td class="py-2 px-3">+${h0Val.toFixed(2)}</td>
+          <td class="py-2 px-3 text-sky-400 font-bold">+${hVal.toFixed(2)}</td>
+          <td class="py-2 px-3 ${isIntruded ? 'text-rose-400 font-bold' : 'text-emerald-400'}">${ziVal.toFixed(2)}</td>
+          <td class="py-2 px-3">${lensThick.toFixed(2)}</td>
+          <td class="py-2 px-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isIntruded ? 'bg-rose-950 text-rose-300 border border-rose-600/50' : 'bg-emerald-950 text-emerald-300 border border-emerald-600/50'}">
+              ${isIntruded ? 'Zona Baji Intrusi' : 'Akuifer Air Tawar Penuh'}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function runSimulationCycle() {
+      const raw = {
+        K: parseFloat(document.getElementById('numK').value),
+        rhoF: parseFloat(document.getElementById('numRhoF').value),
+        rhoS: parseFloat(document.getElementById('numRhoS').value),
+        zb: parseFloat(document.getElementById('numZb').value),
+        zSurf: parseFloat(document.getElementById('numZSurf').value),
+        hL: parseFloat(document.getElementById('numHL').value),
+        L: parseFloat(document.getElementById('numL').value),
+        R_mm: parseFloat(document.getElementById('numR').value),
+        xObs: parseFloat(document.getElementById('numXObs').value),
+        Qw: parseFloat(document.getElementById('numQ').value),
+        xw: parseFloat(document.getElementById('numXw').value),
+        zScreen: parseFloat(document.getElementById('numZScreen').value)
+      };
+
+      const validation = validateParameters(raw);
+      const banner = document.getElementById('alertBanner');
+      if (!validation.valid) {
+        banner.className = 'relative z-20 mx-6 mt-4 p-3 rounded-xl border bg-rose-950/90 border-rose-500 text-rose-200 text-xs font-mono';
+        banner.innerHTML = `<span>⚠️ <strong>Error Validasi Engine:</strong> ${validation.errors.join(' | ')}</span>`;
+        banner.classList.remove('hidden');
+        return;
+      } else if (validation.warnings.length > 0) {
+        banner.className = 'relative z-20 mx-6 mt-4 p-3 rounded-xl border bg-amber-950/90 border-amber-500 text-amber-200 text-xs font-mono';
+        banner.innerHTML = `<span>ℹ️ <strong>Catatan Parameter:</strong> ${validation.warnings.join(' | ')}</span>`;
+        banner.classList.remove('hidden');
+      } else {
+        banner.classList.add('hidden');
+      }
+
+      const p = validation.params;
+      document.getElementById('valK').textContent = p.K.toFixed(1);
+      document.getElementById('valHL').textContent = p.hL.toFixed(2);
+      document.getElementById('valL').textContent = p.L.toFixed(0);
+      document.getElementById('valR').textContent = p.R_mm.toFixed(0);
+      document.getElementById('valXObs').textContent = p.xObs.toFixed(0);
+      document.getElementById('valQ').textContent = p.Qw.toFixed(0);
+      document.getElementById('inpXObs').max = p.L;
+
+      const results = solveCoastalAquifer(p);
+      currentSimulationOutput = { params: p, results };
+
+      updateUI(p, results);
+      renderCrossSection(p, results);
+    }
+
+    /**
+     * 6. GENERATOR PAYLOAD JSON FLOPY (MODFLOW 6 / SEAWAT)
+     */
+    function buildFloPyJsonPayload(p, res) {
+      const ncol = 100, nlay = 20;
+      const delr = Number((p.L / ncol).toFixed(2));
+      const delv = Number(((p.zb + p.zSurf) / nlay).toFixed(2));
+      const wellCol = Math.min(ncol - 1, Math.max(0, Math.floor(p.xw / delr)));
+      const wellLay = Math.min(nlay - 1, Math.max(0, Math.floor((p.zSurf + p.zScreen) / delv)));
+
+      return {
+        metadata: {
+          engine: "CoastalSWI PRO V2.0",
+          creator: "Ir. Mohamad Hartadi (Adi)",
+          target_simulator: "FloPy (MODFLOW 6 GWF-BUY / SEAWAT VDF)",
+          generated_at: new Date().toISOString(),
+          analytical_summary: {
+            ghyben_herzberg_alpha: Number(res.alpha.toFixed(3)),
+            toe_intrusion_m: Number(res.xToe.toFixed(2)),
+            offshore_flux_m2_day: Number(res.q0.toFixed(4)),
+            upconing_status: res.upconingStatus
+          }
+        },
+        discretization_dis: { nlay, nrow: 1, ncol, delr, delc: 1.0, top: p.zSurf, botm_step: -delv, aquifer_bottom_msl: -p.zb },
+        npf_package: { hk_m_day: p.K, vk_m_day: Number((p.K * 0.1).toFixed(3)), sy: 0.22, ss: 1e-5 },
+        buoyancy_vdf: { rho_fresh_kg_m3: p.rhoF, rho_sea_kg_m3: p.rhoS, drhodc: Number(((p.rhoS - p.rhoF) / 35.0).toFixed(4)), ref_salinity: 35.0 },
+        stress_packages: {
+          recharge_rch_m_day: Number(res.R_mday.toFixed(6)),
+          pumping_well_wel: [{ layer: wellLay, row: 0, col: wellCol, x_m: p.xw, screen_msl: -p.zScreen, q_m3_day: -Math.abs(p.Qw) }]
+        }
+      };
+    }
+
+    /**
+     * ============================================================================
+     * 7. OMNI-AI & WIKIPEDIA LIVE API SMART CHATBOT ENGINE
+     *    Mendeteksi topik internal vs pertanyaan luar topik (Wikipedia ID/EN + Google + AI)
+     * ============================================================================
+     */
+    function toggleChatWindow() {
+      const d = document.getElementById('chatDrawer');
+      d.classList.toggle('closed');
+      d.classList.toggle('open');
+    }
+
+    function clearChatHistory() {
+      const cBox = document.getElementById('chatMessages');
+      cBox.innerHTML = `
+        <div class="p-3 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/60 border border-sky-500/40 text-[11px] leading-relaxed shadow-md">
+          <span class="font-bold text-amber-300"><i class="fa-solid fa-broom mr-1"></i> Riwayat percakapan dibersihkan.</span> Silakan ajukan pertanyaan teknis hidrogeologi maupun topik ensiklopedia umum lainnya.
+        </div>`;
+    }
+
+    function sendQuickPrompt(txt) {
+      document.getElementById('chatInput').value = txt;
+      sendChatMessage();
+    }
+
+    // Bersihkan kalimat tanya agar mendapatkan kata kunci pencarian Wikipedia yang akurat
+    function cleanSearchQuery(rawText) {
+      return rawText
+        .replace(/^(apa itu|apakah itu|apakah|siapa itu|siapakah|jelaskan tentang|jelaskan|tolong jelaskan|cari tahu tentang|cari|bagaimana|dimana|kapan|mengapa|arti dari|definisi dari|definisi)\s+/i, '')
+        .replace(/[?!.]+$/g, '')
+        .trim();
+    }
+
+    // Fetch Live API Wikipedia (Mencoba Bahasa Indonesia terlebih dahulu, lalu fallback ke Bahasa Inggris)
+    async function fetchWikipediaKnowledge(queryText) {
+      const cleanQ = cleanSearchQuery(queryText) || queryText;
+      const langs = ['id', 'en'];
+
+      for (const lang of langs) {
+        try {
+          const searchUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanQ)}&utf8=&format=json&origin=*&srlimit=3`;
+          const sRes = await fetch(searchUrl);
+          const sData = await sRes.json();
+
+          if (sData && sData.query && sData.query.search && sData.query.search.length > 0) {
+            const bestMatch = sData.query.search[0];
+            const title = bestMatch.title;
+            const summaryUrl = `https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`;
+            const sumRes = await fetch(summaryUrl);
+
+            if (sumRes.ok) {
+              const sumData = await sumRes.json();
+              const relatedTitles = sData.query.search.slice(1, 3).map(item => item.title);
+              return {
+                found: true,
+                lang: lang === 'id' ? 'Wikipedia Bahasa Indonesia' : 'Wikipedia English Encyclopedia',
+                langCode: lang,
+                title: sumData.title || title,
+                description: sumData.description || 'Artikel Ensiklopedia Terverifikasi',
+                extract: sumData.extract || bestMatch.snippet.replace(/<\/?[^>]+(>|$)/g, ""),
+                pageUrl: (sumData.content_urls && sumData.content_urls.desktop && sumData.content_urls.desktop.page)
+                  ? sumData.content_urls.desktop.page
+                  : `https://${lang}.wikipedia.org/wiki/${encodeURIComponent(title)}`,
+                thumbnail: (sumData.thumbnail && sumData.thumbnail.source) ? sumData.thumbnail.source : null,
+                related: relatedTitles
+              };
+            }
+          }
+        } catch (err) {
+          console.warn(`Wikipedia (${lang}) API fallback:`, err);
+        }
+      }
+      return { found: false, cleanQuery: cleanQ };
+    }
+
+    // Generator Kartu Multi-Sumber Berwarna Profesional (Wikipedia, Google, Scholar, ChatGPT, Perplexity, Gemini, Claude)
+    function buildExternalKnowledgeCard(rawQuery, wikiResult) {
+      const qEnc = encodeURIComponent(rawQuery);
+      const cleanEnc = encodeURIComponent(wikiResult.cleanQuery || cleanSearchQuery(rawQuery) || rawQuery);
+
+      const urlWikiId = wikiResult.found && wikiResult.langCode === 'id'
+        ? wikiResult.pageUrl
+        : `https://id.wikipedia.org/w/index.php?search=${cleanEnc}`;
+      const urlWikiEn = wikiResult.found && wikiResult.langCode === 'en'
+        ? wikiResult.pageUrl
+        : `https://en.wikipedia.org/w/index.php?search=${cleanEnc}`;
+      const urlGoogle = `https://www.google.com/search?q=${qEnc}`;
+      const urlScholar = `https://scholar.google.com/scholar?q=${qEnc}`;
+      const urlChatGPT = `https://chatgpt.com/?q=${qEnc}`;
+      const urlPerplexity = `https://www.perplexity.ai/search?q=${qEnc}`;
+      const urlClaude = `https://claude.ai/new?q=${qEnc}`;
+      const urlGemini = `https://www.google.com/search?q=${qEnc}&udm=50`;
+
+      let wikiSectionHtml = '';
+      if (wikiResult.found) {
+        const thumbHtml = wikiResult.thumbnail
+          ? `<img src="${wikiResult.thumbnail}" alt="${wikiResult.title}" class="w-16 h-16 object-cover rounded-xl border border-purple-400/50 shrink-0 shadow-md" />`
+          : `<div class="w-12 h-12 rounded-xl bg-purple-900/60 border border-purple-400/40 flex items-center justify-center text-purple-300 text-xl shrink-0"><i class="fa-brands fa-wikipedia-w"></i></div>`;
+
+        const relatedChips = wikiResult.related && wikiResult.related.length > 0
+          ? `<div class="pt-1.5 flex flex-wrap gap-1 items-center">
+               <span class="text-[9px] text-purple-300 font-bold">Topik Terkait:</span>
+               ${wikiResult.related.map(t => `<button onclick="sendQuickPrompt('${t.replace(/'/g, "\\'")}')" class="text-[9px] px-2 py-0.5 rounded bg-purple-950 hover:bg-purple-800 text-purple-200 border border-purple-500/40 transition">${t}</button>`).join('')}
+             </div>`
+          : '';
+
+        wikiSectionHtml = `
+          <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-950/90 via-purple-950/75 to-slate-900 border border-purple-500/50 space-y-2 shadow-inner">
+            <div class="flex items-center justify-between border-b border-purple-500/30 pb-1.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+                <i class="fa-brands fa-wikipedia-w text-amber-300"></i> ${wikiResult.lang}
+              </span>
+              <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold">LIVE VERIFIED</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              ${thumbHtml}
+              <div class="space-y-0.5 min-w-0">
+                <h4 class="text-xs font-extrabold text-white font-tech leading-snug">${wikiResult.title}</h4>
+                <p class="text-[10px] text-amber-300 italic">${wikiResult.description}</p>
+              </div>
+            </div>
+            <p class="text-[11px] leading-relaxed text-slate-200 text-justify bg-slate-950/50 p-2.5 rounded-lg border border-slate-800/80">
+              ${wikiResult.extract}
+            </p>
+            ${relatedChips}
+          </div>
+        `;
+      } else {
+        wikiSectionHtml = `
+          <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 border border-indigo-500/40 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-bold uppercase text-indigo-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-compass text-amber-400"></i> Penjelajahan Ensiklopedia &amp; Web Global
+              </span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">MULTI-SEARCH</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              Topik <b>"${rawQuery}"</b> berada di luar parameter spesifik kalkulasi akuifer pesisir atau memerlukan eksplorasi literatur yang lebih luas. Gunakan tautan referensi langsung ke <b>Wikipedia</b>, <b>Google</b>, dan <b>Mesin AI</b> di bawah ini untuk mendapatkan uraian komprehensif:
+            </p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="p-3 rounded-2xl bg-slate-900/95 border-2 border-sky-500/50 space-y-3 shadow-xl">
+          ${wikiSectionHtml}
+
+          <!-- Panel Tautan Sumber Langsung Berwarna Menarik -->
+          <div class="space-y-1.5">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-link text-sky-400"></i> Tautan Sumber Resmi: Wikipedia, Google &amp; AI Global
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 text-[10px]">
+              <!-- Wikipedia ID -->
+              <a href="${urlWikiId}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-purple-950 to-indigo-950 hover:from-purple-900 hover:to-indigo-900 border border-purple-500/50 text-purple-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-brands fa-wikipedia-w text-purple-300 mr-1"></i> <b>Wikipedia ID</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-purple-400"></i>
+              </a>
+
+              <!-- Wikipedia EN -->
+              <a href="${urlWikiEn}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-indigo-950 to-blue-950 hover:from-indigo-900 hover:to-blue-900 border border-indigo-500/50 text-indigo-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-brands fa-wikipedia-w text-indigo-300 mr-1"></i> <b>Wikipedia EN</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-indigo-400"></i>
+              </a>
+
+              <!-- Google Search -->
+              <a href="${urlGoogle}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-emerald-950 to-teal-950 hover:from-emerald-900 hover:to-teal-900 border border-emerald-500/50 text-emerald-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-brands fa-google text-emerald-400 mr-1"></i> <b>Google Search</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-emerald-400"></i>
+              </a>
+
+              <!-- Google Scholar -->
+              <a href="${urlScholar}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-cyan-950 to-sky-950 hover:from-cyan-900 hover:to-sky-900 border border-cyan-500/50 text-cyan-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-solid fa-graduation-cap text-cyan-400 mr-1"></i> <b>Google Scholar</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-cyan-400"></i>
+              </a>
+
+              <!-- ChatGPT AI -->
+              <a href="${urlChatGPT}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-amber-950 to-orange-950 hover:from-amber-900 hover:to-orange-900 border border-amber-500/50 text-amber-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-solid fa-robot text-amber-400 mr-1"></i> <b>ChatGPT AI</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-amber-400"></i>
+              </a>
+
+              <!-- Perplexity AI -->
+              <a href="${urlPerplexity}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-rose-950 to-pink-950 hover:from-rose-900 hover:to-pink-900 border border-rose-500/50 text-rose-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-solid fa-magnifying-glass-chart text-rose-400 mr-1"></i> <b>Perplexity AI</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-rose-400"></i>
+              </a>
+
+              <!-- Google Gemini -->
+              <a href="${urlGemini}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-blue-950 to-sky-950 hover:from-blue-900 hover:to-sky-900 border border-blue-500/50 text-blue-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-solid fa-sparkles text-sky-400 mr-1"></i> <b>Google AI Mode</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-sky-400"></i>
+              </a>
+
+              <!-- Claude AI -->
+              <a href="${urlClaude}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-yellow-950 to-amber-950 hover:from-yellow-900 hover:to-amber-900 border border-yellow-500/50 text-yellow-200 flex items-center justify-between transition shadow">
+                <span class="truncate"><i class="fa-solid fa-brain text-yellow-400 mr-1"></i> <b>Claude AI</b></span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-yellow-400"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function sendChatMessage() {
+      const inp = document.getElementById('chatInput');
+      const txt = inp.value.trim();
+      if (!txt || !currentSimulationOutput) return;
+
+      const cBox = document.getElementById('chatMessages');
+      cBox.innerHTML += `
+        <div class="p-2.5 rounded-xl bg-gradient-to-r from-sky-700 to-cyan-600 text-white font-semibold text-[11px] text-right ml-8 shadow">
+          ${txt}
+        </div>`;
+      inp.value = '';
+      cBox.scrollTop = cBox.scrollHeight;
+
+      const { params: p, results: r } = currentSimulationOutput;
+      const q = txt.toLowerCase();
+
+      // Cek apakah pertanyaan berkaitan dengan modul internal aplikasi
+      const isCreatorQuery = q.includes('creator') || q.includes('programmer') || q.includes('hartadi') || q.includes('developer') || q.includes('pembuat') || q.includes('kontak');
+      const isToeQuery = q.includes('toe') || q.includes('status intrusi') || q.includes('baji air');
+      const isUpconingQuery = q.includes('upconing') || q.includes('dagan') || q.includes('status sumur') || q.includes('sumur pemompaan');
+      const isDebitQuery = q.includes('rekomendasi debit') || q.includes('debit aman') || q.includes('q_max') || q.includes('debit maksimum');
+      const isFlopyQuery = q.includes('flopy') || q.includes('modflow') || q.includes('seawat') || q.includes('json');
+
+      if (isCreatorQuery || isToeQuery || isUpconingQuery || isDebitQuery || isFlopyQuery) {
+        let internalResp = '';
+        if (isCreatorQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/90 via-slate-900 to-slate-950 border border-amber-500/60 space-y-1.5 shadow-lg">
+            <b class="text-amber-300 flex items-center gap-1.5"><i class="fa-solid fa-id-badge"></i> DATA PROGRAMMER &amp; LEAD GEOTECHNICAL CONSULTANT</b>
+            <p class="text-white font-bold text-xs">Ir. Mohamad Hartadi (Adi)</p>
+            <p class="text-amber-400 text-[10px]">Civil &amp; Geotechnical Dam Safety Engineer • AI Developer</p>
+            <p class="text-slate-400 text-[9px]">SKA Ahli Utama Bendungan</p>
+            <div class="grid gap-1 pt-1 text-[10px]">
+              <a href="https://facebook.com/m.hartadi" target="_blank" class="p-1.5 rounded bg-blue-950/70 border border-blue-500/50 text-blue-300 flex justify-between"><span><i class="fa-brands fa-facebook mr-1"></i> Facebook: m.hartadi</span><b>Buka &rarr;</b></a>
+              <a href="https://newbieonline7.blogspot.com" target="_blank" class="p-1.5 rounded bg-amber-950/70 border border-amber-500/50 text-amber-300 flex justify-between"><span><i class="fa-solid fa-blog mr-1"></i> Blog: newbieonline7.blogspot.com</span><b>Buka &rarr;</b></a>
+              <a href="https://wa.me/6282231036047" target="_blank" class="p-1.5 rounded bg-emerald-950/70 border border-emerald-500/50 text-emerald-300 flex justify-between"><span><i class="fa-brands fa-whatsapp mr-1"></i> WA: 0822-3103-6047</span><b>Chat &rarr;</b></a>
+            </div>
+          </div>`;
+        } else if (isToeQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-sky-950/90 to-slate-900 border border-sky-500/50 space-y-1.5">
+            <b class="text-sky-300"><i class="fa-solid fa-water mr-1"></i> ANALISIS INTRUSI &amp; POSISI TOE SAAT INI</b><br>
+            Dengan konduktivitas <b>K = ${p.K} m/hari</b> dan muka air tanah hulu <b>h = +${p.hL} m MSL</b>, rasio Ghyben-Herzberg tercatat <b>α = ${r.alpha.toFixed(2)}</b>.<br>
+            • Panjang penjalaran baji air asin (<i>Toe</i>): <b class="text-amber-300">${r.xToe.toFixed(1)} m</b> dari garis pantai.<br>
+            • Pada titik inspeksi <b>x = ${p.xObs} m</b>, kedalaman antarmuka berada di <b class="text-emerald-300">${r.ziObs.toFixed(2)} m MSL</b> dengan tebal lensa air tawar <b>${(r.hObs - r.ziObs).toFixed(2)} m</b>.
+          </div>`;
+        } else if (isUpconingQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-rose-950/90 to-slate-900 border border-rose-500/50 space-y-1.5">
+            <b class="text-rose-300"><i class="fa-solid fa-bore-hole mr-1"></i> EVALUASI UPCONING SUMUR PEMOMPAAN</b><br>
+            Sumur pada jarak <b>x<sub>w</sub> = ${p.xw} m</b> (saringan <b>-${p.zScreen} m MSL</b>) memompa <b>Q = ${p.Qw} m³/hari</b>.<br>
+            • Kenaikan baji air asin lokal: <b>+${r.upconingRise.toFixed(2)} m</b>.<br>
+            • Rasio Dagan-Bear (λ): <b class="text-amber-300">${(r.upconingRatio * 100).toFixed(1)}%</b> (Batas Kritis = 33.0%).<br>
+            • Status Keamanan Sumur: <b class="text-white px-1.5 py-0.5 rounded bg-rose-700">${r.upconingStatus}</b>.
+          </div>`;
+        } else if (isDebitQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-emerald-950/90 to-slate-900 border border-emerald-500/50 space-y-1.5">
+            <b class="text-emerald-300"><i class="fa-solid fa-gauge-high mr-1"></i> OPTIMASI DEBIT PEMOMPAAN BEBAS INTRUSI</b><br>
+            Berdasarkan ketebalan zona aman di bawah saringan sumur (<b>d<sub>0</sub> = ${r.d0.toFixed(2)} m</b>), agar baji air asin tidak menembus kriteria kritis Dagan-Bear (λ &le; 33%), debit pemompaan disarankan tidak melebihi <b class="text-amber-300">Q<sub>max</sub> &approx; ${r.qSafeMax.toFixed(0)} m³/hari</b>, atau geser lokasi sumur ke daratan (&gt; ${Math.round(Math.min(5000, r.xToe * 1.25 + 50))} m dari pantai).
+          </div>`;
+        } else if (isFlopyQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/90 to-slate-900 border border-amber-500/50 space-y-1.5">
+            <b class="text-amber-300"><i class="fa-solid fa-file-code mr-1"></i> INTEGRASI FLOPY (MODFLOW 6 / SEAWAT)</b><br>
+            Parameter Web UI telah dipetakan ke matriks diskrit 2D (<b>100 kolom &times; 20 lapisan</b>, Δx = ${(p.L/100).toFixed(1)} m). Klik tombol <b>JSON FloPy</b> di navigasi atas untuk menyalin atau mengunduh paket <code>DIS</code>, <code>NPF</code>, <code>BUY</code>, <code>RCH</code>, dan <code>WEL</code>.
+          </div>`;
+        }
+
+        cBox.innerHTML += internalResp;
+        cBox.scrollTop = cBox.scrollHeight;
+        return;
+      }
+
+      // JIKA PERTANYAAN DI LUAR TOPIK -> PANGGIL WIKIPEDIA LIVE API + GOOGLE + AI LINKS
+      const loadingId = 'chatLoad_' + Date.now();
+      cBox.innerHTML += `
+        <div id="${loadingId}" class="p-3 rounded-xl bg-slate-900 border border-purple-500/40 text-[11px] text-purple-300 flex items-center gap-2">
+          <i class="fa-solid fa-spinner fa-spin text-amber-400 text-sm"></i>
+          <span>Mencari penjelasan detail <b>"${txt}"</b> di Wikipedia API, Google &amp; Jaringan AI...</span>
+        </div>`;
+      cBox.scrollTop = cBox.scrollHeight;
+
+      const wikiData = await fetchWikipediaKnowledge(txt);
+      const loadEl = document.getElementById(loadingId);
+      if (loadEl) loadEl.remove();
+
+      cBox.innerHTML += buildExternalKnowledgeCard(txt, wikiData);
+      cBox.scrollTop = cBox.scrollHeight;
+    }
+
+    /**
+     * 8. THREE.JS REALISTIC 3D EARTH SCENE & ANIMASI LOADING TANPA PASSWORD
+     */
+    function createProceduralEarthTexture() {
+      const c = document.createElement('canvas');
+      c.width = 1024; c.height = 512;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 512);
+      grad.addColorStop(0, '#082f49'); grad.addColorStop(0.5, '#0284c7'); grad.addColorStop(1, '#082f49');
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, 1024, 512);
+      ctx.fillStyle = '#10b981';
+      [[200, 150, 140, 80], [280, 280, 100, 160], [520, 130, 220, 100], [500, 220, 130, 150], [720, 170, 190, 110], [810, 330, 120, 85]].forEach(([x, y, w, h]) => {
+        ctx.beginPath(); ctx.ellipse(x, y, w / 2, h / 2, 0, 0, Math.PI * 2); ctx.fill();
+      });
+      return new THREE.CanvasTexture(c);
+    }
+
+    function buildEarthScene(radius) {
+      const scene = new THREE.Scene();
+      scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+      const dir = new THREE.DirectionalLight(0xffffff, 1.35);
+      dir.position.set(5, 3, 5);
+      scene.add(dir);
+
+      const loader = new THREE.TextureLoader();
+      const earthMat = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.1, map: createProceduralEarthTexture() });
+      const globe = new THREE.Mesh(new THREE.SphereGeometry(radius, 48, 48), earthMat);
+      scene.add(globe);
+
+      loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_atmos_2048.jpg', tex => {
+        earthMat.map = tex; earthMat.needsUpdate = true;
+      });
+
+      const cloudMat = new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending });
+      const clouds = new THREE.Mesh(new THREE.SphereGeometry(radius * 1.018, 48, 48), cloudMat);
+      scene.add(clouds);
+      loader.load('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/planets/earth_clouds_1024.png', tex => {
+        cloudMat.map = tex; cloudMat.needsUpdate = true;
+      });
+
+      const orbitLine = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0, 0, radius * 1.45, radius * 1.2, 0, Math.PI * 2, false, 0).getPoints(64).map(pt => new THREE.Vector3(pt.x, 0, pt.y))),
+        new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.55 })
+      );
+      orbitLine.rotation.x = Math.PI / 3.5;
+      scene.add(orbitLine);
+
+      const sat = new THREE.Mesh(new THREE.BoxGeometry(radius * 0.08, radius * 0.05, radius * 0.05), new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.8 }));
+      scene.add(sat);
+
+      return { scene, globe, clouds, sat };
+    }
+
+    let bootEarthObj = null, ssEarthObj = null, ssEarthRAF = 0, ssEarthInit = false, bootTimer = null;
+
+    function initThreeGlobes() {
+      if (typeof THREE === 'undefined') return;
+
+      const bootEl = document.getElementById('loadingEarthCanvas');
+      if (bootEl) {
+        const w = bootEl.clientWidth || 280, h = bootEl.clientHeight || 280;
+        const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+        cam.position.z = 4.4;
+        const ren = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        ren.setSize(w, h);
+        bootEl.innerHTML = '';
+        bootEl.appendChild(ren.domElement);
+        bootEarthObj = buildEarthScene(1.32);
+        let ang = 0;
+        function animBoot() {
+          requestAnimationFrame(animBoot);
+          bootEarthObj.globe.rotation.y += 0.005;
+          bootEarthObj.clouds.rotation.y += 0.007;
+          ang += 0.022;
+          bootEarthObj.sat.position.set(1.85 * Math.cos(ang), 1.55 * Math.sin(ang) * Math.sin(Math.PI / 3.5), 1.55 * Math.sin(ang) * Math.cos(Math.PI / 3.5));
+          ren.render(bootEarthObj.scene, cam);
+        }
+        animBoot();
+
+        let dragging = false, prev = { x: 0, y: 0 };
+        bootEl.addEventListener('pointerdown', e => { dragging = true; prev = { x: e.clientX, y: e.clientY }; });
+        window.addEventListener('pointermove', e => {
+          if (!dragging) return;
+          bootEarthObj.globe.rotation.y += (e.clientX - prev.x) * 0.008;
+          bootEarthObj.globe.rotation.x += (e.clientY - prev.y) * 0.005;
+          prev = { x: e.clientX, y: e.clientY };
+        });
+        window.addEventListener('pointerup', () => { dragging = false; });
+      }
+
+      const bgEl = document.getElementById('bgEarthCanvas');
+      if (bgEl) {
+        const w = window.innerWidth, h = window.innerHeight;
+        const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+        cam.position.z = 4.5;
+        const ren = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        ren.setSize(w, h);
+        bgEl.innerHTML = '';
+        bgEl.appendChild(ren.domElement);
+        const bgScene = buildEarthScene(1.45);
+        function animBg() {
+          requestAnimationFrame(animBg);
+          bgScene.globe.rotation.y += 0.0015;
+          bgScene.clouds.rotation.y += 0.0022;
+          ren.render(bgScene.scene, cam);
+        }
+        animBg();
+      }
+    }
+
+    function startBootLoadingSequence() {
+      const ov = document.getElementById('bootOverlay');
+      const bar = document.getElementById('bootProgressBar');
+      const pctEl = document.getElementById('bootPctText');
+      const txtEl = document.getElementById('bootStatusText');
+
+      ov.style.display = 'flex';
+      ov.style.opacity = '1';
+      ov.style.pointerEvents = 'auto';
+
+      let pct = 0;
+      const steps = [
+        'Menginisialisasi Relasi Ghyben-Herzberg & Potensial Strack...',
+        'Memuat Solver Superposisi Thiem & Upconing Dagan-Bear...',
+        'Menghubungkan Modul Live Wikipedia API, Google & AI Hub...',
+        'Sistem Siap! Membuka Dashboard Hidrogeologi...'
+      ];
+
+      if (bootTimer) clearInterval(bootTimer);
+      bootTimer = setInterval(() => {
+        pct += 4;
+        if (pct > 100) pct = 100;
+        bar.style.width = pct + '%';
+        pctEl.textContent = pct + '%';
+
+        const stepIdx = Math.min(steps.length - 1, Math.floor((pct / 100) * steps.length));
+        txtEl.innerHTML = `<i class="fa-solid fa-gear fa-spin text-amber-400"></i> ${steps[stepIdx]}`;
+
+        if (pct >= 100) {
+          clearInterval(bootTimer);
+          setTimeout(finishBootSequence, 300);
+        }
+      }, 65);
+    }
+
+    function finishBootSequence() {
+      if (bootTimer) clearInterval(bootTimer);
+      const ov = document.getElementById('bootOverlay');
+      if (!ov || ov.style.display === 'none') return;
+      ov.style.opacity = '0';
+      ov.style.pointerEvents = 'none';
+      setTimeout(() => {
+        ov.style.display = 'none';
+        runSimulationCycle();
+      }, 450);
+    }
+
+    function replayBootLoading() {
+      startBootLoadingSequence();
+    }
+
+    function initScreensaverGlobe() {
+      const canvas = document.getElementById('ssEarthCanvas');
+      if (!canvas || typeof THREE === 'undefined') return;
+      const w = canvas.offsetWidth || window.innerWidth, h = canvas.offsetHeight || 400;
+      const cam = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+      cam.position.z = 4.4;
+      const ren = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      ren.setSize(w, h);
+      canvas.innerHTML = '';
+      canvas.appendChild(ren.domElement);
+      ssEarthObj = buildEarthScene(1.5);
+      let ang = 0;
+      ssEarthObj.loop = function () {
+        ssEarthRAF = requestAnimationFrame(ssEarthObj.loop);
+        ssEarthObj.globe.rotation.y += 0.0025;
+        ssEarthObj.clouds.rotation.y += 0.0038;
+        ang += 0.015;
+        ssEarthObj.sat.position.set(2.1 * Math.cos(ang), 1.8 * Math.sin(ang) * Math.sin(Math.PI / 3.5), 1.8 * Math.sin(ang) * Math.cos(Math.PI / 3.5));
+        ren.render(ssEarthObj.scene, cam);
+      };
+      ssEarthInit = true;
+    }
+
+    function toggleScreensaver(show) {
+      const el = document.getElementById('screensaverOverlay');
+      if (show) {
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+        if (!ssEarthInit) initScreensaverGlobe();
+        if (ssEarthObj && ssEarthObj.loop) ssEarthObj.loop();
+      } else {
+        el.classList.remove('flex');
+        el.classList.add('hidden');
+        if (ssEarthRAF) { cancelAnimationFrame(ssEarthRAF); ssEarthRAF = 0; }
+      }
+    }
+
+    function initClocks() {
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      function tick() {
+        const now = new Date();
+        const dStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        const tStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        const bClock = document.getElementById('bootClock');
+        if (bClock) bClock.textContent = `${dStr} • ${tStr} WIB`;
+        document.getElementById('headerLiveClock').textContent = `${dStr} • ${tStr} WIB`;
+        document.getElementById('screensaverClock').textContent = tStr;
+        document.getElementById('screensaverDate').textContent = dStr;
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('flex'); document.getElementById(id).classList.add('hidden'); }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = `p-3 rounded-xl border backdrop-blur-md shadow-2xl font-mono text-xs flex items-center gap-2 transition-all duration-300 ${type === 'success' ? 'bg-emerald-950/95 border-emerald-500 text-emerald-200' : 'bg-slate-900/95 border-sky-500 text-sky-200'}`;
+      el.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-info text-sky-400'}"></i><span>${msg}</span>`;
+      container.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3200);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initClocks();
+      initThreeGlobes();
+      runSimulationCycle();
+      startBootLoadingSequence();
+
+      [['inpK', 'numK'], ['inpHL', 'numHL'], ['inpL', 'numL'], ['inpR', 'numR'], ['inpXObs', 'numXObs'], ['inpQ', 'numQ']].forEach(([rId, nId]) => {
+        const rEl = document.getElementById(rId), nEl = document.getElementById(nId);
+        rEl.addEventListener('input', () => { nEl.value = rEl.value; runSimulationCycle(); });
+        nEl.addEventListener('input', () => { rEl.value = nEl.value; runSimulationCycle(); });
+      });
+
+      ['numRhoF', 'numRhoS', 'numZb', 'numZSurf', 'numXw', 'numZScreen'].forEach(id => {
+        document.getElementById(id).addEventListener('input', runSimulationCycle);
+      });
+
+      document.getElementById('btnReset').addEventListener('click', () => {
+        document.getElementById('inpK').value = document.getElementById('numK').value = DEFAULT_PARAMS.K;
+        document.getElementById('numRhoF').value = DEFAULT_PARAMS.rhoF;
+        document.getElementById('numRhoS').value = DEFAULT_PARAMS.rhoS;
+        document.getElementById('numZb').value = DEFAULT_PARAMS.zb;
+        document.getElementById('numZSurf').value = DEFAULT_PARAMS.zSurf;
+        document.getElementById('inpHL').value = document.getElementById('numHL').value = DEFAULT_PARAMS.hL;
+        document.getElementById('inpL').value = document.getElementById('numL').value = DEFAULT_PARAMS.L;
+        document.getElementById('inpR').value = document.getElementById('numR').value = DEFAULT_PARAMS.R_mm;
+        document.getElementById('inpXObs').value = document.getElementById('numXObs').value = DEFAULT_PARAMS.xObs;
+        document.getElementById('inpQ').value = document.getElementById('numQ').value = DEFAULT_PARAMS.Qw;
+        document.getElementById('numXw').value = DEFAULT_PARAMS.xw;
+        document.getElementById('numZScreen').value = DEFAULT_PARAMS.zScreen;
+        runSimulationCycle();
+        showToast('Seluruh parameter dikembalikan ke nilai default.', 'info');
+      });
+
+      document.getElementById('btnTheme').addEventListener('click', () => {
+        const html = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        html.classList.toggle('dark');
+        html.classList.toggle('light');
+        icon.className = html.classList.contains('dark') ? 'fa-solid fa-moon text-amber-400' : 'fa-solid fa-sun text-amber-500';
+        runSimulationCycle();
+      });
+
+      const modal = document.getElementById('exportModal');
+      document.getElementById('btnExportModal').addEventListener('click', () => {
+        if (!currentSimulationOutput) return;
+        const payload = buildFloPyJsonPayload(currentSimulationOutput.params, currentSimulationOutput.results);
+        document.getElementById('jsonPreview').textContent = JSON.stringify(payload, null, 2);
+        modal.classList.remove('hidden');
+      });
+
+      document.getElementById('btnCloseModal').addEventListener('click', () => modal.classList.add('hidden'));
+
+      document.getElementById('btnCopyJson').addEventListener('click', () => {
+        navigator.clipboard.writeText(document.getElementById('jsonPreview').textContent);
+        showToast('JSON FloPy berhasil disalin ke Clipboard!', 'success');
+      });
+
+      document.getElementById('btnDownloadJson').addEventListener('click', () => {
+        const blob = new Blob([document.getElementById('jsonPreview').textContent], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `FloPy_SWI_Model_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          toggleScreensaver(false);
+          closeModal('creatorModal');
+          modal.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
