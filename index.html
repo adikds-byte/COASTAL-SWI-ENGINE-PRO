@@ -3,11 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <!-- ==================== LAPISAN KEAMANAN SISTEM & EARLY GUARD (ANTI CTRL+U / DEVTOOLS / KLIK KANAN) ==================== -->
-  <script id="coastalswi-early-guard">
-    /**
-     * COASTAL-SWI PRO - EARLY GUARD SECURITY SUBSYSTEM
-     * Proteksi Integritas Aplikasi, Pemblokiran Ctrl+U, F12, Inspect Element, dan Context Menu
-     */
+  <script id="wtp-early-guard">
     (function() {
       'use strict';
 
@@ -52,7 +48,7 @@
             '<span style="font-size:9px;background:#7f1d1d;color:#fecaca;padding:2px 7px;border-radius:4px;border:1px solid #b91c1c;font-weight:bold;">' + (actionCode || 'PROTECTION GUARD') + '</span>' +
           '</div>' +
           '<div style="color:#fecaca;font-size:10.5px;line-height:1.45;">' + reason + '</div>' +
-          '<div style="margin-top:4px;font-size:9px;color:#f87171;opacity:0.85;">COASTAL-SWI PRO SECURITY CORE &bull; AKSES KODE SUMBER DIBATASI</div>' +
+          '<div style="margin-top:4px;font-size:9px;color:#f87171;opacity:0.85;">WTP &amp; HYDRO-INTAKE PRO SECURITY CORE &bull; AKSES KODE SUMBER DIBATASI</div>' +
         '</div>';
 
         toast.innerHTML = iconWrap + details;
@@ -60,9 +56,7 @@
 
         document.documentElement.style.transition = 'box-shadow 0.2s ease';
         document.documentElement.style.boxShadow = 'inset 0 0 50px rgba(239,68,68,0.45)';
-        setTimeout(function() {
-          document.documentElement.style.boxShadow = '';
-        }, 350);
+        setTimeout(function() { document.documentElement.style.boxShadow = ''; }, 350);
 
         setTimeout(function() {
           toast.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
@@ -77,7 +71,7 @@
       window.addEventListener('contextmenu', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        window.showSecurityHUD('Akses Klik Kanan (Context Menu) dinonaktifkan demi perlindungan kode sumber dan integritas pemodelan hidrogeologi.', 'CONTEXT-MENU-BLOCKED');
+        window.showSecurityHUD('Akses Klik Kanan (Context Menu) dinonaktifkan demi perlindungan kode sumber dan integritas perhitungan WTP & Hidrogeologi.', 'CONTEXT-MENU-BLOCKED');
         return false;
       }, true);
 
@@ -89,51 +83,33 @@
         const keyCode = e.keyCode || e.which;
 
         if (key === 'F12' || keyCode === 123) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           window.showSecurityHUD('Pintasan F12 (Developer Tools) telah diblokir oleh kebijakan keamanan aplikasi.', 'KEY-F12-BLOCKED');
           return false;
         }
-
         if (isCtrlOrCmd && (key === 'U' || keyCode === 85)) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           window.showSecurityHUD('Pintasan Ctrl + U / Cmd + U (Lihat Sumber Kode) diblokir oleh Early Guard.', 'VIEW-SOURCE-BLOCKED');
           return false;
         }
-
         if (isCtrlOrCmd && (isShift || isAlt) && (key === 'I' || keyCode === 73)) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           window.showSecurityHUD('Pintasan Inspeksi Elemen (Ctrl/Cmd + Shift/Alt + I) telah diblokir demi keamanan data.', 'INSPECT-ELEMENT-BLOCKED');
           return false;
         }
-
         if (isCtrlOrCmd && (isShift || isAlt) && (key === 'J' || keyCode === 74)) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           window.showSecurityHUD('Pintasan Konsol Pengembang (Ctrl/Cmd + Shift/Alt + J) telah dinonaktifkan.', 'CONSOLE-ACCESS-BLOCKED');
           return false;
         }
-
         if (isCtrlOrCmd && (isShift || isAlt) && (key === 'C' || keyCode === 67)) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault(); e.stopPropagation();
           window.showSecurityHUD('Pintasan Pemeriksaan Komponen (Ctrl/Cmd + Shift/Alt + C) diblokir.', 'ELEMENT-PICKER-BLOCKED');
           return false;
         }
-
-        if (isCtrlOrCmd && isShift && (key === 'K' || keyCode === 75)) {
-          e.preventDefault();
-          e.stopPropagation();
-          window.showSecurityHUD('Pintasan Konsol Web Pengembang (Ctrl/Cmd + Shift + K) diblokir.', 'WEB-CONSOLE-BLOCKED');
-          return false;
-        }
-
         if (isCtrlOrCmd && (key === 'S' || keyCode === 83)) {
-          e.preventDefault();
-          e.stopPropagation();
-          window.showSecurityHUD('Penyimpanan halaman web langsung (Ctrl/Cmd + S) dinonaktifkan. Gunakan tombol ekspor resmi JSON FloPy.', 'SAVE-PAGE-BLOCKED');
+          e.preventDefault(); e.stopPropagation();
+          window.showSecurityHUD('Penyimpanan halaman web langsung (Ctrl/Cmd + S) dinonaktifkan. Gunakan tombol Ekspor Word, PDF, atau JSON FloPy.', 'SAVE-PAGE-BLOCKED');
           return false;
         }
       }, true);
@@ -141,7 +117,7 @@
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CoastalSWI PRO V2.0 — Coastal Aquifer & Seawater Intrusion Web Engine</title>
+  <title>WTP &amp; Hydro-Intake PRO V3.5 — Perhitungan &amp; Desain Water Treatment Plant Profesional</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -175,6 +151,10 @@
 
   <!-- Plotly.js CDN -->
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+  <!-- jsPDF & AutoTable CDN (Untuk Ekspor Laporan Resmi ke PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
   <style>
     :root {
@@ -219,7 +199,7 @@
     }
     @keyframes cardGlow {
       0%, 100% { border-color: rgba(245, 158, 11, 0.35); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
-      50% { border-color: rgba(252, 211, 77, 75%); box-shadow: 0 0 18px rgba(245, 158, 11, 0.25); }
+      50% { border-color: rgba(252, 211, 77, 0.75); box-shadow: 0 0 18px rgba(245, 158, 11, 0.25); }
     }
     .dev-avatar-lg {
       width: 54px; height: 54px; border-radius: 14px;
@@ -275,14 +255,14 @@
     <div class="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
       <div class="flex items-center gap-2.5">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-sky-500/30">
-          <i class="fa-solid fa-water"></i>
+          <i class="fa-solid fa-faucet-drip"></i>
         </div>
         <div>
           <h1 class="font-tech text-sm sm:text-base font-black tracking-wider text-sky-400 flex items-center gap-1.5">
-            COASTAL-SWI <span class="text-white">PRO</span>
-            <span class="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">GHYBEN-HERZBERG ENGINE</span>
+            WTP &amp; HYDRO-INTAKE <span class="text-white">PRO V3.5</span>
+            <span class="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">SNI 6774 &amp; GHYBEN-HERZBERG</span>
           </h1>
-          <p class="text-[10px] text-slate-400 font-mono">Pemodelan Analitik Intrusi Air Laut, Upconing Sumur &amp; Pre-Processor Numerik FloPy</p>
+          <p class="text-[10px] text-slate-400 font-mono">Perhitungan &amp; Desain Water Treatment Plant Profesional + Evaluasi Intrusi Air Laut Akuifer Sadap</p>
         </div>
       </div>
 
@@ -293,7 +273,6 @@
     </div>
 
     <div class="w-full max-w-xl mx-auto my-auto py-4 flex flex-col items-center justify-center space-y-5 text-center">
-      <!-- Bola Dunia 3D Interaktif -->
       <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center rounded-full earth-glow-box bg-slate-900/40 border border-sky-500/30 backdrop-blur-sm cursor-grab active:cursor-grabbing" title="Geser/Putar Bumi 3D dengan mouse atau sentuhan jari">
         <div id="loadingEarthCanvas" class="w-full h-full rounded-full overflow-hidden"></div>
         <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-slate-950/85 border border-sky-500/40 text-[10px] font-mono text-sky-300 flex items-center gap-1.5 shadow pointer-events-none whitespace-nowrap">
@@ -302,11 +281,10 @@
         </div>
       </div>
 
-      <!-- Bar Progres Inisialisasi Otomatis -->
       <div class="w-full bg-slate-900/90 border border-sky-500/40 rounded-2xl p-5 shadow-2xl space-y-3 backdrop-blur-xl">
         <div class="flex items-center justify-between text-xs font-mono">
           <span id="bootStatusText" class="text-sky-300 font-bold flex items-center gap-2">
-            <i class="fa-solid fa-gear fa-spin text-amber-400"></i> Menginisialisasi Engine Ghyben-Herzberg...
+            <i class="fa-solid fa-gear fa-spin text-amber-400"></i> Menginisialisasi Modul Desain WTP &amp; Hidrogeologi...
           </span>
           <span id="bootPctText" class="text-amber-400 font-black font-tech">0%</span>
         </div>
@@ -326,7 +304,7 @@
 
     <div class="w-full max-w-4xl mx-auto text-center pb-2 space-y-1">
       <div class="text-[11px] text-slate-400 font-mono">
-        &ldquo;Keseimbangan hidrostatik air tawar dan air laut di wilayah pesisir adalah kunci keberlanjutan sumber daya air masa depan.&rdquo; &mdash; Ir. Mohamad Hartadi
+        &ldquo;Desain instalasi pengolahan air yang andal berawal dari perlindungan kuantitas dan kualitas akuifer sumber air bakunya.&rdquo; &mdash; Ir. Mohamad Hartadi
       </div>
     </div>
   </div>
@@ -339,8 +317,8 @@
           <i class="fa-solid fa-earth-asia"></i>
         </div>
         <div>
-          <div class="text-sm font-bold text-white font-tech">Screensaver Orbit Bumi &amp; Monitoring Intrusi Air Laut</div>
-          <div class="text-xs text-slate-300 font-mono">Tekan ESC atau klik di mana saja untuk kembali ke simulasi</div>
+          <div class="text-sm font-bold text-white font-tech">Screensaver Orbit Bumi &amp; Telemetri WTP - Akuifer Pesisir</div>
+          <div class="text-xs text-slate-300 font-mono">Tekan ESC atau klik di mana saja untuk kembali ke ruang desain</div>
         </div>
       </div>
       <button type="button" onclick="event.stopPropagation(); toggleScreensaver(false)" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold text-white transition flex items-center gap-1.5 shadow cursor-pointer font-mono">
@@ -358,7 +336,7 @@
           Memuat Hari &amp; Tanggal...
         </div>
         <div id="ssLiveTelemetry" class="text-xs text-emerald-300 font-mono tracking-widest uppercase font-bold bg-slate-950/85 px-4 py-1.5 rounded-full border border-emerald-500/40 shadow-lg">
-          STATUS SIMULASI AKTIF • TOE INTRUSI: -- m | RASIO GHYBEN: α = 40.0
+          KAPASITAS WTP: -- L/dtk • TOE INTRUSI: -- m | STATUS SUMUR SADAP: AMAN
         </div>
       </div>
     </div>
@@ -366,13 +344,13 @@
     <div class="z-20 w-full max-w-2xl mx-auto px-4 mb-2 pointer-events-auto">
       <div class="bg-slate-900/90 border border-sky-500/50 p-4 sm:p-5 rounded-2xl shadow-2xl backdrop-blur text-center">
         <div class="text-amber-400 text-xs mb-1">
-          <i class="fa-solid fa-quote-left mr-1"></i> <span class="font-bold uppercase tracking-wider text-amber-300">Prinsip Hidrogeologi Pesisir</span> <i class="fa-solid fa-quote-right ml-1"></i>
+          <i class="fa-solid fa-quote-left mr-1"></i> <span class="font-bold uppercase tracking-wider text-amber-300">Filosofi Rekayasa Air Bersih &amp; Hidrogeologi</span> <i class="fa-solid fa-quote-right ml-1"></i>
         </div>
         <p class="text-xs sm:text-sm italic text-slate-200 font-serif leading-relaxed">
-          "Setiap penurunan satu meter muka air tanah tawar di daratan pesisir akan memicu kenaikan antarmuka air asin sekitar empat puluh meter dari kedalaman."
+          "Ketelitian dalam merancang gradien hidraulik koagulasi, flokulasi, sedimentasi, dan filtrasi harus berjalan seiring dengan pengawasan batas intrusi air asin pada sumur intake."
         </p>
         <div class="mt-2 text-[11px] text-sky-400 font-mono font-bold">
-          — Prinsip Badon Ghyben (1888) &amp; Alexander Herzberg (1901) • Dikembangkan oleh Ir. Mohamad Hartadi
+          — Ir. Mohamad Hartadi • Spesialis Geoteknik, Bendungan &amp; Infrastruktur Sumber Daya Air
         </div>
       </div>
     </div>
@@ -385,46 +363,51 @@
   <header class="sticky top-0 z-30 border-b border-sky-500/30 bg-slate-950/90 backdrop-blur-md px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-sky-500/30">
-        <i class="fa-solid fa-water"></i>
+        <i class="fa-solid fa-faucet-drip"></i>
       </div>
       <div>
         <div class="flex items-center gap-2 flex-wrap">
           <h1 class="font-tech text-sm sm:text-base font-black tracking-wider text-sky-400">
-            COASTAL-SWI <span class="text-white">ENGINE PRO</span>
+            WTP &amp; HYDRO-INTAKE <span class="text-white">PRO V3.5</span>
           </h1>
           <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-500/40 font-bold">
-            Ghyben-Herzberg + Dupuit-Strack
+            SNI 6774:2008 + Ghyben-Herzberg
           </span>
           <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1">
-            <i class="fa-solid fa-shield-halved"></i> EARLY GUARD ACTIVE
+            <i class="fa-solid fa-shield-halved"></i> EARLY GUARD
           </span>
         </div>
         <p class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>ANALYTICAL SEAWATER INTRUSION &amp; FLOPY (MODFLOW 6 / SEAWAT) PRE-PROCESSOR</span>
+          <span>DESAIN WATER TREATMENT PLANT PROFESIONAL + INTAKE SEAWATER INTRUSION &amp; LAPORAN TEKNIS OTOMATIS</span>
         </p>
       </div>
     </div>
 
-    <!-- Live Clock Pill -->
-    <div class="hidden xl:flex items-center gap-2 bg-slate-900 border border-sky-500/40 rounded-xl px-3 py-1 text-xs font-mono text-sky-300">
+    <div class="hidden 2xl:flex items-center gap-2 bg-slate-900 border border-sky-500/40 rounded-xl px-3 py-1 text-xs font-mono text-sky-300">
       <i class="fa-regular fa-clock text-amber-400"></i>
       <span id="headerLiveClock">Memuat waktu...</span>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Action Buttons: Word, PDF, JSON FloPy, Help, Screensaver, Creator -->
     <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
-      <button id="btnReset" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center gap-1" title="Reset Parameter ke Nilai Awal">
-        <i class="fa-solid fa-rotate-left text-sky-400"></i> <span class="hidden sm:inline">Reset</span>
+      <button type="button" onclick="exportToWordReport()" class="px-2.5 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white font-bold flex items-center gap-1.5 transition shadow" title="Ekspor Risalah Teknis & Metrik ke Microsoft Word (.doc)">
+        <i class="fa-solid fa-file-word"></i> <span>Word (.doc)</span>
       </button>
-      <button id="btnExportModal" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white font-bold shadow flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-file-code text-amber-300"></i> <span>JSON FloPy</span>
+      <button type="button" onclick="exportToPDFReport()" class="px-2.5 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-bold flex items-center gap-1.5 transition shadow" title="Cetak Laporan Resmi & Kesimpulan Teknis ke PDF (.pdf)">
+        <i class="fa-solid fa-file-pdf"></i> <span>PDF (.pdf)</span>
       </button>
-      <button type="button" onclick="replayBootLoading()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1 transition" title="Tampilkan Ulang Animasi Loading Bumi 3D">
-        <i class="fa-solid fa-spinner"></i> <span class="hidden md:inline">Animasi Loading</span>
+      <button id="btnExportModal" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 text-white font-bold shadow flex items-center gap-1.5 transition" title="Ekspor JSON untuk FloPy MODFLOW 6 / SEAWAT">
+        <i class="fa-solid fa-file-code text-amber-300"></i> <span class="hidden sm:inline">JSON FloPy</span>
       </button>
-      <button type="button" onclick="toggleScreensaver(true)" class="px-2.5 py-1.5 rounded-lg bg-indigo-950/90 hover:bg-indigo-900 text-indigo-200 border border-indigo-500/60 font-bold flex items-center gap-1 transition" title="Buka Screensaver 3D Orbit Bumi">
-        <i class="fa-solid fa-tv text-amber-400"></i> <span class="hidden md:inline">Screensaver</span>
+      <button id="btnReset" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold transition flex items-center gap-1" title="Reset Parameter ke Default">
+        <i class="fa-solid fa-rotate-left text-sky-400"></i> <span class="hidden md:inline">Reset</span>
+      </button>
+      <button type="button" onclick="openModal('helpModal')" class="px-2.5 py-1.5 rounded-lg bg-sky-900/80 hover:bg-sky-800 text-sky-200 border border-sky-500/60 font-bold flex items-center gap-1 transition shadow" title="Buka Help System & Panduan Standar Teknis">
+        <i class="fa-solid fa-circle-question text-amber-400"></i> <span>Help</span>
+      </button>
+      <button type="button" onclick="toggleScreensaver(true)" class="px-2.5 py-1.5 rounded-lg bg-indigo-950/90 hover:bg-indigo-900 text-indigo-200 border border-indigo-500/60 font-bold flex items-center gap-1 transition" title="Buka Screensaver 3D">
+        <i class="fa-solid fa-tv text-amber-400"></i> <span class="hidden lg:inline">Screensaver</span>
       </button>
       <button type="button" onclick="openModal('creatorModal')" class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-amber-500 text-slate-950 font-black hover:brightness-110 flex items-center gap-1 transition shadow">
         <i class="fa-solid fa-user-gear"></i> <span>Creator</span>
@@ -435,35 +418,97 @@
     </div>
   </header>
 
-  <!-- BANNER VALIDASI & PERINGATAN HIDROGEOLOGI -->
+  <!-- BANNER VALIDASI & ERROR HANDLING -->
   <div id="alertBanner" class="hidden relative z-20 mx-6 mt-4 p-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-between transition-all"></div>
 
   <!-- MAIN WORKSPACE GRID -->
-  <main class="relative z-10 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1650px] w-full mx-auto flex-1">
+  <main class="relative z-10 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1720px] w-full mx-auto flex-1">
 
-    <!-- PANEL KIRI: INPUT VARIABEL HIDRODINAMIK (4 KOLOM) -->
+    <!-- ==================== PANEL KIRI: INPUT PARAMETER TERPADU (4 KOLOM) ==================== -->
     <aside class="lg:col-span-4 space-y-4 font-mono">
 
-      <!-- Grup 1: Properti Akuifer & Densitas -->
-      <div class="cmd-card p-4 space-y-3.5">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center justify-between border-b border-slate-800 pb-2">
-          <span><i class="fa-solid fa-layer-group mr-1.5 text-amber-400"></i> 1. Akuifer &amp; Densitas Fluida</span>
-          <span class="text-[10px] text-slate-400">Ghyben-Herzberg</span>
+      <!-- Grup 1: Parameter Desain Unit Operasi WTP (SNI 6774:2008) -->
+      <div class="cmd-card p-4 space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center justify-between border-b border-slate-800 pb-2">
+          <span><i class="fa-solid fa-industry mr-1.5 text-sky-400"></i> 1. Parameter Desain Unit WTP</span>
+          <span class="text-[10px] text-slate-400">SNI 6774:2008</span>
         </h2>
 
-        <div class="space-y-3 text-xs">
+        <div class="space-y-2.5 text-xs">
           <div>
             <div class="flex justify-between mb-1">
-              <label for="inpK" class="font-semibold text-slate-200">Konduktivitas Hidrolik (K)</label>
-              <span class="text-sky-400 font-bold"><span id="valK">15.0</span> m/hari</span>
+              <label class="font-semibold text-slate-200">Kapasitas Olahan WTP (Q<sub>desain</sub>)</label>
+              <span class="text-amber-400 font-bold"><span id="valQwtp">50.0</span> L/detik</span>
             </div>
             <div class="flex gap-2 items-center">
-              <input id="inpK" type="range" min="0.5" max="100" step="0.5" value="15" class="w-full" />
-              <input id="numK" type="number" min="0.1" max="500" step="0.5" value="15" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 text-right font-bold" />
+              <input id="inpQwtp" type="range" min="5" max="250" step="5" value="50" class="w-full" />
+              <input id="numQwtp" type="number" min="1" max="1000" step="5" value="50" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 text-right font-bold" />
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Kekeruhan Air Baku</label>
+              <div class="relative">
+                <input id="numTurbidity" type="number" min="5" max="1000" step="5" value="85" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-cyan-300 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">NTU</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1">Dosis Koagulan (Alum)</label>
+              <div class="relative">
+                <input id="numCoagDose" type="number" min="5" max="150" step="1" value="35" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-bold" />
+                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">mg/L</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Td Flokulasi</label>
+              <div class="relative">
+                <input id="numTdFloc" type="number" min="10" max="60" step="5" value="30" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <span class="absolute right-1.5 top-1 text-[9px] text-slate-400">mnt</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Overflow (Vo)</label>
+              <div class="relative">
+                <input id="numVoSed" type="number" min="10" max="60" step="2" value="24" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <span class="absolute right-1.5 top-1 text-[9px] text-slate-400">m/hr</span>
+              </div>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Laju Filtrasi</label>
+              <div class="relative">
+                <input id="numVfFilt" type="number" min="4" max="15" step="0.5" value="7.5" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <span class="absolute right-1.5 top-1 text-[9px] text-slate-400">m/jam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grup 2: Properti Akuifer Sadap (Wellfield Intake) & Densitas -->
+      <div class="cmd-card p-4 space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center justify-between border-b border-slate-800 pb-2">
+          <span><i class="fa-solid fa-layer-group mr-1.5 text-amber-400"></i> 2. Akuifer Sadap &amp; Densitas</span>
+          <span class="text-[10px] text-slate-400">Ghyben-Herzberg</span>
+        </h2>
+
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="inpK" class="font-semibold text-slate-200">Konduktivitas Hidrolik (K)</label>
+              <span class="text-sky-400 font-bold"><span id="valK">18.0</span> m/hari</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input id="inpK" type="range" min="0.5" max="100" step="0.5" value="18" class="w-full" />
+              <input id="numK" type="number" min="0.1" max="500" step="0.5" value="18" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-sky-300 text-right font-bold" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Densitas Air Tawar (ρ<sub>f</sub>)</label>
               <div class="relative">
@@ -480,18 +525,18 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-2.5">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Kedalaman Dasar (z<sub>b</sub>)</label>
+              <label class="block font-semibold text-slate-300 mb-1">Kedalaman Akuifer (z<sub>b</sub>)</label>
               <div class="relative">
-                <input id="numZb" type="number" min="10" max="200" step="5" value="60" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+                <input id="numZb" type="number" min="15" max="200" step="5" value="65" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
                 <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (-MSL)</span>
               </div>
             </div>
             <div>
               <label class="block font-semibold text-slate-300 mb-1">Elevasi Tanah (z<sub>surf</sub>)</label>
               <div class="relative">
-                <input id="numZSurf" type="number" min="2" max="50" step="1" value="8" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-bold" />
+                <input id="numZSurf" type="number" min="2" max="50" step="1" value="9" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-bold" />
                 <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (+MSL)</span>
               </div>
             </div>
@@ -499,28 +544,28 @@
         </div>
       </div>
 
-      <!-- Grup 2: Hidrodinamik & Geometri Penampang -->
-      <div class="cmd-card p-4 space-y-3.5">
+      <!-- Grup 3: Kondisi Batas Hidrodinamik & Sumur Sadap (Wellfield) -->
+      <div class="cmd-card p-4 space-y-3">
         <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center justify-between border-b border-slate-800 pb-2">
-          <span><i class="fa-solid fa-water-ladder mr-1.5 text-emerald-400"></i> 2. Variabel Hidrodinamik Pesisir</span>
-          <span class="text-[10px] text-slate-400">Dupuit-Strack</span>
+          <span><i class="fa-solid fa-bore-hole mr-1.5 text-rose-400"></i> 3. Hidrodinamik &amp; Sumur Intake</span>
+          <span class="text-[10px] text-slate-400">Dupuit &amp; Dagan-Bear</span>
         </h2>
 
-        <div class="space-y-3 text-xs">
+        <div class="space-y-2.5 text-xs">
           <div>
             <div class="flex justify-between mb-1">
               <label class="font-semibold text-slate-200">Elevasi Muka Air Tanah Hulu (h)</label>
-              <span class="text-emerald-400 font-bold"><span id="valHL">2.40</span> m (+MSL)</span>
+              <span class="text-emerald-400 font-bold"><span id="valHL">2.60</span> m (+MSL)</span>
             </div>
             <div class="flex gap-2 items-center">
-              <input id="inpHL" type="range" min="0.2" max="10.0" step="0.1" value="2.4" class="w-full" />
-              <input id="numHL" type="number" min="0.1" max="25.0" step="0.1" value="2.4" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-300 text-right font-bold" />
+              <input id="inpHL" type="range" min="0.2" max="10.0" step="0.1" value="2.6" class="w-full" />
+              <input id="numHL" type="number" min="0.1" max="25.0" step="0.1" value="2.6" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-300 text-right font-bold" />
             </div>
           </div>
 
           <div>
             <div class="flex justify-between mb-1">
-              <label class="font-semibold text-slate-200">Panjang Penampang dari Pantai (L)</label>
+              <label class="font-semibold text-slate-200">Panjang Domain dari Pantai (L)</label>
               <span class="text-emerald-400 font-bold"><span id="valL">1000</span> m</span>
             </div>
             <div class="flex gap-2 items-center">
@@ -532,60 +577,37 @@
           <div>
             <div class="flex justify-between mb-1">
               <label class="font-semibold text-slate-200">Laju Resapan / Recharge (R)</label>
-              <span class="text-cyan-400 font-bold"><span id="valR">250</span> mm/tahun</span>
+              <span class="text-cyan-400 font-bold"><span id="valR">280</span> mm/tahun</span>
             </div>
             <div class="flex gap-2 items-center">
-              <input id="inpR" type="range" min="0" max="1500" step="25" value="250" class="w-full" />
-              <input id="numR" type="number" min="0" max="3000" step="25" value="250" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-cyan-300 text-right font-bold" />
+              <input id="inpR" type="range" min="0" max="1500" step="20" value="280" class="w-full" />
+              <input id="numR" type="number" min="0" max="3000" step="20" value="280" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-cyan-300 text-right font-bold" />
             </div>
           </div>
 
           <div>
             <div class="flex justify-between mb-1">
-              <label class="font-semibold text-slate-200">Jarak Titik Inspeksi dari Pantai (x)</label>
-              <span class="text-amber-400 font-bold"><span id="valXObs">250</span> m</span>
+              <label class="font-semibold text-slate-200">Debit Sadap per Sumur Intake (Q<sub>w</sub>)</label>
+              <span class="text-rose-400 font-bold"><span id="valQ">200</span> m³/hari</span>
             </div>
             <div class="flex gap-2 items-center">
-              <input id="inpXObs" type="range" min="10" max="1000" step="10" value="250" class="w-full" />
-              <input id="numXObs" type="number" min="0" max="10000" step="10" value="250" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 text-right font-bold" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Grup 3: Stres Pemompaan Sumur (Upconing) -->
-      <div class="cmd-card p-4 space-y-3.5">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center justify-between border-b border-slate-800 pb-2">
-          <span><i class="fa-solid fa-bore-hole mr-1.5 text-rose-400"></i> 3. Debit Pemompaan Sumur (Q)</span>
-          <span class="text-[10px] text-slate-400">Thiem &amp; Dagan-Bear</span>
-        </h2>
-
-        <div class="space-y-3 text-xs">
-          <div>
-            <div class="flex justify-between mb-1">
-              <label class="font-semibold text-slate-200">Debit Pemompaan Sumur (Q)</label>
-              <span class="text-rose-400 font-bold"><span id="valQ">180</span> m³/hari</span>
-            </div>
-            <div class="flex gap-2 items-center">
-              <input id="inpQ" type="range" min="0" max="1500" step="10" value="180" class="w-full" />
-              <input id="numQ" type="number" min="0" max="5000" step="10" value="180" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-rose-400 text-right font-bold" />
+              <input id="inpQ" type="range" min="0" max="1500" step="10" value="200" class="w-full" />
+              <input id="numQ" type="number" min="0" max="5000" step="10" value="200" class="w-20 px-2 py-1 rounded bg-slate-950 border border-slate-700 text-rose-400 text-right font-bold" />
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-3 gap-2">
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Jarak Sumur (x<sub>w</sub>)</label>
-              <div class="relative">
-                <input id="numXw" type="number" min="20" max="5000" step="10" value="350" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
-                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m</span>
-              </div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Inspeksi (x)</label>
+              <input id="numXObs" type="number" min="10" max="5000" step="10" value="250" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-amber-300 font-bold" />
             </div>
             <div>
-              <label class="block font-semibold text-slate-300 mb-1">Kedalaman Saringan</label>
-              <div class="relative">
-                <input id="numZScreen" type="number" min="5" max="150" step="1" value="18" class="w-full px-2.5 py-1.5 rounded bg-slate-950 border border-slate-700 text-purple-300 font-bold" />
-                <span class="absolute right-2 top-1.5 text-[10px] text-slate-400">m (-MSL)</span>
-              </div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Jarak Sumur (x<sub>w</sub>)</label>
+              <input id="numXw" type="number" min="20" max="5000" step="10" value="400" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-white font-bold" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-300 mb-1 text-[10px]">Saringan (-MSL)</label>
+              <input id="numZScreen" type="number" min="5" max="150" step="1" value="18" class="w-full px-2 py-1 rounded bg-slate-950 border border-slate-700 text-purple-300 font-bold" />
             </div>
           </div>
         </div>
@@ -593,11 +615,17 @@
 
     </aside>
 
-    <!-- PANEL KANAN: KARTU TELEMETRI KPI, GRAFIK 2D PLOTLY & TABEL (8 KOLOM) -->
+    <!-- ==================== PANEL KANAN: DASHBOARD VISUALISASI, TABEL & RISALAH TEKNIS (8 KOLOM) ==================== -->
     <section class="lg:col-span-8 space-y-4 font-mono">
 
-      <!-- 4 Kartu Indikator Utama -->
+      <!-- 4 Kartu Ringkasan Eksekutif -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="cmd-card p-3.5 border-l-4 border-l-amber-500">
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Produksi WTP &amp; Koagulan</p>
+          <p class="text-xl font-black font-tech text-amber-400 mt-1" id="kpiWtpCap">4,320 m³/hr</p>
+          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiAlum">Alum: 151.2 kg/hr</p>
+        </div>
+
         <div class="cmd-card p-3.5 border-l-4 border-l-sky-500">
           <p class="text-[10px] text-slate-400 uppercase font-bold">Rasio Ghyben (α) &amp; Toe (x<sub>toe</sub>)</p>
           <p class="text-xl font-black font-tech text-sky-400 mt-1" id="kpiToe">-- m</p>
@@ -605,44 +633,84 @@
         </div>
 
         <div class="cmd-card p-3.5 border-l-4 border-l-emerald-500">
-          <p class="text-[10px] text-slate-400 uppercase font-bold">Inspeksi (x = <span id="lblXObs">250</span> m)</p>
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Antarmuka di x = <span id="lblXObs">250</span> m</p>
           <p class="text-xl font-black font-tech text-emerald-400 mt-1" id="kpiZiObs">-- m</p>
           <p class="text-[10px] text-slate-400 mt-0.5" id="kpiHfObs">MAT: -- m (+MSL)</p>
         </div>
 
-        <div class="cmd-card p-3.5 border-l-4 border-l-amber-500">
-          <p class="text-[10px] text-slate-400 uppercase font-bold">Fluks Lepas Pantai (q<sub>0</sub>)</p>
-          <p class="text-xl font-black font-tech text-amber-400 mt-1" id="kpiFlux">-- m²/hr</p>
-          <p class="text-[10px] text-slate-400 mt-0.5" id="kpiGrad">Gradien: --</p>
-        </div>
-
         <div class="cmd-card p-3.5 border-l-4 border-l-rose-500">
-          <p class="text-[10px] text-slate-400 uppercase font-bold">Status Upconing Sumur</p>
+          <p class="text-[10px] text-slate-400 uppercase font-bold">Keamanan Sumur Intake</p>
           <p class="text-lg sm:text-xl font-black font-tech mt-1" id="kpiUpconing">--</p>
           <p class="text-[10px] text-slate-400 mt-0.5" id="kpiUpRatio">Kriteria Dagan-Bear: --</p>
         </div>
       </div>
 
-      <!-- Visualisasi Penampang 2D Interaktif (Plotly.js) -->
+      <!-- GRAFIK 1: PENAMPANG MELINTANG HIDROGEOLOGI SUMUR INTAKE & INTRUSI AIR LAUT (PLOTLY 2D) -->
       <div class="cmd-card p-4 space-y-2">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
           <div>
             <h3 class="text-sm font-bold font-tech text-sky-400 flex items-center gap-2">
-              <i class="fa-solid fa-chart-area text-amber-400"></i> PENAMPANG MELINTANG HIDROGEOLOGI 2D (COASTAL CROSS-SECTION)
+              <i class="fa-solid fa-water text-amber-400"></i> 1. PENAMPANG MELINTANG HIDROGEOLOGI SUMUR INTAKE &amp; INTRUSI AIR LAUT (2D CROSS-SECTION)
             </h3>
-            <p class="text-[11px] text-slate-400">Menampilkan Elevasi Permukaan Tanah, Muka Air Tanah (Water Table), Kurva Intrusi Air Asin, dan Upconing Sumur</p>
+            <p class="text-[11px] text-slate-400">Simulasi Dinamis Elevasi Permukaan Tanah, Muka Air Tanah, Baji Air Asin (Interface Depth), dan Kerucut Upconing Sumur Sadap</p>
           </div>
           <span class="text-[10px] px-2.5 py-1 rounded bg-slate-900 border border-sky-500/40 text-sky-300 font-bold">
-            200 Nodal Analitik Aktif
+            Ghyben-Herzberg + Strack
           </span>
         </div>
-        <div id="plotCrossSection" class="w-full h-[450px]"></div>
+        <div id="plotCrossSection" class="w-full h-[360px]"></div>
       </div>
 
-      <!-- Tabel Profil Transek Pesisir -->
+      <!-- GRAFIK 2: PROFIL HIDRAULIK (HGL) & EFISIENSI UNIT OPERASI WTP (PLOTLY DUAL-CHART) -->
+      <div class="cmd-card p-4 space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
+          <div>
+            <h3 class="text-sm font-bold font-tech text-emerald-400 flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project text-amber-400"></i> 2. PROFIL GARIS GRADIEN HIDRAULIK (HGL) &amp; PENURUNAN KEKERUHAN UNIT WTP
+            </h3>
+            <p class="text-[11px] text-slate-400">Evaluasi Kehilangan Tekanan (Headloss) &amp; Reduksi Kekeruhan (NTU) dari Intake hingga Reservoir Air Bersih</p>
+          </div>
+          <span class="text-[10px] px-2.5 py-1 rounded bg-slate-900 border border-emerald-500/40 text-emerald-300 font-bold">
+            Evaluasi Sistematis SNI 6774:2008
+          </span>
+        </div>
+        <div id="plotWtpProfile" class="w-full h-[290px]"></div>
+      </div>
+
+      <!-- TABEL SISTEMATIS 1: RINGKASAN DESAIN DIMENSI UNIT OPERASI WTP -->
       <div class="cmd-card p-4 overflow-x-auto">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-table-list"></i> Tabel Evaluasi Hidrodinamik Sepanjang Transek Pesisir
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-emerald-400"></i> Rekapitulasi Sistematis Perhitungan &amp; Dimensi Unit Operasi WTP
+          </h3>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="exportToWordReport()" class="px-2.5 py-1 rounded bg-blue-900/80 hover:bg-blue-800 text-blue-200 border border-blue-500/50 text-[10px] font-bold flex items-center gap-1 transition">
+              <i class="fa-solid fa-file-word"></i> Ekspor Word
+            </button>
+            <button type="button" onclick="exportToPDFReport()" class="px-2.5 py-1 rounded bg-rose-900/80 hover:bg-rose-800 text-rose-200 border border-rose-500/50 text-[10px] font-bold flex items-center gap-1 transition">
+              <i class="fa-solid fa-file-pdf"></i> Ekspor PDF
+            </button>
+          </div>
+        </div>
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400 bg-slate-900/80 text-[10px] uppercase">
+              <th class="py-2 px-3">Unit Operasi WTP</th>
+              <th class="py-2 px-3">Kriteria Desain Utama</th>
+              <th class="py-2 px-3">Volume / Luas Efektif</th>
+              <th class="py-2 px-3">Dimensi Rencana (P × L × H / Ø)</th>
+              <th class="py-2 px-3">Waktu Detensi (Td)</th>
+              <th class="py-2 px-3">Evaluasi Standar</th>
+            </tr>
+          </thead>
+          <tbody id="tableWtpUnits" class="divide-y divide-slate-800/70"></tbody>
+        </table>
+      </div>
+
+      <!-- TABEL SISTEMATIS 2: PROFIL HIDRODINAMIK TRANSEK AKUIFER PESISIR -->
+      <div class="cmd-card p-4 overflow-x-auto">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-table-list"></i> Tabel Evaluasi Kedalaman Antarmuka Air Tawar-Air Asin Sepanjang Transek
         </h3>
         <table class="w-full text-left border-collapse text-xs">
           <thead>
@@ -659,12 +727,65 @@
         </table>
       </div>
 
+      <!-- ==================== PANEL BARU: POIN-POIN PENTING, RISALAH TEKNIS, SARAN TEKNIS & KESIMPULAN ==================== -->
+      <div class="cmd-card p-5 space-y-4 border-2 border-amber-500/40">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-sm font-bold font-tech text-amber-400 flex items-center gap-2">
+              <i class="fa-solid fa-file-signature text-sky-400"></i> LAPORAN EVALUASI: POIN PENTING, RISALAH TEKNIS, SARAN &amp; KESIMPULAN REKAYASA
+            </h3>
+            <p class="text-[11px] text-slate-400">Disusun secara otomatis dan dinamis berdasarkan hasil perhitungan desain WTP (SNI 6774:2008) &amp; pemodelan intrusi air laut</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="exportToWordReport()" class="px-3 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-[11px] font-bold flex items-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-file-word"></i> Unduh Laporan Word (.doc)
+            </button>
+            <button type="button" onclick="exportToPDFReport()" class="px-3 py-1.5 rounded-lg bg-rose-700 hover:bg-rose-600 text-white text-[11px] font-bold flex items-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-file-pdf"></i> Cetak Laporan PDF (.pdf)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
+          <!-- 1. Poin-Poin Penting -->
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-sky-500/40 space-y-2">
+            <h4 class="font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+              <i class="fa-solid fa-list-check text-amber-400"></i> I. Poin-Poin Penting Hasil Analisis
+            </h4>
+            <ul id="secKeyPoints" class="list-disc list-inside space-y-1.5 text-[11px] text-slate-300"></ul>
+          </div>
+
+          <!-- 2. Risalah Teknis -->
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-purple-500/40 space-y-2">
+            <h4 class="font-bold text-purple-300 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+              <i class="fa-solid fa-book-journal-whills text-cyan-400"></i> II. Risalah Teknis (Engineering Digest)
+            </h4>
+            <div id="secTechnicalMinutes" class="space-y-1.5 text-[11px] text-slate-300 text-justify"></div>
+          </div>
+
+          <!-- 3. Saran Teknis -->
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-amber-500/40 space-y-2">
+            <h4 class="font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+              <i class="fa-solid fa-lightbulb text-amber-400"></i> III. Saran &amp; Rekomendasi Teknis Operasional
+            </h4>
+            <ul id="secTechnicalAdvice" class="list-disc list-inside space-y-1.5 text-[11px] text-slate-300"></ul>
+          </div>
+
+          <!-- 4. Kesimpulan -->
+          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/40 space-y-2">
+            <h4 class="font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5 border-b border-slate-800 pb-1.5">
+              <i class="fa-solid fa-award text-emerald-400"></i> IV. Kesimpulan Kelayakan Sistem
+            </h4>
+            <div id="secConclusion" class="space-y-1.5 text-[11px] text-slate-200 text-justify font-medium"></div>
+          </div>
+        </div>
+      </div>
+
     </section>
   </main>
 
   <!-- ==================== 3. FLOATING SMART CHATBOT (INTERNAL + WIKIPEDIA LIVE API + GOOGLE + MULTI-AI) ==================== -->
   <div id="chatDrawer" class="chat-drawer closed fixed bottom-4 right-4 z-50 w-[96vw] sm:w-[440px] bg-slate-900 border-2 border-sky-500/70 rounded-2xl shadow-[0_0_45px_rgba(14,165,233,0.3)] overflow-hidden font-mono flex flex-col">
-    <!-- Header Chatbot -->
     <div class="p-3 bg-gradient-to-r from-slate-950 via-sky-950 to-indigo-950 border-b border-sky-500/50 flex justify-between items-center text-xs">
       <div class="flex items-center gap-2">
         <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-sky-500 to-amber-400 flex items-center justify-center text-slate-950 font-black shadow">
@@ -673,7 +794,7 @@
         <div>
           <span class="font-bold text-sky-300 font-tech block leading-none">OMNI-AI &amp; WIKI SMART ENGINE</span>
           <span class="text-[9px] text-emerald-400 flex items-center gap-1 mt-0.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Hydrogeology + Wikipedia API + Google + AI Hub
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> WTP Design + Hydrogeology + Wikipedia API + AI Hub
           </span>
         </div>
       </div>
@@ -687,40 +808,37 @@
       </div>
     </div>
 
-    <!-- Area Pesan Chat -->
     <div id="chatMessages" class="p-3.5 h-[360px] overflow-y-auto space-y-3 text-xs text-slate-200 bg-slate-950/60">
       <div class="p-3 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/60 border border-sky-500/40 text-[11px] leading-relaxed shadow-md space-y-2">
         <div class="flex items-center gap-1.5 font-bold text-amber-300">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Selamat Datang di Asisten Pintar Multi-Engine!
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Asisten Pintar Desain WTP &amp; Hidrogeologi Aktif!
         </div>
         <p class="text-slate-300">
-          Saya dapat menganalisis <b>data simulasi intrusi air laut</b> secara langsung, maupun menjawab <b>pertanyaan di luar topik</b> (Sains, Geoteknik, Bendungan, Sejarah, Tokoh, Teknologi, dll) dengan mengambil referensi langsung dari <span class="text-purple-300 font-bold">Wikipedia Live API</span>, <span class="text-emerald-300 font-bold">Google Search/Scholar</span>, serta <span class="text-amber-300 font-bold">AI Global (ChatGPT, Perplexity, Gemini, Claude)</span>.
+          Saya dapat mengevaluasi <b>dimensi unit operasi WTP, risalah teknis, kesimpulan</b>, menganalisis <b>intrusi air laut pada sumur sadap</b>, maupun menjawab <b>pertanyaan di luar topik</b> dengan mengambil referensi langsung dari <span class="text-purple-300 font-bold">Wikipedia Live API</span>, <span class="text-emerald-300 font-bold">Google Search/Scholar</span>, dan <span class="text-amber-300 font-bold">AI Global</span>.
         </p>
       </div>
     </div>
 
-    <!-- Quick Prompt Pills (Topik Internal & Luar Topik) -->
     <div class="px-2.5 py-2 bg-slate-900 border-t border-slate-800 flex gap-1.5 overflow-x-auto text-[10px]">
+      <button onclick="sendQuickPrompt('Ringkasan dimensi unit WTP saat ini')" class="px-2.5 py-1 rounded-lg bg-amber-950 hover:bg-amber-900 text-amber-300 whitespace-nowrap border border-amber-500/40 font-semibold">
+        <i class="fa-solid fa-industry mr-1"></i>Desain WTP
+      </button>
+      <button onclick="sendQuickPrompt('Tampilkan kesimpulan & saran teknis')" class="px-2.5 py-1 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-emerald-300 whitespace-nowrap border border-emerald-500/40 font-semibold">
+        <i class="fa-solid fa-file-signature mr-1"></i>Kesimpulan
+      </button>
       <button onclick="sendQuickPrompt('Analisis status intrusi & posisi toe saat ini')" class="px-2.5 py-1 rounded-lg bg-sky-950 hover:bg-sky-900 text-sky-300 whitespace-nowrap border border-sky-500/40 font-semibold">
         <i class="fa-solid fa-water mr-1"></i>Status Intrusi
       </button>
-      <button onclick="sendQuickPrompt('Apakah sumur pemompaan aman dari upconing?')" class="px-2.5 py-1 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 whitespace-nowrap border border-rose-500/40 font-semibold">
-        <i class="fa-solid fa-bore-hole mr-1"></i>Cek Upconing
+      <button onclick="sendQuickPrompt('Instalasi pengolahan air')" class="px-2.5 py-1 rounded-lg bg-purple-950 hover:bg-purple-900 text-purple-300 whitespace-nowrap border border-purple-500/40 font-semibold">
+        <i class="fa-brands fa-wikipedia-w mr-1"></i>Wiki: IPA
       </button>
-      <button onclick="sendQuickPrompt('Bendungan')" class="px-2.5 py-1 rounded-lg bg-purple-950 hover:bg-purple-900 text-purple-300 whitespace-nowrap border border-purple-500/40 font-semibold" title="Contoh Pencarian Wikipedia & AI Luar Topik">
-        <i class="fa-brands fa-wikipedia-w mr-1"></i>Wiki: Bendungan
-      </button>
-      <button onclick="sendQuickPrompt('Kecerdasan buatan')" class="px-2.5 py-1 rounded-lg bg-emerald-950 hover:bg-emerald-900 text-emerald-300 whitespace-nowrap border border-emerald-500/40 font-semibold" title="Contoh Pencarian Wikipedia & AI Luar Topik">
-        <i class="fa-solid fa-globe mr-1"></i>Wiki: AI
-      </button>
-      <button onclick="sendQuickPrompt('Tampilkan profil Creator & Kontak')" class="px-2.5 py-1 rounded-lg bg-amber-950 hover:bg-amber-900 text-amber-300 whitespace-nowrap border border-amber-500/40 font-semibold">
+      <button onclick="sendQuickPrompt('Tampilkan profil Creator & Kontak')" class="px-2.5 py-1 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 whitespace-nowrap border border-rose-500/40 font-semibold">
         <i class="fa-solid fa-user-tie mr-1"></i>Creator
       </button>
     </div>
 
-    <!-- Input Box -->
     <div class="p-2.5 bg-slate-950 border-t border-slate-800 flex gap-2">
-      <input type="text" id="chatInput" placeholder="Tanyakan intrusi air laut atau topik umum apa saja..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-400 transition" onkeydown="if(event.key==='Enter') sendChatMessage()">
+      <input type="text" id="chatInput" placeholder="Tanyakan desain WTP, kesimpulan, atau topik umum..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-sky-400 transition" onkeydown="if(event.key==='Enter') sendChatMessage()">
       <button onclick="sendChatMessage()" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-cyan-500 hover:from-sky-500 hover:to-cyan-400 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-sky-500/20">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
@@ -733,7 +851,68 @@
     <span class="text-xs font-mono hidden sm:inline">AI &amp; Wiki Smart Chat</span>
   </button>
 
-  <!-- MODAL CREATOR PROFILE -->
+  <!-- ==================== MODAL HELP SYSTEM (PANDUAN STANDAR SNI 6774:2008 & GHYBEN-HERZBERG) ==================== -->
+  <div id="helpModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4 select-none">
+    <div class="cmd-card p-6 max-w-3xl w-full max-h-[88vh] overflow-y-auto space-y-4 shadow-2xl relative text-xs font-mono border-2 border-sky-500/60">
+      <button onclick="closeModal('helpModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+
+      <div class="border-b border-sky-500/40 pb-3 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-600 text-slate-950 flex items-center justify-center text-lg font-black">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div>
+          <h3 class="text-sm sm:text-base font-bold text-amber-400 font-tech">
+            HELP SYSTEM — PANDUAN STANDAR REKAYASA WTP &amp; HIDROGEOLOGI PESISIR
+          </h3>
+          <p class="text-[10px] text-slate-400">Acuan Kriteria Desain SNI 6774:2008, Relasi Ghyben-Herzberg, Dupuit-Strack, dan Ekspor Dokumen</p>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-slate-300 text-[11px] leading-relaxed">
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <div class="font-bold text-amber-300">1. Standar Perencanaan Unit Paket Instalasi Pengolahan Air (SNI 6774:2008)</div>
+          <p>
+            • <b>Koagulasi (Pengadukan Cepat):</b> Waktu detensi (Td) dirancang 1–60 detik dengan gradien kecepatan <b>G &gt; 700 /detik</b> untuk mendispersikan koagulan Alum secara merata.<br>
+            • <b>Flokulasi (Pengadukan Lambat):</b> Waktu detensi <b>Td = 20–45 menit</b> dengan penurunan gradien kecepatan bertahap (G = 60 s/d 20 /detik) agar pembentukan makro-flok tidak pecah.<br>
+            • <b>Sedimentasi (Clarifier):</b> Beban permukaan (<i>Overflow Rate</i>, Vo) dirancang antara <b>15–40 m³/m²/hari</b> dengan waktu detensi 1,5–4 jam.<br>
+            • <b>Filtrasi Pasir Cepat (Rapid Sand Filter):</b> Kecepatan penyaringan dirancang <b>Vf = 6–11 m/jam</b> dilengkapi pencucian balik (<i>backwash</i>).
+          </p>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <div class="font-bold text-sky-300">2. Prinsip Ghyben-Herzberg &amp; Potensial Aliran Dupuit-Strack (1976)</div>
+          <p>
+            Rasio densitas hidrostatik dihitung dengan <b>α = ρ<sub>f</sub> / (ρ<sub>s</sub> - ρ<sub>f</sub>)</b> (umumnya α ≈ 40). Kedalaman antarmuka air tawar dan air asin di bawah permukaan laut adalah <b>z<sub>i</sub>(x) = -α · h(x)</b>. Panjang penjalaran baji air asin (<i>Toe Distance</i>, x<sub>toe</sub>) merupakan jarak dari garis pantai di mana kurva antarmuka memotong dasar kedap akuifer (-z<sub>b</sub>).
+          </p>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <div class="font-bold text-rose-300">3. Evaluasi Kerucut Depresi &amp; Upconing Sumur Sadap (Dagan &amp; Bear, 1968)</div>
+          <p>
+            Pemompaan sumur sadap WTP sebesar Q<sub>w</sub> pada jarak x<sub>w</sub> dari pantai menimbulkan penurunan muka air tanah lokal (Δs) yang memicu kenaikan puncak baji air asin (<i>Upconing</i>) sebesar <b>Δz<sub>up</sub> = α · Δs</b>. Agar air asin tidak tersedot ke dalam saringan sumur, rasio kenaikan baji (λ = Δz<sub>up</sub> / d<sub>0</sub>) wajib dijaga di bawah batas kritis <b>33% (1/3 jarak awal saringan ke antarmuka)</b>.
+          </p>
+        </div>
+
+        <div class="p-3.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+          <div class="font-bold text-emerald-300">4. Panduan Ekspor ke Word (.doc), PDF (.pdf), dan JSON FloPy</div>
+          <p>
+            • Klik tombol <b>Word (.doc)</b> atau <b>PDF (.pdf)</b> pada bilah atas untuk mengunduh dokumen Berita Acara Perhitungan Teknis lengkap beserta tabel metrik dimensi WTP, tabel transek hidrogeologi, Poin-Poin Penting, Risalah Teknis, Saran Teknis, dan Kesimpulan.<br>
+            • Klik tombol <b>JSON FloPy</b> untuk mengekspor struktur matriks diskrit yang siap dibaca oleh skrip Python <b>MODFLOW 6 (BUY Package) / SEAWAT</b>.
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-2 text-center">
+        <button onclick="closeModal('helpModal')" class="px-6 py-2 bg-gradient-to-r from-sky-600 to-cyan-500 text-slate-950 font-black rounded-xl shadow cursor-pointer">
+          Tutup Panduan Help
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CREATOR PROFILE (FB, BLOG, WA — TANPA GITHUB) -->
   <div id="creatorModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 select-none">
     <div class="dev-card p-6 max-w-md w-full space-y-4 shadow-2xl relative text-xs font-mono">
       <button onclick="closeModal('creatorModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
@@ -756,7 +935,7 @@
 
       <div class="space-y-2 text-slate-300 text-[11px] leading-relaxed">
         <p>
-          Pengembang dan perancang sistem integrasi komputasi geoteknik, pemodelan numerik hidrogeologi pesisir, stabilitas bendungan/TSF, dan otomatisasi analisis rekayasa sumber daya air.
+          Pengembang dan perancang sistem integrasi komputasi infrastruktur sumber daya air, desain instalasi pengolahan air (WTP), pemodelan numerik hidrogeologi pesisir, dan stabilitas bendungan.
         </p>
         <div class="grid gap-1.5 pt-1 text-[10px]">
           <a href="https://facebook.com/m.hartadi" target="_blank" class="p-2 rounded bg-[#0a1428] border border-blue-600/70 text-blue-300 flex justify-between items-center hover:bg-blue-900/40 transition">
@@ -787,13 +966,13 @@
     </div>
   </div>
 
-  <!-- MODAL EKSPOR JSON FLOPY (MODFLOW / SEAWAT) -->
+  <!-- MODAL EKSPOR JSON FLOPY (MODFLOW / SEAWAT & WTP SPECS) -->
   <div id="exportModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="cmd-card max-w-3xl w-full p-6 shadow-2xl space-y-4 font-mono">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div>
-          <h3 class="text-sm sm:text-base font-bold font-tech text-sky-400">Payload JSON Integrasi FloPy (MODFLOW 6 BUY / SEAWAT VDF)</h3>
-          <p class="text-[11px] text-slate-400">Siap diumpankan ke script Python FloPy untuk simulasi numerik Variable-Density Flow</p>
+          <h3 class="text-sm sm:text-base font-bold font-tech text-sky-400">Payload JSON Integrasi FloPy (MODFLOW 6 / SEAWAT) &amp; Desain WTP</h3>
+          <p class="text-[11px] text-slate-400">Siap diumpankan ke script Python FloPy untuk simulasi numerik Variable-Density Flow &amp; dokumentasi teknis WTP</p>
         </div>
         <button id="btnCloseModal" class="text-slate-400 hover:text-white text-lg font-bold px-2">✕</button>
       </div>
@@ -815,20 +994,26 @@
   <!-- ==================== JAVASCRIPT ENGINE ==================== -->
   <script>
     /**
-     * 1. STATE DEFAULT & PARAMETER HIDROGEOLOGI
+     * 1. STATE DEFAULT PARAMETER WTP & HIDROGEOLOGI
      */
     const DEFAULT_PARAMS = {
-      K: 15.0,
+      Qwtp_lps: 50.0,
+      turbidity: 85.0,
+      coagDose: 35.0,
+      tdFloc: 30.0,
+      voSed: 24.0,
+      vfFilt: 7.5,
+      K: 18.0,
       rhoF: 1000.0,
       rhoS: 1025.0,
-      zb: 60.0,
-      zSurf: 8.0,
-      hL: 2.4,
+      zb: 65.0,
+      zSurf: 9.0,
+      hL: 2.6,
       L: 1000.0,
-      R_mm: 250.0,
+      R_mm: 280.0,
+      Qw: 200.0,
       xObs: 250.0,
-      Qw: 180.0,
-      xw: 350.0,
+      xw: 400.0,
       zScreen: 18.0
     };
 
@@ -843,37 +1028,99 @@
 
       for (const [key, val] of Object.entries(raw)) {
         if (typeof val !== 'number' || Number.isNaN(val) || !Number.isFinite(val)) {
-          errors.push(`Variabel "${key}" mengandung nilai non-numerik.`);
+          errors.push(`Parameter "${key}" mengandung nilai non-numerik.`);
         }
       }
       if (errors.length > 0) return { valid: false, errors, warnings };
 
+      if (raw.Qwtp_lps <= 0) errors.push('Kapasitas WTP (Q_desain) harus > 0 L/detik.');
       if (raw.K <= 0) errors.push('Konduktivitas hidrolik (K) harus > 0 m/hari.');
       if (raw.rhoS <= raw.rhoF) {
-        errors.push(`Densitas air laut (ρs = ${raw.rhoS} kg/m³) wajib lebih besar dari densitas air tawar (ρf = ${raw.rhoF} kg/m³) untuk mencegah pembagian nol pada persamaan Ghyben-Herzberg.`);
+        errors.push(`Densitas air laut (ρs = ${raw.rhoS} kg/m³) wajib lebih besar dari densitas air tawar (ρf = ${raw.rhoF} kg/m³) agar persamaan Ghyben-Herzberg tidak mengalami singularitas.`);
       }
       if (raw.L <= 50) errors.push('Panjang penampang (L) minimal 50 m.');
       if (raw.zb <= 5) errors.push('Kedalaman dasar akuifer (zb) minimal 5 m.');
       if (raw.hL < 0) errors.push('Elevasi muka air tanah hulu (h) tidak boleh negatif.');
 
       if (raw.xObs > raw.L) {
-        warnings.push(`Jarak titik inspeksi x (${raw.xObs} m) melampaui panjang domain L (${raw.L} m), disesuaikan otomatis ke L.`);
+        warnings.push(`Titik inspeksi x (${raw.xObs} m) melampaui panjang domain L (${raw.L} m), disesuaikan otomatis ke L.`);
         raw.xObs = raw.L;
       }
       if (raw.xw > raw.L) {
-        warnings.push(`Lokasi sumur xw (${raw.xw} m) berada di luar panjang penampang L (${raw.L} m).`);
+        warnings.push(`Lokasi sumur intake xw (${raw.xw} m) berada di luar panjang penampang L (${raw.L} m).`);
       }
       if (raw.zScreen >= raw.zb) {
-        warnings.push('Kedalaman saringan sumur menembus dasar kedap akuifer.');
+        warnings.push('Kedalaman saringan sumur mencapai/menembus dasar kedap akuifer.');
       }
 
       return { valid: errors.length === 0, errors, warnings, params: raw };
     }
 
     /**
-     * 3. CORE ANALYTICAL ENGINE (GHYBEN-HERZBERG + STRACK + THIEM-DAGAN-BEAR)
+     * 3. CORE ENGINE: KALKULASI UNIT OPERASI WTP (SNI 6774:2008), INTRUSI AIR LAUT, & GENERATOR NARASI TEKNIS
      */
-    function solveCoastalAquifer(p) {
+    function solveWtpAndHydrogeology(p) {
+      const Q_m3s = p.Qwtp_lps / 1000.0;
+      const Q_m3h = Q_m3s * 3600.0;
+      const Q_m3d = Q_m3s * 86400.0;
+
+      const alumKgDay = (p.coagDose * Q_m3d) / 1000.0;
+      const sludgeKgDay = (Q_m3d * (0.44 * p.coagDose + p.turbidity * 1.3)) / 1000.0;
+
+      // 1. Koagulasi
+      const tdCoagSec = 45.0;
+      const volCoag = Q_m3s * tdCoagSec;
+      const diaCoag = Math.pow((4 * volCoag) / (Math.PI * 1.5), 1 / 3);
+      const hCoag = 1.5 * diaCoag;
+
+      // 2. Flokulasi
+      const volFloc = Q_m3s * (p.tdFloc * 60.0);
+      const hFloc = 3.2;
+      const areaFloc = volFloc / hFloc;
+      const wFloc = Math.sqrt(areaFloc / 2.0);
+      const lFloc = 2.0 * wFloc;
+
+      // 3. Sedimentasi
+      const areaSed = Q_m3d / p.voSed;
+      const hSed = 3.8;
+      const volSed = areaSed * hSed;
+      const tdSedHours = (volSed / Q_m3h);
+      const wSed = Math.sqrt(areaSed / 4.0);
+      const lSed = 4.0 * wSed;
+
+      // 4. Filtrasi Pasir Cepat
+      const areaFiltTotal = Q_m3h / p.vfFilt;
+      const nFilterBoxes = Math.max(2, Math.ceil(areaFiltTotal / 18.0));
+      const areaPerBox = areaFiltTotal / nFilterBoxes;
+      const wFilt = Math.sqrt(areaPerBox / 1.4);
+      const lFilt = 1.4 * wFilt;
+
+      // 5. Clearwell Reservoir
+      const volClearwell = Q_m3h * 4.0;
+      const hClear = 4.0;
+      const sideClear = Math.sqrt(volClearwell / hClear);
+
+      const wtpStations = ['1. Sumur Intake', '2. Koagulasi', '3. Flokulasi', '4. Sedimentasi', '5. Filtrasi Pasir', '6. Reservoir Bersih'];
+      const hglElevations = [
+        Number((p.zSurf + 3.5).toFixed(2)),
+        Number((p.zSurf + 3.05).toFixed(2)),
+        Number((p.zSurf + 2.65).toFixed(2)),
+        Number((p.zSurf + 2.25).toFixed(2)),
+        Number((p.zSurf + 0.85).toFixed(2)),
+        Number((p.zSurf - 0.50).toFixed(2))
+      ];
+      const turbidityProfile = [
+        Number(p.turbidity.toFixed(1)),
+        Number((p.turbidity * 0.95).toFixed(1)),
+        Number((p.turbidity * 0.65).toFixed(1)),
+        Number(Math.max(3.5, p.turbidity * 0.12).toFixed(1)),
+        Number(Math.max(0.4, p.turbidity * 0.012).toFixed(2)),
+        Number(Math.max(0.2, p.turbidity * 0.008).toFixed(2))
+      ];
+
+      const nWellsRequired = p.Qw > 0 ? Math.ceil(Q_m3d / p.Qw) : 1;
+
+      // B. HIDROGEOLOGI & INTRUSI AIR LAUT
       const alpha = p.rhoF / (p.rhoS - p.rhoF);
       const R_mday = (p.R_mm / 1000.0) / 365.25;
       const qInland = (p.K * Math.pow(p.hL, 2)) / (2.0 * p.L);
@@ -938,7 +1185,6 @@
       const d0 = Math.max(0.5, ziWellInitial - p.zScreen);
       const upconingRise = Math.max(0, ziPumpedArr[idxWell] - ziNaturalArr[idxWell]);
       const upconingRatio = upconingRise / d0;
-
       const qSafeMax = upconingRatio > 0.01 ? (p.Qw * (0.33 / upconingRatio)) : (p.Qw + 350);
 
       let upconingStatus = 'AMAN';
@@ -950,27 +1196,58 @@
         upconingStatus = 'WASPADA';
       }
 
+      // C. PENYUSUNAN NARASI: POIN PENTING, RISALAH TEKNIS, SARAN TEKNIS & KESIMPULAN
+      const keyPoints = [
+        `Kapasitas desain WTP sebesar ${p.Qwtp_lps.toFixed(1)} L/detik (${Math.round(Q_m3d).toLocaleString('id-ID')} m³/hari) membutuhkan pasokan air baku dari ${nWellsRequired} titik sumur sadap (masing-masing memompa ${p.Qw} m³/hari).`,
+        `Kebutuhan koagulan Alum tercatat ${alumKgDay.toFixed(1)} kg/hari dengan estimasi timbulan lumpur kering (dry solid sludge) di unit Clarifier sebesar ${sludgeKgDay.toFixed(1)} kg/hari.`,
+        `Berdasarkan rasio hidrostatik Ghyben-Herzberg (α = ${alpha.toFixed(2)}), panjang penjalaran baji air asin (Toe Distance) mencapai x_toe = ${xToe.toFixed(1)} m dari garis pantai.`,
+        `Pada lokasi sumur sadap (x_w = ${p.xw} m, saringan -${p.zScreen} m MSL), kenaikan antarmuka lokal (upconing) sebesar +${upconingRise.toFixed(2)} m menghasilkan indeks Dagan-Bear λ = ${(upconingRatio * 100).toFixed(1)}% (Status: ${upconingStatus}).`
+      ];
+
+      const technicalMinutes = `Risalah perhitungan ini disusun berdasarkan SNI 6774:2008 untuk instalasi pengolahan air bersih dan formulasi analitik Dupuit-Strack serta Dagan-Bear (1968) untuk akuifer pesisir tak tertekan (K = ${p.K} m/hari, imbuhan R = ${p.R_mm} mm/tahun). Unit pengolahan dirancang secara berjenjang mulai dari pengadukan cepat bervolume ${volCoag.toFixed(2)} m³, flokulasi 3 kompartemen bervolume ${volFloc.toFixed(1)} m³, bak pengendap sedimentasi seluas ${areaSed.toFixed(1)} m² (Td = ${tdSedHours.toFixed(2)} jam), hingga ${nFilterBoxes} unit saringan pasir cepat seluas total ${areaFiltTotal.toFixed(1)} m² yang mampu menurunkan kekeruhan air baku dari ${p.turbidity} NTU menjadi ${turbidityProfile[5]} NTU (< 1.0 NTU). Di sisi hidrogeologi hulu-hilir, fluks pelepasan air tanah tawar ke laut tercatat q₀ = ${q0.toFixed(3)} m²/hari yang berperan menahan desakan baji air laut pada kedalaman dasar akuifer -${p.zb} m MSL.`;
+
+      const technicalAdvice = [];
+      if (upconingStatus === 'AMAN') {
+        technicalAdvice.push(`Pertahankan debit pemompaan per sumur sadap di bawah ambang kritis Q_max ≈ ${qSafeMax.toFixed(0)} m³/hari dan atur jarak antar-sumur (well spacing) minimal 150–200 m untuk mencegah interferensi kerucut depresi.`);
+      } else {
+        technicalAdvice.push(`PERINGATAN HIDROGEOLOGI: Rasio upconing (λ = ${(upconingRatio * 100).toFixed(1)}%) telah melampaui/mendekati batas aman 33%! Segera turunkan debit per sumur menjadi ≤ ${qSafeMax.toFixed(0)} m³/hari, perbaiki kedalaman saringan lebih dangkal, atau relokasi sumur ke daratan pada jarak x_w > ${Math.round(xToe * 1.25 + 50)} m dari pantai.`);
+      }
+      technicalAdvice.push(`Lakukan pengurasan lumpur (desludging) pada zona kerucut bak sedimentasi secara berkala untuk mengakomodasi beban padatan ${sludgeKgDay.toFixed(1)} kg/hari serta lakukan backwash saringan pasir cepat setiap kehilangan tekan (headloss) mencapai 1,8–2,0 m.`);
+      technicalAdvice.push(`Pasang sumur pantau piezometer dan sensor daya hantar listrik (DHL / EC logger) pada titik pengamatan x = ${p.xObs} m (kedalaman antarmuka saat ini ${ziObs.toFixed(2)} m MSL) sebagai sistem peringatan dini intrusi air asin.`);
+
+      const isWtpCompliant = (p.tdFloc >= 20 && p.tdFloc <= 45) && (p.voSed <= 40) && (p.vfFilt <= 11);
+      const conclusion = `Berdasarkan integrasi evaluasi hidraulik unit operasi WTP dan pemodelan analitik akuifer pesisir, sistem instalasi pengolahan air berkapasitas ${p.Qwtp_lps} L/detik dinyatakan ${isWtpCompliant ? 'MEMENUHI STANDAR SNI 6774:2008' : 'MEMERLUKAN PENYESUAIAN PARAMETER OPERASI WTP'} dengan efisiensi penyisihan kekeruhan akhir mencapai ${((1 - turbidityProfile[5] / p.turbidity) * 100).toFixed(2)}%. Sementara itu, ditinjau dari aspek keamanan pasokan air tanah di wilayah pesisir, operasional sumur sadap berada dalam kondisi ${upconingStatus} (rasio Dagan-Bear λ = ${(upconingRatio * 100).toFixed(1)}% dan posisi Toe intrusi pada ${xToe.toFixed(1)} m dari garis pantai).`;
+
       return {
+        wtp: {
+          Q_m3s, Q_m3h, Q_m3d, alumKgDay, sludgeKgDay, nWellsRequired,
+          coag: { vol: volCoag, dia: diaCoag, h: hCoag, tdSec: tdCoagSec },
+          floc: { vol: volFloc, area: areaFloc, l: lFloc, w: wFloc, h: hFloc, tdMin: p.tdFloc },
+          sed: { vol: volSed, area: areaSed, l: lSed, w: wSed, h: hSed, tdHours: tdSedHours },
+          filt: { areaTotal: areaFiltTotal, nBoxes: nFilterBoxes, l: lFilt, w: wFilt, vf: p.vfFilt },
+          clearwell: { vol: volClearwell, side: sideClear, h: hClear },
+          stations: wtpStations,
+          hgl: hglElevations,
+          turbProfile: turbidityProfile
+        },
         alpha, R_mday, q0, xToe, hObs, ziObs, upconingRise, upconingRatio, upconingStatus, d0, qSafeMax,
+        narrative: { keyPoints, technicalMinutes, technicalAdvice, conclusion },
         arrays: { x: xArr, hNatural: hNaturalArr, hPumped: hPumpedArr, ziNatural: ziNaturalArr, ziPumped: ziPumpedArr, zSurf: zSurfArr, zBottom: zBottomArr }
       };
     }
 
     /**
-     * 4. RENDER PLOTLY 2D CROSS-SECTION
+     * 4. RENDER VISUALISASI PLOTLY (PENAMPANG 2D INTRUSI & PROFIL HIDRAULIK WTP)
      */
-    function renderCrossSection(p, res) {
+    function renderAllCharts(p, res) {
       const isDark = document.documentElement.classList.contains('dark');
       const bgPlot = isDark ? 'rgba(9,17,36,0.4)' : '#ffffff';
       const gridColor = isDark ? '#1e293b' : '#e2e8f0';
       const textColor = isDark ? '#cbd5e1' : '#334155';
       const x = res.arrays.x;
 
-      const traces = [
-        {
-          x, y: res.arrays.zBottom, mode: 'lines', name: 'Dasar Akuifer Kedap (-zb)',
-          line: { color: '#64748b', width: 2, dash: 'dot' }
-        },
+      const tracesSWI = [
+        { x, y: res.arrays.zBottom, mode: 'lines', name: 'Dasar Akuifer (-zb)', line: { color: '#64748b', width: 2, dash: 'dot' } },
         {
           x, y: res.arrays.ziPumped, mode: 'lines', name: 'Antarmuka Air Asin (Terpompa)',
           line: { color: '#ef4444', width: 3 }, fill: 'tonexty',
@@ -981,29 +1258,19 @@
           line: { color: '#0ea5e9', width: 2.5 }, fill: 'tonexty',
           fillcolor: isDark ? 'rgba(14, 165, 233, 0.22)' : 'rgba(14, 165, 233, 0.18)'
         },
+        { x, y: res.arrays.ziNatural, mode: 'lines', name: 'Antarmuka Alami (Tanpa Qw)', line: { color: '#f59e0b', width: 1.5, dash: 'dash' } },
+        { x, y: res.arrays.zSurf, mode: 'lines', name: 'Permukaan Tanah', line: { color: '#10b981', width: 2 } },
+        { x: [p.xObs, p.xObs], y: [-p.zb, p.zSurf], mode: 'lines', name: `Inspeksi (x = ${p.xObs}m)`, line: { color: '#eab308', width: 1.5, dash: 'dashdot' } },
         {
-          x, y: res.arrays.ziNatural, mode: 'lines', name: 'Antarmuka Alami (Tanpa Q)',
-          line: { color: '#f59e0b', width: 1.5, dash: 'dash' }
-        },
-        {
-          x, y: res.arrays.zSurf, mode: 'lines', name: 'Permukaan Tanah',
-          line: { color: '#10b981', width: 2 }
-        },
-        {
-          x: [p.xObs, p.xObs], y: [-p.zb, p.zSurf], mode: 'lines', name: `Inspeksi (x = ${p.xObs}m)`,
-          line: { color: '#eab308', width: 1.5, dash: 'dashdot' }
-        },
-        {
-          x: [p.xw, p.xw], y: [p.zSurf, -p.zScreen], mode: 'lines+markers', name: `Sumur (Q = ${p.Qw} m³/hr)`,
+          x: [p.xw, p.xw], y: [p.zSurf, -p.zScreen], mode: 'lines+markers', name: `Sumur Sadap WTP (Qw = ${p.Qw} m³/hr)`,
           line: { color: '#ec4899', width: 3.5 }, marker: { symbol: 'triangle-down', size: 10, color: '#ec4899' }
         }
       ];
 
-      const layout = {
-        paper_bgcolor: bgPlot,
-        plot_bgcolor: bgPlot,
-        margin: { l: 55, r: 20, t: 25, b: 45 },
-        font: { family: 'JetBrains Mono, monospace', color: textColor, size: 11 },
+      const layoutSWI = {
+        paper_bgcolor: bgPlot, plot_bgcolor: bgPlot,
+        margin: { l: 55, r: 20, t: 25, b: 40 },
+        font: { family: 'JetBrains Mono, monospace', color: textColor, size: 10.5 },
         xaxis: { title: 'Jarak dari Garis Pantai x (meter)', gridcolor: gridColor, range: [0, p.L] },
         yaxis: { title: 'Elevasi terhadap MSL (meter)', gridcolor: gridColor, zerolinecolor: '#38bdf8', zerolinewidth: 1.5, range: [-p.zb * 1.05, Math.max(p.zSurf, p.hL) * 1.2] },
         legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'left', x: 0 },
@@ -1014,20 +1281,48 @@
         }]
       };
 
-      Plotly.react('plotCrossSection', traces, layout, { responsive: true, displaylogo: false });
+      Plotly.react('plotCrossSection', tracesSWI, layoutSWI, { responsive: true, displaylogo: false });
+
+      const tracesWTP = [
+        {
+          x: res.wtp.stations, y: res.wtp.hgl, name: 'Elevasi Muka Air / HGL (m MSL)',
+          type: 'scatter', mode: 'lines+markers',
+          line: { color: '#38bdf8', width: 3, shape: 'hv' },
+          marker: { size: 8, color: '#0284c7' }, yaxis: 'y1'
+        },
+        {
+          x: res.wtp.stations, y: res.wtp.turbProfile, name: 'Kekeruhan Air (NTU)',
+          type: 'bar', marker: { color: 'rgba(245, 158, 11, 0.45)', line: { color: '#f59e0b', width: 1.5 } },
+          yaxis: 'y2'
+        }
+      ];
+
+      const layoutWTP = {
+        paper_bgcolor: bgPlot, plot_bgcolor: bgPlot,
+        margin: { l: 55, r: 55, t: 25, b: 40 },
+        font: { family: 'JetBrains Mono, monospace', color: textColor, size: 10.5 },
+        xaxis: { gridcolor: gridColor },
+        yaxis: { title: 'Elevasi HGL (m MSL)', gridcolor: gridColor, titlefont: { color: '#38bdf8' } },
+        yaxis2: { title: 'Kekeruhan (NTU)', overlaying: 'y', side: 'right', titlefont: { color: '#f59e0b' }, range: [0, p.turbidity * 1.15] },
+        legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'left', x: 0 }
+      };
+
+      Plotly.react('plotWtpProfile', tracesWTP, layoutWTP, { responsive: true, displaylogo: false });
     }
 
     /**
-     * 5. UPDATE DOM, TABEL & SINKRONISASI TELEMETRI SCREENSAVER
+     * 5. UPDATE DOM, TABEL SISTEMATIS WTP, TABEL HIDROGEOLOGI & PANEL NARASI TEKNIS
      */
     function updateUI(p, res) {
+      const w = res.wtp;
+      document.getElementById('kpiWtpCap').textContent = `${Math.round(w.Q_m3d).toLocaleString('id-ID')} m³/hr`;
+      document.getElementById('kpiAlum').textContent = `Alum: ${w.alumKgDay.toFixed(1)} kg/hr | ${w.nWellsRequired} Sumur`;
+
       document.getElementById('kpiToe').textContent = `${res.xToe.toFixed(1)} m`;
       document.getElementById('kpiAlpha').textContent = `α = ${res.alpha.toFixed(2)} | zb = -${p.zb} m`;
       document.getElementById('lblXObs').textContent = p.xObs.toFixed(0);
       document.getElementById('kpiZiObs').textContent = `${res.ziObs.toFixed(2)} m`;
       document.getElementById('kpiHfObs').textContent = `MAT: +${res.hObs.toFixed(2)} m MSL`;
-      document.getElementById('kpiFlux').textContent = `${res.q0.toFixed(3)} m²/hr`;
-      document.getElementById('kpiGrad').textContent = `i avg: ${(p.hL / p.L).toExponential(2)}`;
 
       const kpiUp = document.getElementById('kpiUpconing');
       kpiUp.textContent = res.upconingStatus;
@@ -1039,9 +1334,55 @@
 
       const ssTel = document.getElementById('ssLiveTelemetry');
       if (ssTel) {
-        ssTel.textContent = `STATUS SIMULASI AKTIF • TOE INTRUSI: ${res.xToe.toFixed(1)} m | RASIO GHYBEN: α = ${res.alpha.toFixed(1)} | UPCONING: ${res.upconingStatus}`;
+        ssTel.textContent = `KAPASITAS WTP: ${p.Qwtp_lps} L/dtk (${Math.round(w.Q_m3d)} m³/hr) • TOE INTRUSI: ${res.xToe.toFixed(1)} m | STATUS SUMUR: ${res.upconingStatus}`;
       }
 
+      // Render Tabel 1: Unit Operasi WTP
+      const wtpBody = document.getElementById('tableWtpUnits');
+      wtpBody.innerHTML = `
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-2 px-3 font-bold text-amber-300">1. Koagulasi (Rapid Mix)</td>
+          <td class="py-2 px-3">G = 750 /dtk | Dosis = ${p.coagDose} mg/L</td>
+          <td class="py-2 px-3 font-bold text-sky-400">${w.coag.vol.toFixed(2)} m³</td>
+          <td class="py-2 px-3">Ø ${w.coag.dia.toFixed(2)} m × H ${w.coag.h.toFixed(2)} m</td>
+          <td class="py-2 px-3">${w.coag.tdSec} detik</td>
+          <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-600/50">SESUAI SNI (&lt;60 dtk)</span></td>
+        </tr>
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-2 px-3 font-bold text-amber-300">2. Flokulasi (Slow Mix 3 Tahap)</td>
+          <td class="py-2 px-3">G = 60 &rarr; 20 /dtk | 3 Kompartemen</td>
+          <td class="py-2 px-3 font-bold text-sky-400">${w.floc.vol.toFixed(1)} m³</td>
+          <td class="py-2 px-3">P ${w.floc.l.toFixed(1)} m × L ${w.floc.w.toFixed(1)} m × H ${w.floc.h.toFixed(1)} m</td>
+          <td class="py-2 px-3">${w.floc.tdMin} menit</td>
+          <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.tdFloc >= 20 && p.tdFloc <= 45 ? 'bg-emerald-950 text-emerald-300 border border-emerald-600/50' : 'bg-amber-950 text-amber-300 border border-amber-600/50'}">${p.tdFloc >= 20 && p.tdFloc <= 45 ? 'SESUAI SNI (20-45 mnt)' : 'EVALUASI Td'}</span></td>
+        </tr>
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-2 px-3 font-bold text-amber-300">3. Sedimentasi (Clarifier)</td>
+          <td class="py-2 px-3">Vo = ${p.voSed} m³/m²/hr | Lumpur ${w.sludgeKgDay.toFixed(0)} kg/hr</td>
+          <td class="py-2 px-3 font-bold text-sky-400">A = ${w.sed.area.toFixed(1)} m² (${w.sed.vol.toFixed(0)} m³)</td>
+          <td class="py-2 px-3">P ${w.sed.l.toFixed(1)} m × L ${w.sed.w.toFixed(1)} m × H ${w.sed.h.toFixed(1)} m</td>
+          <td class="py-2 px-3">${w.sed.tdHours.toFixed(2)} jam</td>
+          <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.voSed <= 40 ? 'bg-emerald-950 text-emerald-300 border border-emerald-600/50' : 'bg-amber-950 text-amber-300 border border-amber-600/50'}">${p.voSed <= 40 ? 'SESUAI SNI' : 'Vo TINGGI'}</span></td>
+        </tr>
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-2 px-3 font-bold text-amber-300">4. Filtrasi Pasir Cepat</td>
+          <td class="py-2 px-3">Vf = ${p.vfFilt} m/jam | ${w.filt.nBoxes} Bak Filter</td>
+          <td class="py-2 px-3 font-bold text-sky-400">A<sub>tot</sub> = ${w.filt.areaTotal.toFixed(1)} m²</td>
+          <td class="py-2 px-3">${w.filt.nBoxes} Unit @ P ${w.filt.l.toFixed(1)} m × L ${w.filt.w.toFixed(1)} m</td>
+          <td class="py-2 px-3">Kontinyu</td>
+          <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.vfFilt <= 11 ? 'bg-emerald-950 text-emerald-300 border border-emerald-600/50' : 'bg-rose-950 text-rose-300 border border-rose-600/50'}">${p.vfFilt <= 11 ? 'SESUAI SNI (6-11 m/jam)' : 'MELEBIHI SNI'}</span></td>
+        </tr>
+        <tr class="hover:bg-slate-900/50">
+          <td class="py-2 px-3 font-bold text-amber-300">5. Reservoir Air Bersih</td>
+          <td class="py-2 px-3">Kapasitas Simpanan Minimum 4 Jam</td>
+          <td class="py-2 px-3 font-bold text-sky-400">${w.clearwell.vol.toFixed(0)} m³</td>
+          <td class="py-2 px-3">P ${w.clearwell.side.toFixed(1)} m × L ${w.clearwell.side.toFixed(1)} m × H 4.0 m</td>
+          <td class="py-2 px-3">4.00 jam</td>
+          <td class="py-2 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-600/50">TERVERIFIKASI</span></td>
+        </tr>
+      `;
+
+      // Render Tabel 2: Transek Intrusi Air Laut
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
       [0.05, 0.15, 0.30, 0.50, 0.75, 1.0].forEach(frac => {
@@ -1069,10 +1410,22 @@
         `;
         tbody.appendChild(tr);
       });
+
+      // Render Panel Poin Penting, Risalah Teknis, Saran Teknis & Kesimpulan
+      document.getElementById('secKeyPoints').innerHTML = res.narrative.keyPoints.map(pt => `<li>${pt}</li>`).join('');
+      document.getElementById('secTechnicalMinutes').innerHTML = `<p>${res.narrative.technicalMinutes}</p>`;
+      document.getElementById('secTechnicalAdvice').innerHTML = res.narrative.technicalAdvice.map(adv => `<li>${adv}</li>`).join('');
+      document.getElementById('secConclusion').innerHTML = `<p>${res.narrative.conclusion}</p>`;
     }
 
     function runSimulationCycle() {
       const raw = {
+        Qwtp_lps: parseFloat(document.getElementById('numQwtp').value),
+        turbidity: parseFloat(document.getElementById('numTurbidity').value),
+        coagDose: parseFloat(document.getElementById('numCoagDose').value),
+        tdFloc: parseFloat(document.getElementById('numTdFloc').value),
+        voSed: parseFloat(document.getElementById('numVoSed').value),
+        vfFilt: parseFloat(document.getElementById('numVfFilt').value),
         K: parseFloat(document.getElementById('numK').value),
         rhoF: parseFloat(document.getElementById('numRhoF').value),
         rhoS: parseFloat(document.getElementById('numRhoS').value),
@@ -1081,8 +1434,8 @@
         hL: parseFloat(document.getElementById('numHL').value),
         L: parseFloat(document.getElementById('numL').value),
         R_mm: parseFloat(document.getElementById('numR').value),
-        xObs: parseFloat(document.getElementById('numXObs').value),
         Qw: parseFloat(document.getElementById('numQ').value),
+        xObs: parseFloat(document.getElementById('numXObs').value),
         xw: parseFloat(document.getElementById('numXw').value),
         zScreen: parseFloat(document.getElementById('numZScreen').value)
       };
@@ -1103,23 +1456,301 @@
       }
 
       const p = validation.params;
+      document.getElementById('valQwtp').textContent = p.Qwtp_lps.toFixed(1);
       document.getElementById('valK').textContent = p.K.toFixed(1);
       document.getElementById('valHL').textContent = p.hL.toFixed(2);
       document.getElementById('valL').textContent = p.L.toFixed(0);
       document.getElementById('valR').textContent = p.R_mm.toFixed(0);
-      document.getElementById('valXObs').textContent = p.xObs.toFixed(0);
       document.getElementById('valQ').textContent = p.Qw.toFixed(0);
-      document.getElementById('inpXObs').max = p.L;
 
-      const results = solveCoastalAquifer(p);
+      const results = solveWtpAndHydrogeology(p);
       currentSimulationOutput = { params: p, results };
 
       updateUI(p, results);
-      renderCrossSection(p, results);
+      renderAllCharts(p, results);
     }
 
     /**
-     * 6. GENERATOR PAYLOAD JSON FLOPY (MODFLOW 6 / SEAWAT)
+     * ============================================================================
+     * 6. EKSPOR LAPORAN RESMI KE MICROSOFT WORD (.DOC) DAN PDF (.PDF)
+     * ============================================================================
+     */
+    function exportToWordReport() {
+      if (!currentSimulationOutput) return;
+      const { params: p, results: r } = currentSimulationOutput;
+      const w = r.wtp;
+      const n = r.narrative;
+      const dateStr = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+      const sampleSteps = [0.05, 0.15, 0.30, 0.50, 0.75, 1.0];
+      let swiRowsHtml = '';
+      sampleSteps.forEach(frac => {
+        const idx = Math.min(r.arrays.x.length - 1, Math.floor(frac * (r.arrays.x.length - 1)));
+        const xVal = r.arrays.x[idx];
+        const h0Val = r.arrays.hNatural[idx];
+        const hVal = r.arrays.hPumped[idx];
+        const ziVal = r.arrays.ziPumped[idx];
+        const lens = hVal - ziVal;
+        const zone = ziVal > -p.zb + 0.05 ? 'Zona Baji Intrusi Air Asin' : 'Akuifer Air Tawar Penuh';
+        swiRowsHtml += `
+          <tr>
+            <td style="text-align:center;">${xVal.toFixed(0)} m</td>
+            <td style="text-align:right;">+${h0Val.toFixed(2)} m</td>
+            <td style="text-align:right;">+${hVal.toFixed(2)} m</td>
+            <td style="text-align:right;font-weight:bold;">${ziVal.toFixed(2)} m</td>
+            <td style="text-align:right;">${lens.toFixed(2)} m</td>
+            <td>${zone}</td>
+          </tr>`;
+      });
+
+      const htmlContent = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          <title>Laporan Perhitungan Desain WTP & Evaluasi Intrusi Air Laut</title>
+          <style>
+            body { font-family: Arial, sans-serif; font-size: 10.5pt; color: #0f172a; line-height: 1.45; padding: 15px; }
+            h1 { font-size: 14pt; color: #0369a1; text-align: center; margin-bottom: 2px; }
+            h2 { font-size: 11pt; color: #b45309; text-align: center; margin-top: 0; }
+            h3 { font-size: 11pt; color: #0369a1; border-bottom: 1.5px solid #0369a1; padding-bottom: 3px; margin-top: 16px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; font-size: 9.5pt; }
+            th, td { border: 1px solid #64748b; padding: 6px 8px; }
+            th { background-color: #e0f2fe; color: #0c4a6e; font-weight: bold; }
+            .box { border: 1px solid #94a3b8; background-color: #f8fafc; padding: 10px; margin-top: 8px; }
+          </style>
+        </head>
+        <body>
+          <h1>LAPORAN RESMI PERHITUNGAN &amp; DESAIN WATER TREATMENT PLANT (WTP)</h1>
+          <h2>SERTA EVALUASI HIDROGEOLOGI INTRUSI AIR LAUT SUMUR SADAP (SNI 6774:2008 &amp; GHYBEN-HERZBERG)</h2>
+          <p style="text-align:center;font-size:9.5pt;">Tanggal Evaluasi: <b>${dateStr}</b> | Penyusun &amp; Lead Consultant: <b>Ir. Mohamad Hartadi (Adi)</b></p>
+          <hr/>
+
+          <h3>A. RINGKASAN METRIK EKSEKUTIF</h3>
+          <table>
+            <tr>
+              <th>Kapasitas Olahan WTP</th><td><b>${p.Qwtp_lps.toFixed(1)} L/detik (${Math.round(w.Q_m3d).toLocaleString('id-ID')} m³/hari)</b></td>
+              <th>Rasio Ghyben-Herzberg (α)</th><td><b>${r.alpha.toFixed(2)} (ρf=${p.rhoF}, ρs=${p.rhoS} kg/m³)</b></td>
+            </tr>
+            <tr>
+              <th>Kebutuhan Koagulan Alum</th><td>${w.alumKgDay.toFixed(1)} kg/hari (Dosis ${p.coagDose} mg/L)</td>
+              <th>Panjang Baji Intrusi (x_toe)</th><td><b>${r.xToe.toFixed(1)} m dari garis pantai</b></td>
+            </tr>
+            <tr>
+              <th>Produksi Lumpur Kering</th><td>${w.sludgeKgDay.toFixed(1)} kg/hari (Kekeruhan ${p.turbidity} NTU)</td>
+              <th>Fluks Air Tawar Lepas Pantai (q0)</th><td>${r.q0.toFixed(3)} m²/hari</td>
+            </tr>
+            <tr>
+              <th>Jumlah Sumur Sadap (Wellfield)</th><td>${w.nWellsRequired} Sumur (@ Qw = ${p.Qw} m³/hari)</td>
+              <th>Status Upconing Sumur (Dagan-Bear)</th><td><b>${r.upconingStatus} (λ = ${(r.upconingRatio * 100).toFixed(1)}%)</b></td>
+            </tr>
+          </table>
+
+          <h3>B. REKAPITULASI PERHITUNGAN &amp; DIMENSI UNIT OPERASI WTP (SNI 6774:2008)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Unit Operasi WTP</th>
+                <th>Kriteria Desain</th>
+                <th>Volume / Luas Efektif</th>
+                <th>Dimensi Rencana</th>
+                <th>Waktu Detensi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>1. Koagulasi (Rapid Mix)</b></td>
+                <td>G = 750 /dtk | Alum ${p.coagDose} mg/L</td>
+                <td>${w.coag.vol.toFixed(2)} m³</td>
+                <td>Ø ${w.coag.dia.toFixed(2)} m × H ${w.coag.h.toFixed(2)} m</td>
+                <td>${w.coag.tdSec} detik</td>
+              </tr>
+              <tr>
+                <td><b>2. Flokulasi (Slow Mix)</b></td>
+                <td>G = 60 - 20 /dtk | 3 Tahap</td>
+                <td>${w.floc.vol.toFixed(1)} m³</td>
+                <td>P ${w.floc.l.toFixed(1)} m × L ${w.floc.w.toFixed(1)} m × H ${w.floc.h.toFixed(1)} m</td>
+                <td>${w.floc.tdMin} menit</td>
+              </tr>
+              <tr>
+                <td><b>3. Sedimentasi (Clarifier)</b></td>
+                <td>Vo = ${p.voSed} m³/m²/hari</td>
+                <td>Luas ${w.sed.area.toFixed(1)} m² (${w.sed.vol.toFixed(0)} m³)</td>
+                <td>P ${w.sed.l.toFixed(1)} m × L ${w.sed.w.toFixed(1)} m × H ${w.sed.h.toFixed(1)} m</td>
+                <td>${w.sed.tdHours.toFixed(2)} jam</td>
+              </tr>
+              <tr>
+                <td><b>4. Filtrasi Pasir Cepat</b></td>
+                <td>Vf = ${p.vfFilt} m/jam | ${w.filt.nBoxes} Bak</td>
+                <td>Luas Total ${w.filt.areaTotal.toFixed(1)} m²</td>
+                <td>${w.filt.nBoxes} Bak @ P ${w.filt.l.toFixed(1)} m × L ${w.filt.w.toFixed(1)} m</td>
+                <td>Kontinyu</td>
+              </tr>
+              <tr>
+                <td><b>5. Reservoir Air Bersih</b></td>
+                <td>Simpanan Minimum 4 Jam</td>
+                <td>${w.clearwell.vol.toFixed(0)} m³</td>
+                <td>P ${w.clearwell.side.toFixed(1)} m × L ${w.clearwell.side.toFixed(1)} m × H 4.0 m</td>
+                <td>4.00 jam</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>C. PROFIL TRANSEK KEDALAMAN ANTARMUKA AIR TAWAR - AIR ASIN</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Jarak Pantai (x)</th>
+                <th>MAT Alami (h0)</th>
+                <th>MAT Terpompa (h)</th>
+                <th>Kedalaman Interface (zi)</th>
+                <th>Tebal Lensa Air Tawar</th>
+                <th>Status Zona Akuifer</th>
+              </tr>
+            </thead>
+            <tbody>${swiRowsHtml}</tbody>
+          </table>
+
+          <h3>D. POIN-POIN PENTING HASIL ANALISIS</h3>
+          <div class="box">
+            <ul>${n.keyPoints.map(pt => `<li>${pt}</li>`).join('')}</ul>
+          </div>
+
+          <h3>E. RISALAH TEKNIS (ENGINEERING DIGEST)</h3>
+          <div class="box"><p>${n.technicalMinutes}</p></div>
+
+          <h3>F. SARAN &amp; REKOMENDASI TEKNIS OPERASIONAL</h3>
+          <div class="box">
+            <ul>${n.technicalAdvice.map(adv => `<li>${adv}</li>`).join('')}</ul>
+          </div>
+
+          <h3>G. KESIMPULAN KELAYAKAN SISTEM</h3>
+          <div class="box"><p><b>${n.conclusion}</b></p></div>
+
+          <br/>
+          <p style="font-size:9pt;color:#475569;">Dokumen ini dihasilkan secara otomatis oleh <b>WTP &amp; Hydro-Intake PRO V3.5</b> — Dikembangkan oleh <b>Ir. Mohamad Hartadi (Adi)</b> | WA: 0822-3103-6047 | Blog: newbieonline7.blogspot.com | FB: facebook.com/m.hartadi</p>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Laporan_Desain_WTP_Hidrogeologi_${p.Qwtp_lps}Lps.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Laporan Resmi berhasil diekspor ke Microsoft Word (.doc)!', 'success');
+    }
+
+    function exportToPDFReport() {
+      if (!currentSimulationOutput || !window.jspdf) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const { params: p, results: r } = currentSimulationOutput;
+      const w = r.wtp;
+      const n = r.narrative;
+      const dateStr = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+      // Header Banner PDF
+      doc.setFillColor(15, 23, 42);
+      doc.rect(0, 0, 210, 28, 'F');
+      doc.setTextColor(56, 189, 248);
+      doc.setFontSize(13);
+      doc.setFont('helvetica', 'bold');
+      doc.text('WTP & HYDRO-INTAKE PRO V3.5 — ENGINEERING REPORT', 14, 11);
+      doc.setFontSize(8.5);
+      doc.setTextColor(248, 250, 252);
+      doc.text('PERHITUNGAN & DESAIN WATER TREATMENT PLANT (SNI 6774:2008) & EVALUASI INTRUSI AIR LAUT', 14, 17);
+      doc.setTextColor(251, 191, 36);
+      doc.text(`Tanggal: ${dateStr}  |  Lead Consultant: Ir. Mohamad Hartadi (Adi)  |  Kapasitas: ${p.Qwtp_lps} L/dtk`, 14, 23);
+
+      // Tabel 1: Ringkasan Metrik Utama
+      doc.autoTable({
+        startY: 32,
+        head: [['Parameter Utama WTP', 'Nilai Terhitung', 'Parameter Hidrogeologi Pesisir', 'Nilai Terhitung']],
+        body: [
+          ['Kapasitas Desain WTP', `${p.Qwtp_lps.toFixed(1)} L/dtk (${Math.round(w.Q_m3d)} m³/hr)`, 'Rasio Ghyben-Herzberg (α)', `${r.alpha.toFixed(2)} (zb = -${p.zb} m)`],
+          ['Kebutuhan Alum (Koagulan)', `${w.alumKgDay.toFixed(1)} kg/hr (Dosis ${p.coagDose} mg/L)`, 'Panjang Intrusi Toe (x_toe)', `${r.xToe.toFixed(1)} m dari pantai`],
+          ['Timbulan Lumpur Kering', `${w.sludgeKgDay.toFixed(1)} kg/hr (${p.turbidity} NTU)`, 'Antarmuka di x = ' + p.xObs + ' m', `${r.ziObs.toFixed(2)} m MSL (MAT +${r.hObs.toFixed(2)}m)`],
+          ['Jumlah Sumur Intake', `${w.nWellsRequired} Sumur (@ Qw = ${p.Qw} m³/hr)`, 'Status Upconing (Dagan-Bear)', `${r.upconingStatus} (λ = ${(r.upconingRatio * 100).toFixed(1)}%)`]
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: [3, 105, 161], fontSize: 8 },
+        styles: { fontSize: 7.5, cellPadding: 2 }
+      });
+
+      // Tabel 2: Dimensi Unit Operasi WTP
+      doc.autoTable({
+        startY: doc.lastAutoTable.finalY + 5,
+        head: [['Unit Operasi WTP', 'Kriteria Desain', 'Volume / Luas', 'Dimensi Rencana', 'Waktu Detensi']],
+        body: [
+          ['1. Koagulasi (Rapid Mix)', `G = 750 /dtk | ${p.coagDose} mg/L`, `${w.coag.vol.toFixed(2)} m³`, `Dia ${w.coag.dia.toFixed(2)}m x H ${w.coag.h.toFixed(2)}m`, `${w.coag.tdSec} detik`],
+          ['2. Flokulasi (3 Kompartemen)', 'G = 60 -> 20 /dtk', `${w.floc.vol.toFixed(1)} m³`, `P ${w.floc.l.toFixed(1)}m x L ${w.floc.w.toFixed(1)}m x H ${w.floc.h.toFixed(1)}m`, `${w.floc.tdMin} menit`],
+          ['3. Sedimentasi (Clarifier)', `Vo = ${p.voSed} m³/m²/hr`, `A = ${w.sed.area.toFixed(1)} m²`, `P ${w.sed.l.toFixed(1)}m x L ${w.sed.w.toFixed(1)}m x H ${w.sed.h.toFixed(1)}m`, `${w.sed.tdHours.toFixed(2)} jam`],
+          ['4. Filtrasi Pasir Cepat', `Vf = ${p.vfFilt} m/jam`, `A_tot = ${w.filt.areaTotal.toFixed(1)} m²`, `${w.filt.nBoxes} Bak @ P ${w.filt.l.toFixed(1)}m x L ${w.filt.w.toFixed(1)}m`, 'Kontinyu'],
+          ['5. Reservoir Air Bersih', 'Simpanan 4 Jam', `${w.clearwell.vol.toFixed(0)} m³`, `P ${w.clearwell.side.toFixed(1)}m x L ${w.clearwell.side.toFixed(1)}m x H 4.0m`, '4.00 jam']
+        ],
+        theme: 'striped',
+        headStyles: { fillColor: [180, 83, 9], fontSize: 8 },
+        styles: { fontSize: 7.5, cellPadding: 2 }
+      });
+
+      // Tabel 3: Transek Kedalaman Antarmuka Air Asin
+      const sampleSteps = [0.05, 0.15, 0.30, 0.50, 0.75, 1.0];
+      const swiBody = sampleSteps.map(frac => {
+        const idx = Math.min(r.arrays.x.length - 1, Math.floor(frac * (r.arrays.x.length - 1)));
+        const xVal = r.arrays.x[idx];
+        const h0Val = r.arrays.hNatural[idx];
+        const hVal = r.arrays.hPumped[idx];
+        const ziVal = r.arrays.ziPumped[idx];
+        return [
+          `${xVal.toFixed(0)} m`,
+          `+${h0Val.toFixed(2)} m`,
+          `+${hVal.toFixed(2)} m`,
+          `${ziVal.toFixed(2)} m MSL`,
+          `${(hVal - ziVal).toFixed(2)} m`,
+          ziVal > -p.zb + 0.05 ? 'Zona Baji Intrusi' : 'Akuifer Air Tawar Penuh'
+        ];
+      });
+
+      doc.autoTable({
+        startY: doc.lastAutoTable.finalY + 5,
+        head: [['Jarak x (m)', 'MAT Alami h0', 'MAT Terpompa h', 'Antarmuka zi', 'Tebal Lensa', 'Status Zona Akuifer']],
+        body: swiBody,
+        theme: 'grid',
+        headStyles: { fillColor: [15, 118, 110], fontSize: 8 },
+        styles: { fontSize: 7.5, cellPadding: 1.8 }
+      });
+
+      // Tabel 4: Poin Penting, Risalah Teknis, Saran Teknis & Kesimpulan
+      doc.autoTable({
+        startY: doc.lastAutoTable.finalY + 5,
+        head: [['BAGIAN EVALUASI', 'URAIAN RISALAH, REKOMENDASI & KESIMPULAN REKAYASA']],
+        body: [
+          ['I. Poin-Poin Penting', n.keyPoints.map((pt, i) => `${i + 1}. ${pt}`).join('\n')],
+          ['II. Risalah Teknis', n.technicalMinutes],
+          ['III. Saran Teknis', n.technicalAdvice.map((adv, i) => `${i + 1}. ${adv}`).join('\n')],
+          ['IV. Kesimpulan', n.conclusion]
+        ],
+        theme: 'grid',
+        columnStyles: { 0: { cellWidth: 38, fontStyle: 'bold' }, 1: { cellWidth: 144 } },
+        headStyles: { fillColor: [30, 41, 59], fontSize: 8 },
+        styles: { fontSize: 7.5, cellPadding: 2.5 }
+      });
+
+      const fy = doc.lastAutoTable.finalY + 6;
+      doc.setFontSize(7.5);
+      doc.setTextColor(71, 85, 105);
+      doc.text('Pengembang: Ir. Mohamad Hartadi (Adi) — WA: 0822-3103-6047 | Blog: newbieonline7.blogspot.com | FB: facebook.com/m.hartadi', 14, Math.min(288, fy));
+
+      doc.save(`Laporan_Resmi_WTP_Hidrogeologi_${p.Qwtp_lps}Lps.pdf`);
+      showToast('Laporan Resmi berhasil dicetak ke PDF (.pdf)!', 'success');
+    }
+
+    /**
+     * 7. GENERATOR PAYLOAD JSON FLOPY (MODFLOW 6 / SEAWAT) + DESAIN WTP
      */
     function buildFloPyJsonPayload(p, res) {
       const ncol = 100, nlay = 20;
@@ -1130,32 +1761,46 @@
 
       return {
         metadata: {
-          engine: "CoastalSWI PRO V2.0",
+          engine: "WTP & Hydro-Intake PRO V3.5",
           creator: "Ir. Mohamad Hartadi (Adi)",
-          target_simulator: "FloPy (MODFLOW 6 GWF-BUY / SEAWAT VDF)",
-          generated_at: new Date().toISOString(),
-          analytical_summary: {
+          standards: ["SNI 6774:2008 (Perencanaan Unit Paket IPA)", "FloPy MODFLOW 6 GWF-BUY / SEAWAT VDF"],
+          generated_at: new Date().toISOString()
+        },
+        wtp_design_summary: {
+          design_flow_lps: p.Qwtp_lps,
+          design_flow_m3_day: Number(res.wtp.Q_m3d.toFixed(1)),
+          coagulant_alum_kg_day: Number(res.wtp.alumKgDay.toFixed(2)),
+          dry_sludge_kg_day: Number(res.wtp.sludgeKgDay.toFixed(2)),
+          intake_wells_required: res.wtp.nWellsRequired,
+          units: {
+            coagulation_m3: Number(res.wtp.coag.vol.toFixed(2)),
+            flocculation_m3: Number(res.wtp.floc.vol.toFixed(2)),
+            sedimentation_area_m2: Number(res.wtp.sed.area.toFixed(2)),
+            rapid_sand_filter_area_m2: Number(res.wtp.filt.areaTotal.toFixed(2)),
+            clearwell_reservoir_m3: Number(res.wtp.clearwell.vol.toFixed(1))
+          }
+        },
+        engineering_evaluation: res.narrative,
+        flopy_modflow6_seawat: {
+          analytical_verification: {
             ghyben_herzberg_alpha: Number(res.alpha.toFixed(3)),
             toe_intrusion_m: Number(res.xToe.toFixed(2)),
             offshore_flux_m2_day: Number(res.q0.toFixed(4)),
             upconing_status: res.upconingStatus
+          },
+          discretization_dis: { nlay, nrow: 1, ncol, delr, delc: 1.0, top: p.zSurf, botm_step: -delv, aquifer_bottom_msl: -p.zb },
+          npf_package: { hk_m_day: p.K, vk_m_day: Number((p.K * 0.1).toFixed(3)), sy: 0.22, ss: 1e-5 },
+          buoyancy_vdf: { rho_fresh_kg_m3: p.rhoF, rho_sea_kg_m3: p.rhoS, drhodc: Number(((p.rhoS - p.rhoF) / 35.0).toFixed(4)), ref_salinity: 35.0 },
+          stress_packages: {
+            recharge_rch_m_day: Number(res.R_mday.toFixed(6)),
+            pumping_well_wel: [{ layer: wellLay, row: 0, col: wellCol, x_m: p.xw, screen_msl: -p.zScreen, q_m3_day: -Math.abs(p.Qw) }]
           }
-        },
-        discretization_dis: { nlay, nrow: 1, ncol, delr, delc: 1.0, top: p.zSurf, botm_step: -delv, aquifer_bottom_msl: -p.zb },
-        npf_package: { hk_m_day: p.K, vk_m_day: Number((p.K * 0.1).toFixed(3)), sy: 0.22, ss: 1e-5 },
-        buoyancy_vdf: { rho_fresh_kg_m3: p.rhoF, rho_sea_kg_m3: p.rhoS, drhodc: Number(((p.rhoS - p.rhoF) / 35.0).toFixed(4)), ref_salinity: 35.0 },
-        stress_packages: {
-          recharge_rch_m_day: Number(res.R_mday.toFixed(6)),
-          pumping_well_wel: [{ layer: wellLay, row: 0, col: wellCol, x_m: p.xw, screen_msl: -p.zScreen, q_m3_day: -Math.abs(p.Qw) }]
         }
       };
     }
 
     /**
-     * ============================================================================
-     * 7. OMNI-AI & WIKIPEDIA LIVE API SMART CHATBOT ENGINE
-     *    Mendeteksi topik internal vs pertanyaan luar topik (Wikipedia ID/EN + Google + AI)
-     * ============================================================================
+     * 8. OMNI-AI & WIKIPEDIA LIVE API SMART CHATBOT ENGINE
      */
     function toggleChatWindow() {
       const d = document.getElementById('chatDrawer');
@@ -1164,10 +1809,9 @@
     }
 
     function clearChatHistory() {
-      const cBox = document.getElementById('chatMessages');
-      cBox.innerHTML = `
+      document.getElementById('chatMessages').innerHTML = `
         <div class="p-3 rounded-xl bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/60 border border-sky-500/40 text-[11px] leading-relaxed shadow-md">
-          <span class="font-bold text-amber-300"><i class="fa-solid fa-broom mr-1"></i> Riwayat percakapan dibersihkan.</span> Silakan ajukan pertanyaan teknis hidrogeologi maupun topik ensiklopedia umum lainnya.
+          <span class="font-bold text-amber-300"><i class="fa-solid fa-broom mr-1"></i> Riwayat percakapan dibersihkan.</span> Silakan ajukan pertanyaan teknis WTP, kesimpulan, hidrogeologi, maupun topik ensiklopedia umum lainnya.
         </div>`;
     }
 
@@ -1176,7 +1820,6 @@
       sendChatMessage();
     }
 
-    // Bersihkan kalimat tanya agar mendapatkan kata kunci pencarian Wikipedia yang akurat
     function cleanSearchQuery(rawText) {
       return rawText
         .replace(/^(apa itu|apakah itu|apakah|siapa itu|siapakah|jelaskan tentang|jelaskan|tolong jelaskan|cari tahu tentang|cari|bagaimana|dimana|kapan|mengapa|arti dari|definisi dari|definisi)\s+/i, '')
@@ -1184,7 +1827,6 @@
         .trim();
     }
 
-    // Fetch Live API Wikipedia (Mencoba Bahasa Indonesia terlebih dahulu, lalu fallback ke Bahasa Inggris)
     async function fetchWikipediaKnowledge(queryText) {
       const cleanQ = cleanSearchQuery(queryText) || queryText;
       const langs = ['id', 'en'];
@@ -1219,24 +1861,17 @@
               };
             }
           }
-        } catch (err) {
-          console.warn(`Wikipedia (${lang}) API fallback:`, err);
-        }
+        } catch (err) {}
       }
       return { found: false, cleanQuery: cleanQ };
     }
 
-    // Generator Kartu Multi-Sumber Berwarna Profesional (Wikipedia, Google, Scholar, ChatGPT, Perplexity, Gemini, Claude)
     function buildExternalKnowledgeCard(rawQuery, wikiResult) {
       const qEnc = encodeURIComponent(rawQuery);
       const cleanEnc = encodeURIComponent(wikiResult.cleanQuery || cleanSearchQuery(rawQuery) || rawQuery);
 
-      const urlWikiId = wikiResult.found && wikiResult.langCode === 'id'
-        ? wikiResult.pageUrl
-        : `https://id.wikipedia.org/w/index.php?search=${cleanEnc}`;
-      const urlWikiEn = wikiResult.found && wikiResult.langCode === 'en'
-        ? wikiResult.pageUrl
-        : `https://en.wikipedia.org/w/index.php?search=${cleanEnc}`;
+      const urlWikiId = wikiResult.found && wikiResult.langCode === 'id' ? wikiResult.pageUrl : `https://id.wikipedia.org/w/index.php?search=${cleanEnc}`;
+      const urlWikiEn = wikiResult.found && wikiResult.langCode === 'en' ? wikiResult.pageUrl : `https://en.wikipedia.org/w/index.php?search=${cleanEnc}`;
       const urlGoogle = `https://www.google.com/search?q=${qEnc}`;
       const urlScholar = `https://scholar.google.com/scholar?q=${qEnc}`;
       const urlChatGPT = `https://chatgpt.com/?q=${qEnc}`;
@@ -1276,86 +1911,62 @@
               ${wikiResult.extract}
             </p>
             ${relatedChips}
-          </div>
-        `;
+          </div>`;
       } else {
         wikiSectionHtml = `
           <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-slate-950 border border-indigo-500/40 space-y-1.5">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold uppercase text-indigo-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-compass text-amber-400"></i> Penjelajahan Ensiklopedia &amp; Web Global
-              </span>
-              <span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">MULTI-SEARCH</span>
-            </div>
+            <span class="text-[10px] font-bold uppercase text-indigo-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-compass text-amber-400"></i> Penjelajahan Ensiklopedia &amp; Web Global
+            </span>
             <p class="text-[11px] text-slate-300 leading-relaxed">
-              Topik <b>"${rawQuery}"</b> berada di luar parameter spesifik kalkulasi akuifer pesisir atau memerlukan eksplorasi literatur yang lebih luas. Gunakan tautan referensi langsung ke <b>Wikipedia</b>, <b>Google</b>, dan <b>Mesin AI</b> di bawah ini untuk mendapatkan uraian komprehensif:
+              Topik <b>"${rawQuery}"</b> berada di luar parameter spesifik aplikasi. Gunakan tautan referensi langsung ke <b>Wikipedia</b>, <b>Google</b>, dan <b>Mesin AI</b> di bawah ini:
             </p>
-          </div>
-        `;
+          </div>`;
       }
 
       return `
         <div class="p-3 rounded-2xl bg-slate-900/95 border-2 border-sky-500/50 space-y-3 shadow-xl">
           ${wikiSectionHtml}
-
-          <!-- Panel Tautan Sumber Langsung Berwarna Menarik -->
           <div class="space-y-1.5">
             <div class="text-[10px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
               <i class="fa-solid fa-link text-sky-400"></i> Tautan Sumber Resmi: Wikipedia, Google &amp; AI Global
             </div>
-
             <div class="grid grid-cols-2 gap-1.5 text-[10px]">
-              <!-- Wikipedia ID -->
               <a href="${urlWikiId}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-purple-950 to-indigo-950 hover:from-purple-900 hover:to-indigo-900 border border-purple-500/50 text-purple-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-brands fa-wikipedia-w text-purple-300 mr-1"></i> <b>Wikipedia ID</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-purple-400"></i>
               </a>
-
-              <!-- Wikipedia EN -->
               <a href="${urlWikiEn}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-indigo-950 to-blue-950 hover:from-indigo-900 hover:to-blue-900 border border-indigo-500/50 text-indigo-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-brands fa-wikipedia-w text-indigo-300 mr-1"></i> <b>Wikipedia EN</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-indigo-400"></i>
               </a>
-
-              <!-- Google Search -->
               <a href="${urlGoogle}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-emerald-950 to-teal-950 hover:from-emerald-900 hover:to-teal-900 border border-emerald-500/50 text-emerald-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-brands fa-google text-emerald-400 mr-1"></i> <b>Google Search</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-emerald-400"></i>
               </a>
-
-              <!-- Google Scholar -->
               <a href="${urlScholar}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-cyan-950 to-sky-950 hover:from-cyan-900 hover:to-sky-900 border border-cyan-500/50 text-cyan-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-solid fa-graduation-cap text-cyan-400 mr-1"></i> <b>Google Scholar</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-cyan-400"></i>
               </a>
-
-              <!-- ChatGPT AI -->
               <a href="${urlChatGPT}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-amber-950 to-orange-950 hover:from-amber-900 hover:to-orange-900 border border-amber-500/50 text-amber-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-solid fa-robot text-amber-400 mr-1"></i> <b>ChatGPT AI</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-amber-400"></i>
               </a>
-
-              <!-- Perplexity AI -->
               <a href="${urlPerplexity}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-rose-950 to-pink-950 hover:from-rose-900 hover:to-pink-900 border border-rose-500/50 text-rose-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-solid fa-magnifying-glass-chart text-rose-400 mr-1"></i> <b>Perplexity AI</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-rose-400"></i>
               </a>
-
-              <!-- Google Gemini -->
               <a href="${urlGemini}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-blue-950 to-sky-950 hover:from-blue-900 hover:to-sky-900 border border-blue-500/50 text-blue-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-solid fa-sparkles text-sky-400 mr-1"></i> <b>Google AI Mode</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-sky-400"></i>
               </a>
-
-              <!-- Claude AI -->
               <a href="${urlClaude}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-gradient-to-r from-yellow-950 to-amber-950 hover:from-yellow-900 hover:to-amber-900 border border-yellow-500/50 text-yellow-200 flex items-center justify-between transition shadow">
                 <span class="truncate"><i class="fa-solid fa-brain text-yellow-400 mr-1"></i> <b>Claude AI</b></span>
                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-yellow-400"></i>
               </a>
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }
 
     async function sendChatMessage() {
@@ -1364,70 +1975,71 @@
       if (!txt || !currentSimulationOutput) return;
 
       const cBox = document.getElementById('chatMessages');
-      cBox.innerHTML += `
-        <div class="p-2.5 rounded-xl bg-gradient-to-r from-sky-700 to-cyan-600 text-white font-semibold text-[11px] text-right ml-8 shadow">
-          ${txt}
-        </div>`;
+      cBox.innerHTML += `<div class="p-2.5 rounded-xl bg-gradient-to-r from-sky-700 to-cyan-600 text-white font-semibold text-[11px] text-right ml-8 shadow">${txt}</div>`;
       inp.value = '';
       cBox.scrollTop = cBox.scrollHeight;
 
       const { params: p, results: r } = currentSimulationOutput;
       const q = txt.toLowerCase();
 
-      // Cek apakah pertanyaan berkaitan dengan modul internal aplikasi
-      const isCreatorQuery = q.includes('creator') || q.includes('programmer') || q.includes('hartadi') || q.includes('developer') || q.includes('pembuat') || q.includes('kontak');
+      const isCreatorQuery = q.includes('creator') || q.includes('programmer') || q.includes('hartadi') || q.includes('developer') || q.includes('kontak');
+      const isConclusionQuery = q.includes('kesimpulan') || q.includes('saran') || q.includes('risalah') || q.includes('poin penting');
+      const isWtpQuery = q.includes('dimensi') || q.includes('wtp') || q.includes('koagulasi') || q.includes('flokulasi') || q.includes('sedimentasi') || q.includes('filtrasi');
       const isToeQuery = q.includes('toe') || q.includes('status intrusi') || q.includes('baji air');
       const isUpconingQuery = q.includes('upconing') || q.includes('dagan') || q.includes('status sumur') || q.includes('sumur pemompaan');
-      const isDebitQuery = q.includes('rekomendasi debit') || q.includes('debit aman') || q.includes('q_max') || q.includes('debit maksimum');
-      const isFlopyQuery = q.includes('flopy') || q.includes('modflow') || q.includes('seawat') || q.includes('json');
 
-      if (isCreatorQuery || isToeQuery || isUpconingQuery || isDebitQuery || isFlopyQuery) {
+      if (isCreatorQuery || isConclusionQuery || isWtpQuery || isToeQuery || isUpconingQuery) {
         let internalResp = '';
         if (isCreatorQuery) {
           internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/90 via-slate-900 to-slate-950 border border-amber-500/60 space-y-1.5 shadow-lg">
             <b class="text-amber-300 flex items-center gap-1.5"><i class="fa-solid fa-id-badge"></i> DATA PROGRAMMER &amp; LEAD GEOTECHNICAL CONSULTANT</b>
             <p class="text-white font-bold text-xs">Ir. Mohamad Hartadi (Adi)</p>
             <p class="text-amber-400 text-[10px]">Civil &amp; Geotechnical Dam Safety Engineer • AI Developer</p>
-            <p class="text-slate-400 text-[9px]">SKA Ahli Utama Bendungan</p>
             <div class="grid gap-1 pt-1 text-[10px]">
               <a href="https://facebook.com/m.hartadi" target="_blank" class="p-1.5 rounded bg-blue-950/70 border border-blue-500/50 text-blue-300 flex justify-between"><span><i class="fa-brands fa-facebook mr-1"></i> Facebook: m.hartadi</span><b>Buka &rarr;</b></a>
               <a href="https://newbieonline7.blogspot.com" target="_blank" class="p-1.5 rounded bg-amber-950/70 border border-amber-500/50 text-amber-300 flex justify-between"><span><i class="fa-solid fa-blog mr-1"></i> Blog: newbieonline7.blogspot.com</span><b>Buka &rarr;</b></a>
               <a href="https://wa.me/6282231036047" target="_blank" class="p-1.5 rounded bg-emerald-950/70 border border-emerald-500/50 text-emerald-300 flex justify-between"><span><i class="fa-brands fa-whatsapp mr-1"></i> WA: 0822-3103-6047</span><b>Chat &rarr;</b></a>
             </div>
           </div>`;
+        } else if (isConclusionQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-emerald-950/90 to-slate-900 border border-emerald-500/50 space-y-1.5">
+            <b class="text-emerald-300"><i class="fa-solid fa-award mr-1"></i> KESIMPULAN &amp; SARAN TEKNIS</b>
+            <p class="text-[11px] text-slate-200">${r.narrative.conclusion}</p>
+            <div class="pt-1 flex gap-1.5">
+              <button onclick="exportToWordReport()" class="px-2 py-1 rounded bg-blue-700 text-white text-[10px] font-bold">Unduh Word</button>
+              <button onclick="exportToPDFReport()" class="px-2 py-1 rounded bg-rose-700 text-white text-[10px] font-bold">Unduh PDF</button>
+            </div>
+          </div>`;
+        } else if (isWtpQuery) {
+          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/90 to-slate-900 border border-amber-500/50 space-y-1.5">
+            <b class="text-amber-300"><i class="fa-solid fa-industry mr-1"></i> RINGKASAN DESAIN UNIT WTP (${p.Qwtp_lps} L/dtk)</b><br>
+            • <b>Koagulasi:</b> Volume ${r.wtp.coag.vol.toFixed(2)} m³ | Alum: ${r.wtp.alumKgDay.toFixed(1)} kg/hr<br>
+            • <b>Flokulasi:</b> Volume ${r.wtp.floc.vol.toFixed(1)} m³ (P ${r.wtp.floc.l.toFixed(1)}m × L ${r.wtp.floc.w.toFixed(1)}m)<br>
+            • <b>Sedimentasi:</b> Luas ${r.wtp.sed.area.toFixed(1)} m² | Td = ${r.wtp.sed.tdHours.toFixed(2)} jam<br>
+            • <b>Filtrasi Pasir Cepat:</b> ${r.wtp.filt.nBoxes} Bak (Total ${r.wtp.filt.areaTotal.toFixed(1)} m²)<br>
+            • <b>Reservoir Bersih:</b> ${r.wtp.clearwell.vol.toFixed(0)} m³ (Pasokan dari ${r.wtp.nWellsRequired} sumur intake).
+          </div>`;
         } else if (isToeQuery) {
           internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-sky-950/90 to-slate-900 border border-sky-500/50 space-y-1.5">
             <b class="text-sky-300"><i class="fa-solid fa-water mr-1"></i> ANALISIS INTRUSI &amp; POSISI TOE SAAT INI</b><br>
-            Dengan konduktivitas <b>K = ${p.K} m/hari</b> dan muka air tanah hulu <b>h = +${p.hL} m MSL</b>, rasio Ghyben-Herzberg tercatat <b>α = ${r.alpha.toFixed(2)}</b>.<br>
-            • Panjang penjalaran baji air asin (<i>Toe</i>): <b class="text-amber-300">${r.xToe.toFixed(1)} m</b> dari garis pantai.<br>
-            • Pada titik inspeksi <b>x = ${p.xObs} m</b>, kedalaman antarmuka berada di <b class="text-emerald-300">${r.ziObs.toFixed(2)} m MSL</b> dengan tebal lensa air tawar <b>${(r.hObs - r.ziObs).toFixed(2)} m</b>.
+            Rasio Ghyben-Herzberg tercatat <b>α = ${r.alpha.toFixed(2)}</b>.<br>
+            • Panjang baji air asin (<i>Toe</i>): <b class="text-amber-300">${r.xToe.toFixed(1)} m</b> dari garis pantai.<br>
+            • Pada titik inspeksi <b>x = ${p.xObs} m</b>, kedalaman antarmuka berada di <b class="text-emerald-300">${r.ziObs.toFixed(2)} m MSL</b>.
           </div>`;
         } else if (isUpconingQuery) {
           internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-rose-950/90 to-slate-900 border border-rose-500/50 space-y-1.5">
-            <b class="text-rose-300"><i class="fa-solid fa-bore-hole mr-1"></i> EVALUASI UPCONING SUMUR PEMOMPAAN</b><br>
-            Sumur pada jarak <b>x<sub>w</sub> = ${p.xw} m</b> (saringan <b>-${p.zScreen} m MSL</b>) memompa <b>Q = ${p.Qw} m³/hari</b>.<br>
-            • Kenaikan baji air asin lokal: <b>+${r.upconingRise.toFixed(2)} m</b>.<br>
-            • Rasio Dagan-Bear (λ): <b class="text-amber-300">${(r.upconingRatio * 100).toFixed(1)}%</b> (Batas Kritis = 33.0%).<br>
-            • Status Keamanan Sumur: <b class="text-white px-1.5 py-0.5 rounded bg-rose-700">${r.upconingStatus}</b>.
-          </div>`;
-        } else if (isDebitQuery) {
-          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-emerald-950/90 to-slate-900 border border-emerald-500/50 space-y-1.5">
-            <b class="text-emerald-300"><i class="fa-solid fa-gauge-high mr-1"></i> OPTIMASI DEBIT PEMOMPAAN BEBAS INTRUSI</b><br>
-            Berdasarkan ketebalan zona aman di bawah saringan sumur (<b>d<sub>0</sub> = ${r.d0.toFixed(2)} m</b>), agar baji air asin tidak menembus kriteria kritis Dagan-Bear (λ &le; 33%), debit pemompaan disarankan tidak melebihi <b class="text-amber-300">Q<sub>max</sub> &approx; ${r.qSafeMax.toFixed(0)} m³/hari</b>, atau geser lokasi sumur ke daratan (&gt; ${Math.round(Math.min(5000, r.xToe * 1.25 + 50))} m dari pantai).
-          </div>`;
-        } else if (isFlopyQuery) {
-          internalResp = `<div class="p-3 rounded-xl bg-gradient-to-br from-amber-950/90 to-slate-900 border border-amber-500/50 space-y-1.5">
-            <b class="text-amber-300"><i class="fa-solid fa-file-code mr-1"></i> INTEGRASI FLOPY (MODFLOW 6 / SEAWAT)</b><br>
-            Parameter Web UI telah dipetakan ke matriks diskrit 2D (<b>100 kolom &times; 20 lapisan</b>, Δx = ${(p.L/100).toFixed(1)} m). Klik tombol <b>JSON FloPy</b> di navigasi atas untuk menyalin atau mengunduh paket <code>DIS</code>, <code>NPF</code>, <code>BUY</code>, <code>RCH</code>, dan <code>WEL</code>.
+            <b class="text-rose-300"><i class="fa-solid fa-bore-hole mr-1"></i> EVALUASI UPCONING SUMUR INTAKE WTP</b><br>
+            Sumur pada jarak <b>x<sub>w</sub> = ${p.xw} m</b> memompa <b>Q<sub>w</sub> = ${p.Qw} m³/hari</b>.<br>
+            • Kenaikan baji air asin lokal: <b>+${r.upconingRise.toFixed(2)} m</b> (λ = ${(r.upconingRatio * 100).toFixed(1)}%).<br>
+            • Rekomendasi debit aman maksimum: <b class="text-emerald-300">Q<sub>max</sub> &approx; ${r.qSafeMax.toFixed(0)} m³/hari</b>.<br>
+            • Status: <b class="text-white px-1.5 py-0.5 rounded bg-rose-700">${r.upconingStatus}</b>.
           </div>`;
         }
-
         cBox.innerHTML += internalResp;
         cBox.scrollTop = cBox.scrollHeight;
         return;
       }
 
-      // JIKA PERTANYAAN DI LUAR TOPIK -> PANGGIL WIKIPEDIA LIVE API + GOOGLE + AI LINKS
       const loadingId = 'chatLoad_' + Date.now();
       cBox.innerHTML += `
         <div id="${loadingId}" class="p-3 rounded-xl bg-slate-900 border border-purple-500/40 text-[11px] text-purple-300 flex items-center gap-2">
@@ -1445,7 +2057,7 @@
     }
 
     /**
-     * 8. THREE.JS REALISTIC 3D EARTH SCENE & ANIMASI LOADING TANPA PASSWORD
+     * 9. THREE.JS REALISTIC 3D EARTH SCENE & ANIMASI LOADING
      */
     function createProceduralEarthTexture() {
       const c = document.createElement('canvas');
@@ -1566,10 +2178,10 @@
 
       let pct = 0;
       const steps = [
-        'Menginisialisasi Relasi Ghyben-Herzberg & Potensial Strack...',
-        'Memuat Solver Superposisi Thiem & Upconing Dagan-Bear...',
-        'Menghubungkan Modul Live Wikipedia API, Google & AI Hub...',
-        'Sistem Siap! Membuka Dashboard Hidrogeologi...'
+        'Menginisialisasi Standar Perhitungan WTP (SNI 6774:2008)...',
+        'Memuat Solver Intrusi Air Laut Ghyben-Herzberg & Dagan-Bear...',
+        'Menyiapkan Generator Laporan Word (.doc), PDF (.pdf) & Help System...',
+        'Sistem Siap! Membuka Dashboard WTP & Hidrogeologi...'
       ];
 
       if (bootTimer) clearInterval(bootTimer);
@@ -1601,9 +2213,7 @@
       }, 450);
     }
 
-    function replayBootLoading() {
-      startBootLoadingSequence();
-    }
+    function replayBootLoading() { startBootLoadingSequence(); }
 
     function initScreensaverGlobe() {
       const canvas = document.getElementById('ssEarthCanvas');
@@ -1677,17 +2287,23 @@
       runSimulationCycle();
       startBootLoadingSequence();
 
-      [['inpK', 'numK'], ['inpHL', 'numHL'], ['inpL', 'numL'], ['inpR', 'numR'], ['inpXObs', 'numXObs'], ['inpQ', 'numQ']].forEach(([rId, nId]) => {
+      [['inpQwtp', 'numQwtp'], ['inpK', 'numK'], ['inpHL', 'numHL'], ['inpL', 'numL'], ['inpR', 'numR'], ['inpQ', 'numQ']].forEach(([rId, nId]) => {
         const rEl = document.getElementById(rId), nEl = document.getElementById(nId);
         rEl.addEventListener('input', () => { nEl.value = rEl.value; runSimulationCycle(); });
         nEl.addEventListener('input', () => { rEl.value = nEl.value; runSimulationCycle(); });
       });
 
-      ['numRhoF', 'numRhoS', 'numZb', 'numZSurf', 'numXw', 'numZScreen'].forEach(id => {
+      ['numTurbidity', 'numCoagDose', 'numTdFloc', 'numVoSed', 'numVfFilt', 'numRhoF', 'numRhoS', 'numZb', 'numZSurf', 'numXObs', 'numXw', 'numZScreen'].forEach(id => {
         document.getElementById(id).addEventListener('input', runSimulationCycle);
       });
 
       document.getElementById('btnReset').addEventListener('click', () => {
+        document.getElementById('inpQwtp').value = document.getElementById('numQwtp').value = DEFAULT_PARAMS.Qwtp_lps;
+        document.getElementById('numTurbidity').value = DEFAULT_PARAMS.turbidity;
+        document.getElementById('numCoagDose').value = DEFAULT_PARAMS.coagDose;
+        document.getElementById('numTdFloc').value = DEFAULT_PARAMS.tdFloc;
+        document.getElementById('numVoSed').value = DEFAULT_PARAMS.voSed;
+        document.getElementById('numVfFilt').value = DEFAULT_PARAMS.vfFilt;
         document.getElementById('inpK').value = document.getElementById('numK').value = DEFAULT_PARAMS.K;
         document.getElementById('numRhoF').value = DEFAULT_PARAMS.rhoF;
         document.getElementById('numRhoS').value = DEFAULT_PARAMS.rhoS;
@@ -1696,12 +2312,12 @@
         document.getElementById('inpHL').value = document.getElementById('numHL').value = DEFAULT_PARAMS.hL;
         document.getElementById('inpL').value = document.getElementById('numL').value = DEFAULT_PARAMS.L;
         document.getElementById('inpR').value = document.getElementById('numR').value = DEFAULT_PARAMS.R_mm;
-        document.getElementById('inpXObs').value = document.getElementById('numXObs').value = DEFAULT_PARAMS.xObs;
         document.getElementById('inpQ').value = document.getElementById('numQ').value = DEFAULT_PARAMS.Qw;
+        document.getElementById('numXObs').value = DEFAULT_PARAMS.xObs;
         document.getElementById('numXw').value = DEFAULT_PARAMS.xw;
         document.getElementById('numZScreen').value = DEFAULT_PARAMS.zScreen;
         runSimulationCycle();
-        showToast('Seluruh parameter dikembalikan ke nilai default.', 'info');
+        showToast('Seluruh parameter WTP & Hidrogeologi dikembalikan ke default.', 'info');
       });
 
       document.getElementById('btnTheme').addEventListener('click', () => {
@@ -1725,7 +2341,7 @@
 
       document.getElementById('btnCopyJson').addEventListener('click', () => {
         navigator.clipboard.writeText(document.getElementById('jsonPreview').textContent);
-        showToast('JSON FloPy berhasil disalin ke Clipboard!', 'success');
+        showToast('JSON FloPy & WTP berhasil disalin ke Clipboard!', 'success');
       });
 
       document.getElementById('btnDownloadJson').addEventListener('click', () => {
@@ -1733,7 +2349,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `FloPy_SWI_Model_${Date.now()}.json`;
+        a.download = `WTP_FloPy_Model_${Date.now()}.json`;
         a.click();
         URL.revokeObjectURL(url);
       });
@@ -1742,6 +2358,7 @@
         if (e.key === 'Escape') {
           toggleScreensaver(false);
           closeModal('creatorModal');
+          closeModal('helpModal');
           modal.classList.add('hidden');
         }
       });
